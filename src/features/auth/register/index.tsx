@@ -1,4 +1,4 @@
-import {useState, useMemo} from 'react';
+import {useState, useMemo, useEffect} from 'react';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
@@ -10,6 +10,9 @@ import {ContentWrapper} from './index.styled';
 import {useRegisterMutation} from '../api';
 
 import {useTranslation} from 'react-i18next';
+
+import {validationSchema} from './validation';
+import {validate} from '../../../utils/validate';
 
 interface iForm {
   username: string;
@@ -42,6 +45,12 @@ const Register = () => {
   const onFromSubmit = () => {
     register(form);
   };
+
+  useEffect(() => {
+    validate(validationSchema, form)
+      .then(data => console.log('data', data))
+      .catch(err => console.log('err', err));
+  }, [form]);
 
   return (
     <PageWrapper>
