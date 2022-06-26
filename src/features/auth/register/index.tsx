@@ -7,6 +7,8 @@ import Button from '../../../components/Button';
 import {Column, PageWrapper, Row} from '../../../components/Containers';
 import {ContentWrapper} from './index.styled';
 
+import {useRegisterMutation} from '../api';
+
 interface iForm {
   username: string;
   email: string;
@@ -22,6 +24,8 @@ const Register = () => {
     passwordConfirmation: '',
   });
 
+  const [register] = useRegisterMutation();
+
   const isDisabled = useMemo(() => Object.values(form).some(el => !el), [form]);
 
   const onInputChange = (name: string, value: string) => {
@@ -32,7 +36,7 @@ const Register = () => {
   };
 
   const onFromSubmit = () => {
-
+    register(form);
   };
 
   return (
