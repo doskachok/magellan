@@ -9,6 +9,8 @@ import {ContentWrapper} from './index.styled';
 
 import {useRegisterMutation} from '../api';
 
+import {useTranslation} from 'react-i18next';
+
 interface iForm {
   username: string;
   email: string;
@@ -17,6 +19,8 @@ interface iForm {
 }
 
 const Register = () => {
+  const {t} = useTranslation('auth');
+
   const [form, setForm] = useState<iForm>({
     username: '',
     email: '',
@@ -41,37 +45,37 @@ const Register = () => {
 
   return (
     <PageWrapper>
-      <Header text={'Sign up'} />
+      <Header text={t('signup')} />
       <ContentWrapper jc={'space-between'} fullWidth>
         <Column gap={'32px'} fullWidth>
           <Input
             value={form.username}
-            placeholder={'Username'}
+            placeholder={t('username')}
             onChange={(value) => onInputChange('username', value)}
           />
 
           <Input
             value={form.email}
-            placeholder={'Email address'}
+            placeholder={t('email')}
             onChange={(value) => onInputChange('email', value)}
           />
 
           <Input
             value={form.password}
-            placeholder={'Password'}
+            placeholder={t('password')}
             onChange={(value) => onInputChange('password', value)}
           />
 
           <Input
             value={form.passwordConfirmation}
-            placeholder={'Confirm password'}
+            placeholder={t('confirmPassword')}
             onChange={(value) => onInputChange('passwordConfirmation', value)}
           />
         </Column>
 
         <Row jc={'flex-end'} fullWidth>
           <Button onClick={onFromSubmit} disabled={isDisabled}>
-            Create account
+            {t('createAccount')}
           </Button>
         </Row>
       </ContentWrapper>
