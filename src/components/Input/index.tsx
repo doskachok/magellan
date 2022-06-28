@@ -11,6 +11,8 @@ import {
 import {InputStyled, TextError} from './index.styled';
 import {Column} from '../Containers';
 
+import {useTranslation} from 'react-i18next';
+
 import {AnySchema} from 'yup';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -47,6 +49,8 @@ const Input =
      ...rest
    }: Props) => {
 
+  const {t} = useTranslation('validation');
+
   const [isShowError, setIsShowError] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const _error = useMemo(() => error || errors.length ? errors[0] : '', [error, errors]);
@@ -54,17 +58,17 @@ const Input =
   const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onTextChange(name, event.target.value);
     setIsShowError(false);
-  }, [onTextChange]);
+  }, [onTextChange, name]);
 
   const handleBlur = useCallback((event: FocusEvent<HTMLInputElement>) => {
     rest.onBlur && rest.onBlur(event);
     setIsShowError(true);
-  }, [rest.onBlur]);
+  }, [rest]);
 
   useEffect(() => {
     onValidationChange &&
       onValidationChange(name, !errors.length);
-  }, [errors, onValidationChange]);
+  }, [errors, onValidationChange, name]);
 
   useEffect(() => {
     if (validator) {
@@ -76,7 +80,7 @@ const Input =
 
   return (
     <Column fullWidth>
-      {(!!_error && isShowError) && <TextError>{_error}</TextError>}
+      {(!!_error && isShowError) && <TextError>{t(_error)}</TextError>}
 
       <InputStyled
         name={name}
