@@ -16,7 +16,7 @@ export const InputStyled = styled.input<InputProps>`
   width: 100%;
   padding: 11px 18px 15px;
   
-  margin-top: 24px;
+  margin-top: 23px;
 
   font-weight: 500;
   font-size: 18px;
@@ -29,5 +29,6 @@ export const InputStyled = styled.input<InputProps>`
   
   ${props => props.hasError && css`
     margin-top: 4px;
+    border-color: #FF2121;
   `};
 `;
