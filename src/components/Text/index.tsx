@@ -9,3 +9,9 @@ export const TextHeader = styled(Text)`
   font-size: 23px;
   color: #ffffff;
 `;
+
+export const TextRegular = styled(Text)`
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+`;

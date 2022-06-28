@@ -1,4 +1,4 @@
-import {useState, useMemo, useEffect} from 'react';
+import {useState, useMemo, useCallback} from 'react';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
@@ -11,14 +11,18 @@ import {useRegisterMutation} from '../api';
 
 import {useTranslation} from 'react-i18next';
 
-import {validationSchema} from './validation';
-import {validate} from '../../../utils/validate';
+import {usernameValidator, emailValidator} from './validation';
 
 interface iForm {
   username: string;
   email: string;
   password: string;
   passwordConfirmation: string;
+}
+
+interface iValidation {
+  username: boolean;
+  email: boolean;
 }
 
 const Register = () => {
@@ -31,54 +35,69 @@ const Register = () => {
     passwordConfirmation: '',
   });
 
+  const [validation, setValidation] = useState<iValidation>({
+    username: false,
+    email: false,
+  });
+
   const [register] = useRegisterMutation();
 
-  const isDisabled = useMemo(() => Object.values(form).some(el => !el), [form]);
+  const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
 
-  const onInputChange = (name: string, value: string) => {
+  const onInputChange = useCallback((name: string, value: string) => {
     setForm(form => ({
       ...form,
       [name]: value,
     }));
-  };
+  }, []);
+
+  const onValidationChange = useCallback((name: string, value: boolean) => {
+    setValidation(validation => ({
+      ...validation,
+      [name]: value,
+    }));
+  }, []);
 
   const onFromSubmit = () => {
     register(form);
   };
 
-  useEffect(() => {
-    validate(validationSchema, form)
-      .then(data => console.log('data', data))
-      .catch(err => console.log('err', err));
-  }, [form]);
-
   return (
     <PageWrapper>
       <Header text={t('signup')} />
       <ContentWrapper jc={'space-between'} fullWidth>
-        <Column gap={'32px'} fullWidth>
+        <Column gap={'8px'} fullWidth>
           <Input
+            required
+            name={'username'}
             value={form.username}
             placeholder={t('username')}
-            onChange={(value) => onInputChange('username', value)}
+            onTextChange={onInputChange}
+            validator={usernameValidator}
+            onValidationChange={onValidationChange}
           />
 
           <Input
+            name={'email'}
             value={form.email}
             placeholder={t('email')}
-            onChange={(value) => onInputChange('email', value)}
+            onTextChange={onInputChange}
+            validator={emailValidator}
+            onValidationChange={onValidationChange}
           />
 
           <Input
+            name={'password'}
             value={form.password}
             placeholder={t('password')}
-            onChange={(value) => onInputChange('password', value)}
+            onTextChange={onInputChange}
           />
 
           <Input
+            name={'confirmPassword'}
             value={form.passwordConfirmation}
             placeholder={t('confirmPassword')}
-            onChange={(value) => onInputChange('passwordConfirmation', value)}
+            onTextChange={onInputChange}
           />
         </Column>
 
