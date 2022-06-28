@@ -8,8 +8,7 @@ import {
   useCallback,
   memo,
 } from 'react';
-import {InputStyled, TextError} from './index.styled';
-import {Column} from '../Containers';
+import {InputStyled, RequiredIndicator, TextError, Wrapper} from './index.styled';
 
 import {useTranslation} from 'react-i18next';
 
@@ -49,50 +48,52 @@ const Input =
      ...rest
    }: Props) => {
 
-  const {t} = useTranslation('validation');
+    const {t} = useTranslation('validation');
 
-  const [isShowError, setIsShowError] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
-  const _error = useMemo(() => error || errors.length ? errors[0] : '', [error, errors]);
+    const [isShowError, setIsShowError] = useState(false);
+    const [errors, setErrors] = useState<string[]>([]);
+    const _error = useMemo(() => error || errors.length ? errors[0] : '', [error, errors]);
 
-  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    onTextChange(name, event.target.value);
-    setIsShowError(false);
-  }, [onTextChange, name]);
+    const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+      onTextChange(name, event.target.value);
+      setIsShowError(false);
+    }, [onTextChange, name]);
 
-  const handleBlur = useCallback((event: FocusEvent<HTMLInputElement>) => {
-    rest.onBlur && rest.onBlur(event);
-    setIsShowError(true);
-  }, [rest]);
+    const handleBlur = useCallback((event: FocusEvent<HTMLInputElement>) => {
+      rest.onBlur && rest.onBlur(event);
+      setIsShowError(true);
+    }, [rest]);
 
-  useEffect(() => {
-    onValidationChange &&
+    useEffect(() => {
+      onValidationChange &&
       onValidationChange(name, !errors.length);
-  }, [errors, onValidationChange, name]);
+    }, [errors, onValidationChange, name]);
 
-  useEffect(() => {
-    if (validator) {
-      validate(validator, value)
-        .then(setErrors)
-        .catch(setErrors);
-    }
-  }, [validator, value]);
+    useEffect(() => {
+      if (validator) {
+        validate(validator, value)
+          .then(setErrors)
+          .catch(setErrors);
+      }
+    }, [validator, value]);
 
-  return (
-    <Column fullWidth>
-      {(!!_error && isShowError) && <TextError>{t(_error)}</TextError>}
+    return (
+      <Wrapper fullWidth>
+        {(!!_error && isShowError) && <TextError>{t(_error)}</TextError>}
 
-      <InputStyled
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        hasError={!!_error && isShowError}
-        {...rest}
-      />
-    </Column>
-  );
-};
+        {(required && !value) && <RequiredIndicator>*</RequiredIndicator>}
+
+        <InputStyled
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          hasError={!!_error && isShowError}
+          {...rest}
+        />
+      </Wrapper>
+    );
+  };
 
 export default memo(Input);

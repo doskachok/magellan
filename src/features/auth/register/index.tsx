@@ -5,7 +5,7 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 
 import {Column, PageWrapper, Row} from '../../../components/Containers';
-import {ContentWrapper} from './index.styled';
+import {ContentWrapper, RequiredText} from './index.styled';
 
 import {useRegisterMutation} from '../api';
 
@@ -66,7 +66,13 @@ const Register = () => {
     <PageWrapper>
       <Header text={t('signup')} />
       <ContentWrapper jc={'space-between'} fullWidth>
+
         <Column gap={'8px'} fullWidth>
+          <RequiredText>
+            <span>*</span>
+            {t('requiredText')}
+          </RequiredText>
+
           <Input
             required
             name={'username'}
@@ -78,6 +84,7 @@ const Register = () => {
           />
 
           <Input
+            required
             name={'email'}
             value={form.email}
             placeholder={t('email')}
@@ -87,6 +94,7 @@ const Register = () => {
           />
 
           <Input
+            required
             name={'password'}
             value={form.password}
             placeholder={t('password')}
@@ -94,6 +102,7 @@ const Register = () => {
           />
 
           <Input
+            required
             name={'confirmPassword'}
             value={form.passwordConfirmation}
             placeholder={t('confirmPassword')}

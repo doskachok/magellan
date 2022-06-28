@@ -1,9 +1,22 @@
 import styled, {css} from 'styled-components';
 import {TextRegular} from '../Text';
 
+import {Column} from '../Containers';
+
 interface InputProps {
   hasError?: boolean;
 }
+
+export const Wrapper = styled(Column)`
+  position: relative;
+`;
+
+export const RequiredIndicator = styled(TextRegular)`
+  color: #379970;
+  position: absolute;
+  top: 32px;
+  left: 8px;
+`;
 
 export const TextError = styled(TextRegular)`
   color: #FF2121;
