@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useLoginMutation } from '../api';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-import { requiredValidator } from '../register/validation';
+import { requiredValidator } from '../validation';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
 

@@ -11,7 +11,7 @@ import {useRegisterMutation} from '../api';
 
 import {useTranslation} from 'react-i18next';
 
-import {usernameValidator, emailValidator} from './validation';
+import {usernameValidator, emailValidator} from '../validation';
 
 interface iForm {
   username: string;

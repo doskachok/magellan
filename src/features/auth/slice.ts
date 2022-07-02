@@ -15,7 +15,7 @@ interface IAuthPayload {
 
 const initialState: ISliceState = {
   accessToken: localStorage.getItem(LocalStorageKeys.TOKEN),
-  user: JSON.parse(<string>localStorage.getItem(LocalStorageKeys.USER))
+  user: JSON.parse(localStorage.getItem(LocalStorageKeys.USER) as string),
 };
 
 const authSlice = createSlice({
