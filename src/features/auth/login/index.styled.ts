@@ -10,7 +10,7 @@ export const ContentWrapper = styled(PageContentWrapper)`
 
 export const RequiredText = styled(TextRegular)`
   & span {
-    color: #379970;
+    color: ${props => props.theme.colors.primary};
     padding-right: 4px;
   }
 `;
@@ -22,7 +22,7 @@ const TextLink = styled.a`
   font-size: 16px;
   line-height: 20px;
   text-decoration-line: underline;
-  color: #379970;
+  color: ${props => props.theme.colors.text.link};
 `;
 
 export const ForgotPasswordLink = styled(TextLink)`

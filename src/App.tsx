@@ -1,5 +1,8 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import { Provider } from 'react-redux';
+import {ThemeProvider} from 'styled-components';
+
+import theme from './constants/theme/default.theme';
 
 import store from './store';
 
@@ -10,14 +13,16 @@ import Auth from './features/auth';
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path={ROUTES.ROOT}>
-            <Route index element={<div>test</div>} />
-            <Route path={`${ROUTES.AUTH.ROOT}/*`} element={<Auth/>}/>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Routes>
+            <Route path={ROUTES.ROOT}>
+              <Route index element={<div>test</div>} />
+              <Route path={`${ROUTES.AUTH.ROOT}/*`} element={<Auth/>}/>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </Provider>
   );
 }

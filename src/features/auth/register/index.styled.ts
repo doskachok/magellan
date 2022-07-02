@@ -10,7 +10,7 @@ export const ContentWrapper = styled(PageContentWrapper)`
 
 export const RequiredText = styled(TextRegular)`
   & span {
-    color: #379970;
+    color: ${props => props.theme.colors.primary};
     padding-right: 4px;
   }
 `;
