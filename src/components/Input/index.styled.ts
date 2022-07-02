@@ -34,6 +34,8 @@ export const InputStyled = styled.input<InputProps>`
   font-weight: 500;
   font-size: 18px;
   color: #000000;
+
+  font-family: 'Montserrat';
   
   ::placeholder {
     font-weight: 300;
