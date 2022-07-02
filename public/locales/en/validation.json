@@ -1,0 +1,6 @@
+{
+  "username_required": "Username is required",
+  "username_length": "Username should be at least 5 characters",
+  "email": "Please enter a valid email",
+  "email_required": "Email is required"
+}
