@@ -9,6 +9,8 @@ import { useLoginMutation } from '../api';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { requiredValidator } from '../register/validation';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../constants/routes';
 
 
 interface iForm {
@@ -23,6 +25,7 @@ interface iValidation {
 
 const Login = () => {
   const { t } = useTranslation('auth');
+  const navigate = useNavigate();
 
   const [form, setForm] = useState<iForm>({
     email: '',
@@ -54,7 +57,7 @@ const Login = () => {
 
   const onFormSubmit = async () => {
     login(form).then(() => {
-
+      navigate(ROUTES.ROOT, { replace: true });
     });
   };
 
