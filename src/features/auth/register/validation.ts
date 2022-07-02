@@ -4,6 +4,7 @@ import {ValidationKeys} from '../../../constants/validationKeys';
 
 YupPassword(yup);
 
+export const requiredValidator = yup.string().required();
 export const usernameValidator = yup.string().required(ValidationKeys.usernameRequired).min(5, ValidationKeys.usernameLength);
 export const emailValidator = yup.string().required(ValidationKeys.emailRequired).email(ValidationKeys.email);
 

@@ -103,7 +103,7 @@ const Register = () => {
 
           <Input
             required
-            name={'confirmPassword'}
+            name={'passwordConfirmation'}
             value={form.passwordConfirmation}
             placeholder={t('confirmPassword')}
             onTextChange={onInputChange}

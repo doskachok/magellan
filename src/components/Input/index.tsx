@@ -40,7 +40,6 @@ const Input =
      value,
      name,
      onTextChange,
-     placeholder = '',
      error,
      validator,
      onValidationChange,
@@ -86,7 +85,6 @@ const Input =
         <InputStyled
           name={name}
           value={value}
-          placeholder={placeholder}
           onChange={handleChange}
           onBlur={handleBlur}
           hasError={!!_error && isShowError}
