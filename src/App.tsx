@@ -1,4 +1,4 @@
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 import { Provider } from 'react-redux';
 import {ThemeProvider} from 'styled-components';
 
@@ -17,7 +17,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={ROUTES.ROOT}>
-              <Route index element={<div>test</div>} />
+              <Route index element={<Navigate to={ROUTES.AUTH.ROOT} />} />
               <Route path={`${ROUTES.AUTH.ROOT}/*`} element={<Auth/>}/>
             </Route>
           </Routes>
