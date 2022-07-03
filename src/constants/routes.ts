@@ -3,5 +3,6 @@ export const ROUTES = {
   AUTH: {
     ROOT: '/auth',
     REGISTER: 'sign-up',
+    FORGOT_PASSWORD: 'forgot-password',
   },
 };

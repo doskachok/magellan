@@ -93,11 +93,11 @@ const Login = () => {
             onValidationChange={onValidationChange}
           />
 
-          <ForgotPasswordLink>
+          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
             {t('forgotPassword')}
           </ForgotPasswordLink>
 
-          <NoAccountLink>
+          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
             {t('noAccount')}
           </NoAccountLink>
         </Column>

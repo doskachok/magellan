@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { PageContentWrapper } from '../../../components/Containers';
 import { TextRegular } from '../../../components/Text';
+import { Link } from 'react-router-dom';
 
 export const ContentWrapper = styled(PageContentWrapper)`
   padding-top: 120px;
@@ -15,7 +16,7 @@ export const RequiredText = styled(TextRegular)`
   }
 `;
 
-const TextLink = styled.a`
+const TextLink = styled(Link)`
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 700;
