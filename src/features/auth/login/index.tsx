@@ -1,25 +1,20 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 
 import Header from '../../../components/Header';
 import { Column, PageWrapper, Row } from '../../../components/Containers';
 import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
 
 import { useTranslation } from 'react-i18next';
-import { useLoginMutation } from '../api';
+import { useLoginMutation, useLazyUserQuery } from '../api';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { requiredValidator } from '../validation';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
-
-
-interface iForm {
-  email: string;
-  password: string;
-}
+import { ILoginForm } from '../types';
 
 interface iValidation {
-  email: boolean;
+  login: boolean;
   password: boolean;
 }
 
@@ -27,17 +22,18 @@ const Login = () => {
   const { t } = useTranslation('auth');
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<iForm>({
-    email: '',
+  const [form, setForm] = useState<ILoginForm>({
+    login: '',
     password: '',
   });
 
   const [validation, setValidation] = useState<iValidation>({
-    email: false,
+    login: false,
     password: false,
   });
 
-  const [login] = useLoginMutation();
+  const [login, {data: loginData}] = useLoginMutation();
+  const [getUser] = useLazyUserQuery();
 
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
 
@@ -56,10 +52,15 @@ const Login = () => {
   }, []);
 
   const onFormSubmit = async () => {
-    login(form).then(() => {
-      navigate(ROUTES.ROOT, { replace: true });
-    });
+    login(form);
   };
+
+  useEffect(() => {
+    if (loginData) {
+      getUser(loginData.id)
+        .then(() => navigate(ROUTES.ROOT, { replace: true }));
+    }
+  }, [loginData, navigate, getUser]);
 
   return (
     <PageWrapper>
@@ -74,8 +75,8 @@ const Login = () => {
 
           <Input
             required
-            name={'email'}
-            value={form.email}
+            name='login'
+            value={form.login}
             validator={requiredValidator}
             placeholder={t('usernameOrEmailAddress')}
             onTextChange={onInputChange}

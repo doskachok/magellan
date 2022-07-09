@@ -2,20 +2,16 @@ import { createSlice } from '@reduxjs/toolkit';
 import { LocalStorageKeys } from '../../constants/localStorageKeys';
 import { RootState } from '../../store';
 import { authApi } from './api';
+import { IAuthPayload, IUser } from './types';
 
 interface ISliceState {
-  user: { email: string } | null;
+  user: IUser | null;
   accessToken: string | null;
-}
-
-interface IAuthPayload {
-  email: string,
-  token: string
 }
 
 const initialState: ISliceState = {
   accessToken: localStorage.getItem(LocalStorageKeys.TOKEN),
-  user: JSON.parse(localStorage.getItem(LocalStorageKeys.USER) as string),
+  user: JSON.parse(localStorage.getItem(LocalStorageKeys.USER) as string) as IUser,
 };
 
 const authSlice = createSlice({
@@ -29,14 +25,19 @@ const authSlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addMatcher(
+    builder
+    .addMatcher(
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }: { payload: IAuthPayload }) => {
         localStorage.setItem(LocalStorageKeys.TOKEN, payload.token);
-        localStorage.setItem(LocalStorageKeys.USER, JSON.stringify({ email: payload.email }));
-
         state.accessToken = payload.token;
-        state.user = { email: payload.email };
+      }
+    )
+    .addMatcher(
+      authApi.endpoints.user.matchFulfilled,
+      (state, { payload }: { payload: IUser }) => {
+        localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(payload));
+        state.user = payload;
       }
     )
   }
