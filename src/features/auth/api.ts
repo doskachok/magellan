@@ -1,4 +1,5 @@
 import mainApi from '../../store/api';
+import { IAuthPayload, ILoginForm, IUser } from './types';
 
 export const authApi = mainApi.injectEndpoints({
   endpoints: (build => ({
@@ -9,7 +10,12 @@ export const authApi = mainApi.injectEndpoints({
         body,
       }),
     }),
-    login: build.mutation({
+    user: build.query<IUser, string>({
+      query: (id) => ({
+        url: `users/${id}`,
+      })
+    }),
+    login: build.mutation<IAuthPayload, ILoginForm>({
       query: (body) => ({
         url: `users/authorize`,
         method: 'POST',
@@ -20,6 +26,7 @@ export const authApi = mainApi.injectEndpoints({
 });
 
 export const {
+  useLazyUserQuery,
   useLoginMutation,
   useRegisterMutation,
 } = authApi;
