@@ -16,6 +16,10 @@ declare module 'styled-components' {
         secondary: string;
         link: string;
         error: string;
+        title: string,
+        border: {
+          default: string
+        }
       },
 
       input: {

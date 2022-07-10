@@ -17,6 +17,10 @@ const defaultTheme: DefaultTheme = {
       secondary: '#FFFFFF',
       link: PRIMARY_COLOR,
       error: '#FF2121',
+      title: 'rgba(0, 0, 0, 0.5)',
+      border: {
+        default: 'rgba(0, 0, 0, 0.5)',
+      }
     },
 
     input: {
