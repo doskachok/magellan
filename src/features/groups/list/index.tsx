@@ -4,17 +4,17 @@ import { useCallback, useMemo, useState } from 'react';
 import { useGetTransactionGroupsQuery } from '../api';
 import Header from '../../../components/Header';
 import { Column, PageWrapper } from '../../../components/Containers';
-import { CategoriesWrapper, ContentWrapper } from './index.styled';
-import CategoryTab from './category-tab';
+import { FilterTabsWrapper, ContentWrapper } from './index.styled';
 import GroupRow from './group-row';
 import { ITransactionGroupListItem } from '../types';
+import FilterTab from './filter-tab';
 
-interface ICategoryTab {
+interface IFilterTab {
   key: string;
   filter: (items: ITransactionGroupListItem[]) => ITransactionGroupListItem[];
 }
 
-const categoryTabs: ICategoryTab[] = [
+const filterTabs: IFilterTab[] = [
   { key: 'all', filter: (items) => items },
   { key: 'iLent', filter: (items) => items.filter(i => i.yourPart > 0) },
   { key: 'iBorrowed', filter: (items) => items.filter(i => i.yourPart < 0) }
@@ -25,14 +25,14 @@ const GroupsList = () => {
 
   const { data: groups } = useGetTransactionGroupsQuery();
 
-  const [activeTab, setActiveTab] = useState<ICategoryTab>(categoryTabs[0]);
+  const [activeTab, setActiveTab] = useState<IFilterTab>(filterTabs[0]);
 
   const filteredGroups = useMemo(() => activeTab.filter(groups || []), [
     groups, activeTab
   ]);
 
   const onTabClick = useCallback((key: string) => {
-    setActiveTab(categoryTabs.find(c => c.key === key)!);
+    setActiveTab(filterTabs.find(c => c.key === key)!);
   }, []);
 
   return (
@@ -40,11 +40,11 @@ const GroupsList = () => {
       <Header text={t('groups')} />
 
       <ContentWrapper fullWidth>
-        <CategoriesWrapper jc={'space-between'} fullWidth>
-          {categoryTabs.map(({ key }) => {
-            return <CategoryTab key={key} tabId={key} activeTab={activeTab.key} name={t(key)} onClick={onTabClick} />
+        <FilterTabsWrapper jc={'space-between'} fullWidth>
+          {filterTabs.map(({ key }) => {
+            return <FilterTab key={key} tabId={key} activeTab={activeTab.key} name={t(key)} onClick={onTabClick} />
           })}
-        </CategoriesWrapper>
+        </FilterTabsWrapper>
 
         <Column gap={'17px'} fullWidth>
           {filteredGroups.map(g => <GroupRow key={g.id} item={g} />)}

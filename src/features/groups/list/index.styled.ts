@@ -7,6 +7,6 @@ export const ContentWrapper = styled(PageContentWrapper)`
   gap: 30px;
 `;
 
-export const CategoriesWrapper = styled(Row)`
+export const FilterTabsWrapper = styled(Row)`
   padding: 0 1rem;
 `;

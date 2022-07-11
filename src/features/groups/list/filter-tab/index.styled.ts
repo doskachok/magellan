@@ -1,15 +1,15 @@
 import styled, { css } from 'styled-components';
 
-export const CategoryTabWrapper = styled.div`
+export const FilterTabWrapper = styled.div`
   display: inline-flex;
   flex-direction: column;
 `;
 
-interface ICategoryTabProps {
+interface IFilterTabProps {
   active?: boolean;
 }
 
-export const CategoryText = styled.div<ICategoryTabProps>`
+export const FilterTabText = styled.div<IFilterTabProps>`
   display: flex;
   font-family: 'Montserrat';
   font-style: normal;
@@ -24,7 +24,7 @@ export const CategoryText = styled.div<ICategoryTabProps>`
   `};
 `;
 
-export const CategoryUnderline = styled.div<ICategoryTabProps>`
+export const FilterTabUnderline = styled.div<IFilterTabProps>`
   margin-top: 4px;
   height: 3px;
   border-radius: 5px;
