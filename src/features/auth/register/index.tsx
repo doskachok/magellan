@@ -1,4 +1,7 @@
 import {useState, useMemo, useCallback, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+
+import {ROUTES} from '../../../constants/routes';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
@@ -35,6 +38,7 @@ interface IPasswordRequirements {
 
 const Register = () => {
   const {t} = useTranslation('auth');
+  const navigate = useNavigate();
 
   const [form, setForm] = useState<IForm>({
     username: '',
@@ -77,7 +81,8 @@ const Register = () => {
   }, []);
 
   const onFromSubmit = () => {
-    register(form);
+    register(form)
+      .then(() => navigate(ROUTES.AUTH.ROOT));
   };
 
   useEffect(() => {
