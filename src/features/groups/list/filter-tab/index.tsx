@@ -1,7 +1,7 @@
 
-import { FilterTabWrapper, FilterTabText, FilterTabUnderline } from './index.styled';
-import { useTranslation } from 'react-i18next';
 import { memo, useCallback } from 'react';
+
+import { FilterTabWrapper, FilterTabText, FilterTabUnderline } from './index.styled';
 
 export interface IFilterTabProps {
   tabId: string,
@@ -11,11 +11,9 @@ export interface IFilterTabProps {
 }
 
 const FilterTab = (props: IFilterTabProps) => {
-  const { t } = useTranslation('groups');
-
   const onTabClick = useCallback(() => {
     props.onClick(props.tabId);
-  }, []);
+  }, [props]);
 
   const isTabActive = (tabName: string) => {
     return props.activeTab === tabName;
