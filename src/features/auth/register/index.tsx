@@ -1,11 +1,11 @@
-import {useState, useMemo, useCallback} from 'react';
+import {useState, useMemo, useCallback, useEffect} from 'react';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 
 import {Column, PageWrapper, Row} from '../../../components/Containers';
-import {ContentWrapper, RequiredText} from './index.styled';
+import {ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText} from './index.styled';
 
 import {useRegisterMutation} from '../api';
 
@@ -27,6 +27,12 @@ interface IValidation {
   passwordConfirmation: boolean;
 }
 
+interface IPasswordRequirements {
+  length: boolean;
+  capitalLetter: boolean;
+  number: boolean;
+}
+
 const Register = () => {
   const {t} = useTranslation('auth');
 
@@ -44,7 +50,13 @@ const Register = () => {
     passwordConfirmation: false,
   });
 
-  const confirmPasswordValidator = createConfirmPasswordValidator(form.password);
+  const [passwordRequirements, setPasswordRequirements] = useState<IPasswordRequirements>({
+    length: false,
+    capitalLetter: false,
+    number: false,
+  });
+
+  const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
 
   const [register] = useRegisterMutation();
 
@@ -67,6 +79,15 @@ const Register = () => {
   const onFromSubmit = () => {
     register(form);
   };
+
+  useEffect(() => {
+    const requirements = {
+      length: form.password.length >= 8,
+      capitalLetter: /[A-Z]+/.test(form.password),
+      number: /\d+/.test(form.password),
+    };
+    setPasswordRequirements(requirements);
+  }, [form.password, setPasswordRequirements]);
 
   return (
     <PageWrapper>
@@ -120,6 +141,21 @@ const Register = () => {
             validator={confirmPasswordValidator}
             onValidationChange={onValidationChange}
           />
+
+          <PasswordRequirementsWrapper fullWidth>
+            <PasswordRequirementsText>
+              {t('passwordRequirements')}
+            </PasswordRequirementsText>
+            <PasswordRequirementsText fulfilled={passwordRequirements.length}>
+              {t('atLeast8Chars')}
+            </PasswordRequirementsText>
+            <PasswordRequirementsText fulfilled={passwordRequirements.capitalLetter}>
+              {t('containCapitalLetter')}
+            </PasswordRequirementsText>
+            <PasswordRequirementsText fulfilled={passwordRequirements.number}>
+              {t('containNumber')}
+            </PasswordRequirementsText>
+          </PasswordRequirementsWrapper>
         </Column>
 
         <Row jc={'flex-end'} fullWidth>
