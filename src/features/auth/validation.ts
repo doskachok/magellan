@@ -8,7 +8,12 @@ export const requiredValidator = yup.string().required();
 export const usernameValidator = yup.string().required(ValidationKeys.usernameRequired).min(5, ValidationKeys.usernameLength);
 export const emailValidator = yup.string().required(ValidationKeys.emailRequired).email(ValidationKeys.email);
 
-export const passwordsValidationSchema = yup.object().shape({
-  password: yup.string().min(8).minLowercase(1).minUppercase(1).minSymbols(1).minNumbers(1).required(),
-  passwordConfirmation: yup.string().oneOf([yup.ref('password'), ''], 'passwords_not_match').required()
-});
+export const passwordValidator = yup.string()
+  .required(ValidationKeys.passwordRequired)
+  .min(8, ValidationKeys.passwordIncorrect)
+  .minLowercase(1, ValidationKeys.passwordIncorrect)
+  .minUppercase(1, ValidationKeys.passwordIncorrect)
+  .minNumbers(1, ValidationKeys.passwordIncorrect);
+
+export const createConfirmPasswordValidator = (password: string) =>
+  yup.string().required(ValidationKeys.confirmPasswordRequired).oneOf([password, ''], ValidationKeys.passwordsDontMatch);

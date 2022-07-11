@@ -11,34 +11,40 @@ import {useRegisterMutation} from '../api';
 
 import {useTranslation} from 'react-i18next';
 
-import {usernameValidator, emailValidator} from '../validation';
+import {usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator} from '../validation';
 
-interface iForm {
+interface IForm {
   username: string;
   email: string;
   password: string;
   passwordConfirmation: string;
 }
 
-interface iValidation {
+interface IValidation {
   username: boolean;
   email: boolean;
+  password: boolean;
+  passwordConfirmation: boolean;
 }
 
 const Register = () => {
   const {t} = useTranslation('auth');
 
-  const [form, setForm] = useState<iForm>({
+  const [form, setForm] = useState<IForm>({
     username: '',
     email: '',
     password: '',
     passwordConfirmation: '',
   });
 
-  const [validation, setValidation] = useState<iValidation>({
+  const [validation, setValidation] = useState<IValidation>({
     username: false,
     email: false,
+    password: false,
+    passwordConfirmation: false,
   });
+
+  const confirmPasswordValidator = createConfirmPasswordValidator(form.password);
 
   const [register] = useRegisterMutation();
 
@@ -95,18 +101,24 @@ const Register = () => {
 
           <Input
             required
+            type={'password'}
             name={'password'}
             value={form.password}
             placeholder={t('password')}
             onTextChange={onInputChange}
+            validator={passwordValidator}
+            onValidationChange={onValidationChange}
           />
 
           <Input
             required
+            type={'password'}
             name={'passwordConfirmation'}
             value={form.passwordConfirmation}
             placeholder={t('confirmPassword')}
             onTextChange={onInputChange}
+            validator={confirmPasswordValidator}
+            onValidationChange={onValidationChange}
           />
         </Column>
 
