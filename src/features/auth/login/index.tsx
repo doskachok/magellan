@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
 import { ILoginForm } from '../types';
 
-interface iValidation {
+interface IValidation {
   login: boolean;
   password: boolean;
 }
@@ -27,7 +27,7 @@ const Login = () => {
     password: '',
   });
 
-  const [validation, setValidation] = useState<iValidation>({
+  const [validation, setValidation] = useState<IValidation>({
     login: false,
     password: false,
   });
@@ -58,7 +58,7 @@ const Login = () => {
   useEffect(() => {
     if (loginData) {
       getUser(loginData.id)
-        .then(() => navigate(ROUTES.ROOT, { replace: true }));
+        .then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
     }
   }, [loginData, navigate, getUser]);
 

@@ -9,6 +9,7 @@ import store from './store';
 import {ROUTES} from './constants/routes';
 
 import Auth from './features/auth';
+import Groups from './features/groups';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path={ROUTES.ROOT}>
               <Route index element={<Navigate to={ROUTES.AUTH.ROOT} />} />
               <Route path={`${ROUTES.AUTH.ROOT}/*`} element={<Auth/>}/>
+              <Route path={`${ROUTES.GROUPS.ROOT}/*`} element={<Groups/>}/>
             </Route>
           </Routes>
         </BrowserRouter>

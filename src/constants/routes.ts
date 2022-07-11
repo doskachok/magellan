@@ -5,4 +5,9 @@ export const ROUTES = {
     REGISTER: 'sign-up',
     FORGOT_PASSWORD: 'forgot-password',
   },
+  GROUPS: {
+    ROOT: '/groups',
+    LIST: 'list',
+    MEMBERS: 'members'
+  }
 };
