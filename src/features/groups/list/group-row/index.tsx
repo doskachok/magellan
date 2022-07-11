@@ -3,12 +3,12 @@ import { GroupLogo, GroupName, GroupRowWrapper } from './index.styled';
 import { memo, useCallback } from 'react';
 import { ITransactionGroupListItem } from '../../types';
 
-export interface ICategoryTabProps {
+export interface IGroupRowProps {
   item: ITransactionGroupListItem,
   onClick?: (item: ITransactionGroupListItem) => void;
 }
 
-const GroupRow = ({ item, onClick }: ICategoryTabProps) => {
+const GroupRow = ({ item, onClick }: IGroupRowProps) => {
   const onRowClick = useCallback(() => {
     onClick && onClick(item);
   }, [onClick, item]);
