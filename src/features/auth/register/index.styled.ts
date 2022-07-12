@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import {PageContentWrapper} from '../../../components/Containers';
+import styled, {css} from 'styled-components';
+import {PageContentWrapper, Column} from '../../../components/Containers';
 import {TextRegular} from '../../../components/Text';
 
 export const ContentWrapper = styled(PageContentWrapper)`
@@ -14,3 +14,16 @@ export const RequiredText = styled(TextRegular)`
     padding-right: 4px;
   }
 `;
+
+export const PasswordRequirementsWrapper = styled(Column)`
+  margin-top: 17px;
+`;
+
+export const PasswordRequirementsText = styled(TextRegular)<{ fulfilled?: boolean }>`
+  font-size: 12px;
+  
+  ${props => props.fulfilled && css`
+    color: ${props.theme.colors.primary};
+  `};
+`;
+
