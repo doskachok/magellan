@@ -3,7 +3,7 @@
   "username_length": "Username should be at least 5 characters",
   "email": "Please enter a valid email",
   "email_required": "Email is required",
-  "passwords_not_match": "Passwords dont match.",
+  "passwords_not_match": "Passwords don’t match.",
   "confirm_password_required": "You need to confirm your password",
   "password_required": "Password is required",
   "password_incorrect": "Password doesn’t fulfill requirements"
