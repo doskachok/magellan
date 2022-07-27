@@ -17,3 +17,10 @@ export const TextRegular = styled(Text)`
   font-weight: 300;
   font-size: 16px;
 `;
+
+export const TextUnderline = styled(TextRegular)`
+  font-weight: 700;
+  line-height: 20px;
+  text-decoration-line: underline;
+  color: ${props => props.theme.colors.text.link};
+`;

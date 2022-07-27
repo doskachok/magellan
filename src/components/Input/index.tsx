@@ -8,11 +8,11 @@ import {
   useCallback,
   memo,
 } from 'react';
-import {InputStyled, RequiredIndicator, TextError, Wrapper} from './index.styled';
+import { InputStyled, RequiredIndicator, TextError, Wrapper } from './index.styled';
 
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-import {AnySchema} from 'yup';
+import { AnySchema } from 'yup';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
@@ -22,12 +22,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   validator?: AnySchema;
   required?: boolean;
+  reversedTheme?: boolean;
 }
 
 const validate = (schema: AnySchema, value: string): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     schema
-      .validate(value, {abortEarly: false})
+      .validate(value, { abortEarly: false })
       .then(() => resolve([]))
       .catch(err => {
         reject(err.errors);
@@ -37,17 +38,18 @@ const validate = (schema: AnySchema, value: string): Promise<string[]> => {
 
 const Input =
   ({
-     value,
-     name,
-     onTextChange,
-     error,
-     validator,
-     onValidationChange,
-     required = false,
-     ...rest
-   }: Props) => {
+    value,
+    name,
+    onTextChange,
+    error,
+    validator,
+    onValidationChange,
+    required = false,
+    reversedTheme = false,
+    ...rest
+  }: Props) => {
 
-    const {t} = useTranslation('validation');
+    const { t } = useTranslation('validation');
 
     const [isShowError, setIsShowError] = useState(false);
     const [errors, setErrors] = useState<string[]>([]);
@@ -65,7 +67,7 @@ const Input =
 
     useEffect(() => {
       onValidationChange &&
-      onValidationChange(name, !errors.length);
+        onValidationChange(name, !errors.length);
     }, [errors, onValidationChange, name]);
 
     useEffect(() => {
@@ -80,7 +82,7 @@ const Input =
       <Wrapper fullWidth>
         {(!!_error && isShowError) && <TextError>{t(_error)}</TextError>}
 
-        {(required && !value) && <RequiredIndicator>*</RequiredIndicator>}
+        {(required && !value) && <RequiredIndicator reversedTheme={reversedTheme}>*</RequiredIndicator>}
 
         <InputStyled
           name={name}
@@ -88,6 +90,7 @@ const Input =
           onChange={handleChange}
           onBlur={handleBlur}
           hasError={!!_error && isShowError}
+          reversedTheme={reversedTheme}
           {...rest}
         />
       </Wrapper>

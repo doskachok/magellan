@@ -7,7 +7,7 @@ export const FilterTabWrapper = styled.div`
 
 interface IFilterTabProps {
   active?: boolean;
-}
+};
 
 export const FilterTabText = styled.div<IFilterTabProps>`
   display: flex;

@@ -1,3 +1,4 @@
+import { ApiTags } from '../../constants/api-tags';
 import mainApi from '../../store/api';
 import { ICreateTransactionGroup, ITransactionGroup, ITransactionGroupListItem, IUpdateTransactionGroup } from './types';
 
@@ -6,6 +7,7 @@ const API_URL = `transaction-groups`;
 export const transactionGroupsApi = mainApi.injectEndpoints({
   endpoints: (build => ({
     getTransactionGroups: build.query<ITransactionGroupListItem[], void>({
+      providesTags: [ApiTags.GROUPS_LIST],
       query: () => ({
         url: API_URL,
       })
@@ -15,14 +17,16 @@ export const transactionGroupsApi = mainApi.injectEndpoints({
         url: `${API_URL}/${id}`,
       })
     }),
-    createTransactionGroup: build.mutation({
+    createTransactionGroup: build.mutation<ITransactionGroup, ICreateTransactionGroup>({
+      invalidatesTags: [ApiTags.GROUPS_LIST],
       query: (body: ICreateTransactionGroup) => ({
         url: API_URL,
         method: 'POST',
         body,
       }),
     }),
-    updateTransactionGroup: build.mutation({
+    updateTransactionGroup: build.mutation<ITransactionGroup, IUpdateTransactionGroup>({
+      invalidatesTags: [ApiTags.GROUPS_LIST],
       query: (body: IUpdateTransactionGroup) => ({
         url: API_URL,
         method: 'PUT',
@@ -33,7 +37,7 @@ export const transactionGroupsApi = mainApi.injectEndpoints({
 });
 
 export const {
-  useGetTransactionGroupsQuery,
+  useLazyGetTransactionGroupsQuery,
   useLazyGetTransactionGroupByIdQuery,
   useCreateTransactionGroupMutation,
   useUpdateTransactionGroupMutation

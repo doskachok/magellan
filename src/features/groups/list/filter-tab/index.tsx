@@ -10,19 +10,19 @@ export interface IFilterTabProps {
   onClick: (tabName: string) => void;
 }
 
-const FilterTab = (props: IFilterTabProps) => {
+const FilterTab = ({ tabId, name, activeTab, onClick }: IFilterTabProps) => {
   const onTabClick = useCallback(() => {
-    props.onClick(props.tabId);
-  }, [props]);
+    onClick(tabId);
+  }, [tabId, onClick]);
 
   const isTabActive = (tabName: string) => {
-    return props.activeTab === tabName;
+    return activeTab === tabName;
   };
 
   return (
     <FilterTabWrapper onClick={onTabClick}>
-      <FilterTabText active={isTabActive(props.tabId)}>{props.name}</FilterTabText>
-      <FilterTabUnderline active={isTabActive(props.tabId)} />
+      <FilterTabText active={isTabActive(tabId)}>{name}</FilterTabText>
+      <FilterTabUnderline active={isTabActive(tabId)} />
     </FilterTabWrapper>
   );
 };
