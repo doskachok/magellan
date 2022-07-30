@@ -37,7 +37,7 @@ const GroupsList = () => {
 
   const [isGroupDetailsMode, setIsGroupDetailsMode] = useState<boolean>(false);
   const [isAddGroupMembersMode, setIsAddGroupMembersMode] = useState<boolean>(false);
-  const [editedGroupId, setEditedGroupId] = useState<string | null>(null);
+  const [editedGroup, setEditedGroup] = useState<ITransactionGroupListItem | null>(null);
 
   const filteredGroups = useMemo(() => activeTab.filter(groups || []), [
     groups, activeTab
@@ -56,13 +56,13 @@ const GroupsList = () => {
       setIsAddGroupMembersMode(false);
     } else if (isGroupDetailsMode) {
       setIsGroupDetailsMode(false);
-      setEditedGroupId(null);
+      setEditedGroup(null);
     }
   }, [isAddGroupMembersMode, isGroupDetailsMode]);
 
   const onGroupSaved = useCallback((group: ITransactionGroup) => {
     setIsGroupDetailsMode(false);
-    setEditedGroupId(null);
+    setEditedGroup(null);
 
     dispatch(saveGroup(group));
   }, [dispatch]);
@@ -72,15 +72,15 @@ const GroupsList = () => {
   }, []);
 
   const onGroupClick = useCallback((group: ITransactionGroupListItem) => {
-    setEditedGroupId(group.id);
+    setEditedGroup(group);
     setIsGroupDetailsMode(true);
   }, []);
 
   const headerText = useMemo(() => isAddGroupMembersMode ?
     t('groupMembers') :
     isGroupDetailsMode ?
-      editedGroupId ? t('updateGroup') : t('createGroup') :
-      t('groups'), [isAddGroupMembersMode, isGroupDetailsMode, editedGroupId, t]);
+      editedGroup ? t('updateGroup') : t('createGroup') :
+      t('groups'), [isAddGroupMembersMode, isGroupDetailsMode, editedGroup, t]);
 
   const leftAction = useMemo(() => (isGroupDetailsMode || isAddGroupMembersMode) ?
     <BackIconSVG onClick={onBackIconClick} /> :
@@ -130,7 +130,7 @@ const GroupsList = () => {
           isGroupDetailsMode &&
           <GroupDetailsWrapper fullWidth>
             <GroupDetails
-              groupId={editedGroupId}
+              groupListItem={editedGroup}
               onSaved={onGroupSaved}
               isAddGroupMembersMode={isAddGroupMembersMode}
               onGroupMembersModeChange={onAddMembersModeChange}

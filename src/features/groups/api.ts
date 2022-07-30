@@ -38,6 +38,7 @@ export const transactionGroupsApi = mainApi.injectEndpoints({
 
 export const {
   useLazyGetTransactionGroupsQuery,
+  useGetTransactionGroupByIdQuery,
   useLazyGetTransactionGroupByIdQuery,
   useCreateTransactionGroupMutation,
   useUpdateTransactionGroupMutation

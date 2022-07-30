@@ -5,19 +5,20 @@ import { useTranslation } from 'react-i18next';
 import Button from '../../../../components/Button';
 import { Column, Row } from '../../../../components/Containers';
 import { TextRegular } from '../../../../components/Text';
-import { ITransactionGroup } from '../../types';
 import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
-
 import { Avatar, ContentWrapper } from './index.styled';
+import { useGetTransactionGroupByIdQuery } from '../../api';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export interface IGroupMembersProps {
-  group: ITransactionGroup
+  groupId: string
 }
 
-const GroupMembers = ({ group }: IGroupMembersProps) => {
+const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   const { t } = useTranslation('groups');
+
+  const { data } = useGetTransactionGroupByIdQuery(groupId);
 
   const onAddMember = useCallback(() => {
 
@@ -26,7 +27,7 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
   return (
     <ContentWrapper jc={'space-between'} fullWidth>
       <Column fullWidth>
-        {group.participants.map(p =>
+        {data?.participants?.map(p =>
           <Row key={p.id} jc={'space-between'} ai={'center'} fullWidth>
             {
               !!p.avatarId &&
@@ -49,7 +50,7 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
         )}
 
         {
-          group.participants.length === 0 ?
+          data?.participants?.length === 0 ?
             <Row jc={'center'} fullWidth>
               <TextRegular>
                 {t('noMembers')}

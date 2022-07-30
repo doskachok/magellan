@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Row } from '../../../../components/Containers';
-import { ITransactionGroup } from '../../types';
+import { ITransactionGroup, ITransactionGroupListItem } from '../../types';
 import {
   AddMembersWrapper,
   ContentWrapper,
@@ -30,13 +30,13 @@ interface IValidation {
 }
 
 export interface IGroupDetailsProps {
-  groupId?: string | null;
+  groupListItem?: ITransactionGroupListItem | null;
   onSaved: (group: ITransactionGroup) => void;
   isAddGroupMembersMode: boolean;
   onGroupMembersModeChange: (value: boolean) => void;
 }
 
-const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersModeChange }: IGroupDetailsProps) => {
+const GroupDetails = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembersModeChange }: IGroupDetailsProps) => {
   const { t } = useTranslation('groups');
 
   const [getGroupById] = useLazyGetTransactionGroupByIdQuery();
@@ -44,12 +44,12 @@ const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersM
   const [updateGroup, { data: updatedGroup }] = useUpdateTransactionGroupMutation();
 
   const [form, setForm] = useState<ITransactionGroup>({
-    id: '',
-    name: '',
-    currencyCode: currencies[0].value,
+    id: groupListItem?.id || '',
+    name: groupListItem?.name || '',
+    currencyCode: groupListItem?.currencyCode || currencies[0].value,
+    ownerId: '',
     participants: [],
-    transactions: [],
-    ownerId: ''
+    transactions: []
   });
 
   const [validation, setValidation] = useState<IValidation>({
@@ -65,19 +65,8 @@ const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersM
     }));
   }, []);
 
-  const onFormSubmit = async () => {
-    if (form.id) {
-      updateGroup({
-        name: form.name,
-        currencyCode: form.currencyCode,
-        id: form.id
-      });
-    } else {
-      createGroup({
-        name: form.name,
-        currencyCode: form.currencyCode
-      });
-    }
+  const onFormSubmit = () => {
+    form.id ? updateGroup(form) : createGroup(form);
   };
 
   useEffect(() => {
@@ -93,14 +82,10 @@ const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersM
   }, [updatedGroup, onSaved]);
 
   useEffect(() => {
-    if (groupId) {
-      getGroupById(groupId).then(({ data }) => {
-        if (data) {
-          setForm(data);
-        }
-      });
+    if (groupListItem) {
+      getGroupById(groupListItem.id);
     }
-  }, [groupId, getGroupById]);
+  }, [groupListItem, getGroupById]);
 
   const onControlChange = useCallback((name: string, value: string) => {
     setForm(form => ({
@@ -156,7 +141,7 @@ const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersM
         </MainInfoWrapper>
 
         {
-          form.id &&
+          !!groupListItem &&
           <AddMembersWrapper gap={'0.5rem'} jc={'center'} ai={'center'} fullWidth>
             <TextUnderline onClick={onAddGroupMembersClick}>
               {t('addGroupMembers')}
@@ -175,7 +160,7 @@ const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersM
 
       {
         isAddGroupMembersMode &&
-        <GroupMembers group={form} />
+        <GroupMembers groupId={form.id} />
       }
     </ContentWrapper>
   );
