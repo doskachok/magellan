@@ -4,7 +4,7 @@ import { Column, PageContentWrapper, Row } from '../../../components/Containers'
 export const ContentWrapper = styled(Column)`
   position: relative;
   overflow:hidden;
-  height: calc(100vh - 80px);
+  flex: 1;
 `;
 
 export const GroupsListWrapper = styled(PageContentWrapper)`
@@ -20,7 +20,7 @@ export const FilterTabsWrapper = styled(Row)`
 
 export const FilterTabItemsWrapper = styled(Column)`
   overflow: auto;
-  height: calc(100vh - 11.2rem);
+  flex: 0px 1;
   padding-bottom: 2rem;
 `;
 

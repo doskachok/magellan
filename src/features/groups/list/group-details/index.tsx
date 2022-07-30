@@ -14,8 +14,8 @@ import {
   MainInfoWrapper,
   SaveButtonWrapper
 } from './index.styled';
-import addAvatar from '../../../../assets/images/add-avatar.png';
-import arrowRight from '../../../../assets/images/arrow-right.png';
+import { ReactComponent as AddAvatarSVG } from '../../../../assets/images/add-avatar.svg';
+import { ReactComponent as ArrowRightSVG } from '../../../../assets/images/arrow-right.svg';
 import Select from '../../../../components/Select';
 import { TextUnderline } from '../../../../components/Text';
 import currencies from '../../../../constants/currencies';
@@ -119,7 +119,7 @@ const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersM
         <MainInfoWrapper fullWidth>
           <GroupInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
             <Row jc={'center'} fullWidth>
-              <img src={addAvatar} alt={addAvatar} />
+              <AddAvatarSVG />
             </Row>
 
             <Row jc={'center'} fullWidth>
@@ -162,7 +162,7 @@ const GroupDetails = ({ groupId, onSaved, isAddGroupMembersMode, onGroupMembersM
               {t('addGroupMembers')}
             </TextUnderline>
 
-            <img src={arrowRight} alt={arrowRight} onClick={onAddGroupMembersClick} />
+            <ArrowRightSVG onClick={onAddGroupMembersClick} />
           </AddMembersWrapper>
         }
 

@@ -8,8 +8,8 @@ import { FilterTabsWrapper, ContentWrapper, GroupDetailsWrapper, GroupsListWrapp
 import GroupRow from './group-row';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
 import FilterTab from './filter-tab';
-import plusIcon from '../../../assets/images/plus-icon.png';
-import backIcon from '../../../assets/images/back-icon.png';
+import { ReactComponent as PlusIconSVG } from '../../../assets/images/plus-icon.svg';
+import { ReactComponent as BackIconSVG } from '../../../assets/images/back-icon.svg';
 import GroupDetails from './group-details';
 import { TextRegular } from '../../../components/Text';
 import { useDispatch, useSelector } from 'react-redux';
@@ -76,33 +76,21 @@ const GroupsList = () => {
     setIsGroupDetailsMode(true);
   }, []);
 
-  const headerText = () => {
-    if (isAddGroupMembersMode) {
-      return t('groupMembers');
-    }
+  const headerText = useMemo(() => isAddGroupMembersMode ?
+    t('groupMembers') :
+    isGroupDetailsMode ?
+      editedGroupId ? t('updateGroup') : t('createGroup') :
+      t('groups'), [isAddGroupMembersMode, isGroupDetailsMode, editedGroupId, t]);
 
-    if (isGroupDetailsMode) {
-      return editedGroupId ? t('updateGroup') : t('createGroup');
-    }
+  const leftAction = useMemo(() => (isGroupDetailsMode || isAddGroupMembersMode) ?
+    <BackIconSVG onClick={onBackIconClick} /> :
+    null,
+    [isGroupDetailsMode, isAddGroupMembersMode, onBackIconClick]);
 
-    return t('groups');
-  };
-
-  const leftAction = () => {
-    if (isGroupDetailsMode || isAddGroupMembersMode) {
-      return () => { return <img src={backIcon} alt={backIcon} onClick={onBackIconClick} /> };
-    }
-
-    return null;
-  };
-
-  const rightAction = () => {
-    if (!isGroupDetailsMode && !isAddGroupMembersMode) {
-      return () => <img src={plusIcon} alt={plusIcon} onClick={onAddIconClick} />;
-    }
-
-    return null;
-  };
+  const rightAction = useMemo(() => (!isGroupDetailsMode && !isAddGroupMembersMode) ?
+    <PlusIconSVG onClick={onAddIconClick} /> :
+    null,
+    [isGroupDetailsMode, isAddGroupMembersMode, onAddIconClick]);
 
   useEffect(() => {
     loadGroups();
@@ -110,7 +98,7 @@ const GroupsList = () => {
 
   return (
     <PageWrapper>
-      <Header text={headerText()} leftActionComponent={leftAction()} rightActionComponent={rightAction()} />
+      <Header text={headerText} leftActionComponent={leftAction} rightActionComponent={rightAction} />
 
       <ContentWrapper fullWidth>
         {

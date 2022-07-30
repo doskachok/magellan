@@ -6,7 +6,7 @@ import Button from '../../../../components/Button';
 import { Column, Row } from '../../../../components/Containers';
 import { TextRegular } from '../../../../components/Text';
 import { ITransactionGroup } from '../../types';
-import addAvatar from '../../../../assets/images/add-avatar.png';
+import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
 
 import { Avatar, ContentWrapper } from './index.styled';
 
@@ -32,10 +32,10 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
               !!p.avatarId &&
               <Avatar src={`${BASE_URL}storage/${p.avatarId}`} alt={`${BASE_URL}storage/${p.avatarId}`} />
             }
-            
+
             {
               !p.avatarId &&
-              <Avatar src={addAvatar} alt={addAvatar} />
+              <Avatar src={AddAvatarSVG} alt={AddAvatarSVG} />
             }
 
             <TextRegular>

@@ -4,18 +4,15 @@ import { ReactElement } from 'react';
 
 interface Props {
   text: string;
-  leftActionComponent?: (() => ReactElement<any>) | null;
-  rightActionComponent?: (() => ReactElement<any>) | null;
+  leftActionComponent?: ReactElement<any> | null;
+  rightActionComponent?: ReactElement<any> | null;
 }
 
 const Header = ({ text, leftActionComponent, rightActionComponent }: Props) => {
-  const leftAction = leftActionComponent ? leftActionComponent() : null;
-  const rightAction = rightActionComponent ? rightActionComponent() : null;
-
   return (
     <Wrapper jc={'space-between'} ai={'flex-end'}>
       <LeftActionWrapper>
-        {leftAction}
+        {leftActionComponent}
       </LeftActionWrapper>
 
       <HeaderTextWrapper>
@@ -23,7 +20,7 @@ const Header = ({ text, leftActionComponent, rightActionComponent }: Props) => {
       </HeaderTextWrapper>
 
       <RightActionWrapper>
-        {rightAction}
+        {rightActionComponent}
       </RightActionWrapper>
 
     </Wrapper>

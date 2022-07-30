@@ -24,6 +24,9 @@ export const RequiredIndicator = styled(TextRegular) <ISelectProps>`
 `;
 
 export const SelectLabel = styled.label<ISelectProps>`
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
   border: 1px solid ${props => props.theme.colors.select.border.default};
   border-radius: 8px;
   height: 48px;

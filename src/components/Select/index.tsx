@@ -7,7 +7,7 @@ import {
   ChangeEvent,
 } from 'react';
 import { SelectLabel, SelectStyled, Wrapper } from './index.styled';
-import angleDown from '../../assets/images/angle-down.png';
+import { ReactComponent as AngleDownSVG } from '../../assets/images/angle-down.svg';
 import { useState } from 'react';
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -25,6 +25,8 @@ const Select =
     options = [],
     onValueChanged,
     reversedTheme = false,
+    onClick,
+    onBlur,
     ...rest
   }: Props) => {
     const handleChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
@@ -34,18 +36,16 @@ const Select =
     const [isOpened, setIsOpened] = useState(false);
 
     const handleClick = useCallback((event: MouseEvent<HTMLSelectElement>) => {
-      rest.onClick && rest.onClick(event);
+      onClick && onClick(event);
 
-      setTimeout(() => {
-        setIsOpened(!isOpened);
-      }, 100);
-    }, [isOpened, rest]);
+      setIsOpened(!isOpened);
+    }, [isOpened, onClick]);
 
     const handleBlur = useCallback((event: FocusEvent<HTMLSelectElement>) => {
-      rest.onBlur && rest.onBlur(event);
+      onBlur && onBlur(event);
 
       setIsOpened(false);
-    }, [rest]);
+    }, [onBlur]);
 
     return (
       <Wrapper fullWidth>
@@ -62,7 +62,7 @@ const Select =
             {options.map(o => <option key={o.value} value={o.value}>{o.title}</option>)}
           </SelectStyled>
 
-          <img src={angleDown} alt={angleDown} />
+          <AngleDownSVG />
         </SelectLabel>
       </Wrapper>
     );
