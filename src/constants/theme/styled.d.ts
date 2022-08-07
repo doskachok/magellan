@@ -6,6 +6,7 @@ declare module 'styled-components' {
       primary: string;
 
       button: {
+        focused: string;
         primary: string;
         disabled: string;
         shadow: string;
