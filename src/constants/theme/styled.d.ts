@@ -7,6 +7,7 @@ declare module 'styled-components' {
       reversed: string;
 
       button: {
+        focused: string;
         primary: string;
         disabled: string;
         shadow: string;
