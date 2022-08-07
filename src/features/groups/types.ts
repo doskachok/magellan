@@ -9,9 +9,10 @@ export interface ITransactionGroup {
   id: string;
   name: string;
   currencyCode: string;
-  participants: string[];
+  avatarId?: string;
+  participants: ITransactionGroupMember[];
   ownerId: string;
-  transactions:ITransaction[];
+  transactions: ITransaction[];
 }
 
 export interface ITransaction {
@@ -22,10 +23,18 @@ export interface ITransaction {
   totalAmount: number;
 }
 
+export interface ITransactionGroupMember {
+  id: string;
+  name: string;
+  email: string;
+  username: string;
+  avatarId: string;
+}
+
 export interface ICreateTransactionGroup {
   name: string;
   currencyCode: string;
-  participants: string[];
+  avatarId?: string;
 }
 
 export interface IUpdateTransactionGroup extends ICreateTransactionGroup {

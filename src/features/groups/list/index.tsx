@@ -1,13 +1,19 @@
 import { useTranslation } from 'react-i18next';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useGetTransactionGroupsQuery } from '../api';
+import { useLazyGetTransactionGroupsQuery } from '../api';
 import Header from '../../../components/Header';
-import { Column, PageWrapper } from '../../../components/Containers';
-import { FilterTabsWrapper, ContentWrapper } from './index.styled';
+import { PageWrapper, Row } from '../../../components/Containers';
+import { FilterTabsWrapper, ContentWrapper, GroupDetailsWrapper, GroupsListWrapper, FilterTabItemsWrapper } from './index.styled';
 import GroupRow from './group-row';
-import { ITransactionGroupListItem } from '../types';
+import { ITransactionGroup, ITransactionGroupListItem } from '../types';
 import FilterTab from './filter-tab';
+import { ReactComponent as PlusIconSVG } from '../../../assets/images/plus-icon.svg';
+import { ReactComponent as BackIconSVG } from '../../../assets/images/back-icon.svg';
+import GroupDetails from './group-details';
+import { TextRegular } from '../../../components/Text';
+import { useDispatch, useSelector } from 'react-redux';
+import { groupsListSelector, saveGroup } from '../slice';
 
 interface IFilterTab {
   key: string;
@@ -22,10 +28,16 @@ const filterTabs: IFilterTab[] = [
 
 const GroupsList = () => {
   const { t } = useTranslation('groups');
+  const groups = useSelector(groupsListSelector);
+  const dispatch = useDispatch();
 
-  const { data: groups } = useGetTransactionGroupsQuery();
+  const [loadGroups] = useLazyGetTransactionGroupsQuery();
 
   const [activeTab, setActiveTab] = useState<IFilterTab>(filterTabs[0]);
+
+  const [isGroupDetailsMode, setIsGroupDetailsMode] = useState<boolean>(false);
+  const [isAddGroupMembersMode, setIsAddGroupMembersMode] = useState<boolean>(false);
+  const [editedGroup, setEditedGroup] = useState<ITransactionGroupListItem | null>(null);
 
   const filteredGroups = useMemo(() => activeTab.filter(groups || []), [
     groups, activeTab
@@ -33,24 +45,98 @@ const GroupsList = () => {
 
   const onTabClick = useCallback((key: string) => {
     setActiveTab(filterTabs.find(c => c.key === key)!);
+  }, [setActiveTab]);
+
+  const onAddIconClick = useCallback(() => {
+    setIsGroupDetailsMode(true);
+  }, [setIsGroupDetailsMode]);
+
+  const onBackIconClick = useCallback(() => {
+    if (isAddGroupMembersMode) {
+      setIsAddGroupMembersMode(false);
+    } else if (isGroupDetailsMode) {
+      setIsGroupDetailsMode(false);
+      setEditedGroup(null);
+    }
+  }, [isAddGroupMembersMode, isGroupDetailsMode]);
+
+  const onGroupSaved = useCallback((group: ITransactionGroup) => {
+    setIsGroupDetailsMode(false);
+    setEditedGroup(null);
+
+    dispatch(saveGroup(group));
+  }, [dispatch]);
+
+  const onAddMembersModeChange = useCallback((value: boolean) => {
+    setIsAddGroupMembersMode(value);
   }, []);
+
+  const onGroupClick = useCallback((group: ITransactionGroupListItem) => {
+    setEditedGroup(group);
+    setIsGroupDetailsMode(true);
+  }, []);
+
+  const headerText = useMemo(() => isAddGroupMembersMode ?
+    t('groupMembers') :
+    isGroupDetailsMode ?
+      editedGroup ? t('updateGroup') : t('createGroup') :
+      t('groups'), [isAddGroupMembersMode, isGroupDetailsMode, editedGroup, t]);
+
+  const leftAction = useMemo(() => (isGroupDetailsMode || isAddGroupMembersMode) ?
+    <BackIconSVG onClick={onBackIconClick} /> :
+    null,
+    [isGroupDetailsMode, isAddGroupMembersMode, onBackIconClick]);
+
+  const rightAction = useMemo(() => (!isGroupDetailsMode && !isAddGroupMembersMode) ?
+    <PlusIconSVG onClick={onAddIconClick} /> :
+    null,
+    [isGroupDetailsMode, isAddGroupMembersMode, onAddIconClick]);
+
+  useEffect(() => {
+    loadGroups();
+  }, [loadGroups])
 
   return (
     <PageWrapper>
-      <Header text={t('groups')} />
+      <Header text={headerText} leftActionComponent={leftAction} rightActionComponent={rightAction} />
 
       <ContentWrapper fullWidth>
-        <FilterTabsWrapper jc={'space-between'} fullWidth>
-          {filterTabs.map(({ key }) => {
-            return <FilterTab key={key} tabId={key} activeTab={activeTab.key} name={t(key)} onClick={onTabClick} />
-          })}
-        </FilterTabsWrapper>
+        {
+          !isGroupDetailsMode &&
+          <GroupsListWrapper fullWidth>
+            <FilterTabsWrapper jc={'space-between'} fullWidth>
+              {filterTabs.map(({ key }) => {
+                return <FilterTab key={key} tabId={key} activeTab={activeTab.key} name={t(key)} onClick={onTabClick} />
+              })}
+            </FilterTabsWrapper>
 
-        <Column gap={'17px'} fullWidth>
-          {filteredGroups.map(g => <GroupRow key={g.id} item={g} />)}
-        </Column>
+            <FilterTabItemsWrapper gap={'17px'} fullWidth>
+              {filteredGroups.map(g => <GroupRow key={g.id} item={g} onClick={onGroupClick} />)}
 
+              {
+                filteredGroups.length ?
+                  null :
+                  <Row jc={'center'} fullWidth>
+                    <TextRegular>
+                      {t('noGroups')}
+                    </TextRegular>
+                  </Row>
+              }
+            </FilterTabItemsWrapper>
+          </GroupsListWrapper>
+        }
 
+        {
+          isGroupDetailsMode &&
+          <GroupDetailsWrapper fullWidth>
+            <GroupDetails
+              groupListItem={editedGroup}
+              onSaved={onGroupSaved}
+              isAddGroupMembersMode={isAddGroupMembersMode}
+              onGroupMembersModeChange={onAddMembersModeChange}
+            />
+          </GroupDetailsWrapper>
+        }
       </ContentWrapper>
     </PageWrapper>
   );

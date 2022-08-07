@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { PageContentWrapper } from '../../../components/Containers';
+import { TextLink } from '../../../components/Link';
 import { TextRegular } from '../../../components/Text';
-import { Link } from 'react-router-dom';
 
 export const ContentWrapper = styled(PageContentWrapper)`
   padding-top: 120px;
@@ -14,16 +14,6 @@ export const RequiredText = styled(TextRegular)`
     color: ${props => props.theme.colors.primary};
     padding-right: 4px;
   }
-`;
-
-const TextLink = styled(Link)`
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 20px;
-  text-decoration-line: underline;
-  color: ${props => props.theme.colors.text.link};
 `;
 
 export const ForgotPasswordLink = styled(TextLink)`

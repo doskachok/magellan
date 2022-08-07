@@ -2,5 +2,15 @@
   "groups": "Groups",
   "all": "All",
   "iLent": "I lent",
-  "iBorrowed": "I borrowed"
+  "iBorrowed": "I borrowed",
+  "noGroups" : "No groups yet",
+  "createGroup": "Create a group",
+  "updateGroup" : "Update a group",
+  "groupMembers": "Group members",
+  "groupName": "Group name",
+  "mainCurrency": "Main currency",
+  "addGroupMembers": "Add group members",
+  "addMembers": "Add members",
+  "noMembers": "No members",
+  "saveGroup": "Save group"
 }

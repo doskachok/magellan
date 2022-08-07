@@ -1,17 +1,28 @@
-import {Wrapper} from './index.styled';
+import {  LeftActionWrapper, RightActionWrapper, HeaderTextWrapper, Wrapper } from './index.styled';
 
-import {TextHeader} from '../Text';
+import { ReactElement } from 'react';
 
 interface Props {
   text: string;
+  leftActionComponent?: ReactElement<any> | null;
+  rightActionComponent?: ReactElement<any> | null;
 }
 
-const Header = ({text}: Props) => {
+const Header = ({ text, leftActionComponent, rightActionComponent }: Props) => {
   return (
-    <Wrapper jc={'center'} ai={'flex-end'}>
-      <TextHeader>
+    <Wrapper jc={'space-between'} ai={'flex-end'}>
+      <LeftActionWrapper>
+        {leftActionComponent}
+      </LeftActionWrapper>
+
+      <HeaderTextWrapper>
         {text}
-      </TextHeader>
+      </HeaderTextWrapper>
+
+      <RightActionWrapper>
+        {rightActionComponent}
+      </RightActionWrapper>
+
     </Wrapper>
   );
 };

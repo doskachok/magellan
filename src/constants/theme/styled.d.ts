@@ -4,6 +4,7 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       primary: string;
+      reversed: string;
 
       button: {
         primary: string;
@@ -22,10 +23,32 @@ declare module 'styled-components' {
         }
       },
 
+      select: {
+        border: {
+          default: string;
+          reversed: string;
+        },
+        color: {
+          default: string,
+          reversed: string,
+        },
+        placeholder: {
+          default: string,
+          reversed: string;
+        }
+      },
+
       input: {
         border: {
           default: string;
+          reversed: string;
           error: string;
+        },
+        color: {
+          reversed: string,
+        },
+        placeholder: {
+          reversed: string;
         }
       }
     };
