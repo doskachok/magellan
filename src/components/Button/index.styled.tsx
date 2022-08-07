@@ -16,11 +16,13 @@ export const ButtonStyled = styled.button<ButtonProps>`
   font-size: 18px;
   color: ${props => props.theme.colors.text.secondary};
   
-  &:active {
-    transition: 0.1s;
-    transform: scale(1.02, 1.05);
-    background: ${props => props.theme.colors.button.focused};
-  }
+  ${props => !props.disabled && css 
+    `&:active {
+      transition: 0.1s;
+      transform: scale(1.02, 1.05);
+      background: ${props => props.theme.colors.button.focused};
+    }`
+  };
 
   ${props => props.disabled && css`
     background: ${props => props.theme.colors.button.disabled};
