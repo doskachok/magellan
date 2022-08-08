@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 
 import Header from '../../../components/Header';
+import Loader from '../../../components/Loader';
 import { Column, PageWrapper, Row } from '../../../components/Containers';
 import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
 
@@ -32,7 +33,7 @@ const Login = () => {
     password: false,
   });
 
-  const [login, {data: loginData}] = useLoginMutation();
+  const [login, {data: loginData, isLoading }] = useLoginMutation();
   const [getUser] = useLazyUserQuery();
 
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
@@ -64,6 +65,7 @@ const Login = () => {
 
   return (
     <PageWrapper>
+      <Loader isLoading={isLoading} />
       <Header text={'Login'} />
       <ContentWrapper jc={'space-between'} fullWidth>
 
@@ -75,6 +77,7 @@ const Login = () => {
 
           <Input
             required
+            disabled={isLoading}
             name='login'
             value={form.login}
             validator={requiredValidator}
@@ -85,6 +88,7 @@ const Login = () => {
 
           <Input
             required
+            disabled={isLoading}
             name={'password'}
             type={'password'}
             value={form.password}
@@ -104,7 +108,7 @@ const Login = () => {
         </Column>
 
         <Row jc={'flex-end'} fullWidth>
-          <Button onClick={onFormSubmit} disabled={isDisabled}>
+          <Button onClick={onFormSubmit} disabled={isDisabled || isLoading}>
             {t('signIn')}
           </Button>
         </Row>
