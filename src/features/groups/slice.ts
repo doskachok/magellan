@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../store';
 import { transactionGroupsApi } from './api';
 import { ITransactionGroup, ITransactionGroupListItem } from './types';
@@ -15,7 +15,7 @@ const groupsSlice = createSlice({
   name: 'groups',
   initialState: initialState,
   reducers: {
-    saveGroup: (state, { payload }: { payload: ITransactionGroup }) => {
+    saveGroup: (state, { payload }: PayloadAction<ITransactionGroup>) => {
       const index = state.list.findIndex(g => g.id === payload.id);
       if (index === -1) {
         state.list = [...state.list, { ...payload, yourPart: 0 }];
@@ -29,7 +29,7 @@ const groupsSlice = createSlice({
     builder
       .addMatcher(
         transactionGroupsApi.endpoints.getTransactionGroups.matchFulfilled,
-        (state, { payload }: { payload: ITransactionGroupListItem[] }) => {
+        (state, { payload }: PayloadAction<ITransactionGroupListItem[]>) => {
           state.list = payload;
         }
       )
