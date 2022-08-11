@@ -11,7 +11,7 @@ const TinyLoader = ({ isLoading }: Props) => {
         <div className="loader-line"></div>
       </TinyLoaderStyled>
     );
-  return <></>;
+  return null;
 };
 
 export default TinyLoader;

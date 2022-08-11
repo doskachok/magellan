@@ -4,9 +4,9 @@ import { Row } from '../Containers';
 import { TextHeader } from '../Text';
 
 export const Wrapper = styled(Row)`
-  height: 80px;
+  height: 60px;
   width: 100%;
-  padding: 12px;
+  padding: 15px 12px;
   background: ${props => props.theme.colors.primary};
 `;
 

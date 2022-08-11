@@ -28,7 +28,7 @@ const Loader = ({isLoading}: Props) => {
         </svg>
       </LoaderStyled>
     );
-    return (<></>);
+    return null;
 }
 
 export default Loader;
