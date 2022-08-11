@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LocalStorageKeys } from '../../constants/localStorageKeys';
 import { RootState } from '../../store';
 import { authApi } from './api';
@@ -28,14 +28,14 @@ const authSlice = createSlice({
     builder
     .addMatcher(
       authApi.endpoints.login.matchFulfilled,
-      (state, { payload }: { payload: IAuthPayload }) => {
+      (state, { payload }: PayloadAction<IAuthPayload>) => {
         localStorage.setItem(LocalStorageKeys.TOKEN, payload.token);
         state.accessToken = payload.token;
       }
     )
     .addMatcher(
       authApi.endpoints.user.matchFulfilled,
-      (state, { payload }: { payload: IUser }) => {
+      (state, { payload }: PayloadAction<IUser>) => {
         localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(payload));
         state.user = payload;
       }
