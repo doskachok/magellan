@@ -1,18 +1,17 @@
-import { useCallback, useMemo, useState, useEffect } from 'react';
+import { useCallback, useMemo, useState, useEffect } from "react";
 
-import Header from '../../../components/Header';
-import Loader from '../../../components/Loader';
-import { Column, PageWrapper, Row } from '../../../components/Containers';
-import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
+import Header from "../../../components/Header";
+import { Column, PageWrapper, Row } from "../../../components/Containers";
+import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from "./index.styled";
 
-import { useTranslation } from 'react-i18next';
-import { useLoginMutation, useLazyUserQuery } from '../api';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import { requiredValidator } from '../validation';
-import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../../constants/routes';
-import { ILoginForm } from '../types';
+import { useTranslation } from "react-i18next";
+import { useLoginMutation, useLazyUserQuery } from "../api";
+import Input from "../../../components/Input";
+import Button from "../../../components/Button";
+import { requiredValidator } from "../validation";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../../constants/routes";
+import { ILoginForm } from "../types";
 
 interface IValidation {
   login: boolean;
@@ -20,12 +19,12 @@ interface IValidation {
 }
 
 const Login = () => {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation("auth");
   const navigate = useNavigate();
 
   const [form, setForm] = useState<ILoginForm>({
-    login: '',
-    password: '',
+    login: "",
+    password: "",
   });
 
   const [validation, setValidation] = useState<IValidation>({
@@ -33,20 +32,20 @@ const Login = () => {
     password: false,
   });
 
-  const [login, {data: loginData, isLoading }] = useLoginMutation();
+  const [login, { data: loginData, isLoading }] = useLoginMutation();
   const [getUser] = useLazyUserQuery();
 
-  const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
+  const isDisabled = useMemo(() => Object.values(validation).some((el) => !el), [validation]);
 
   const onInputChange = useCallback((name: string, value: string) => {
-    setForm(form => ({
+    setForm((form) => ({
       ...form,
       [name]: value,
     }));
   }, []);
 
   const onValidationChange = useCallback((name: string, value: boolean) => {
-    setValidation(validation => ({
+    setValidation((validation) => ({
       ...validation,
       [name]: value,
     }));
@@ -58,30 +57,27 @@ const Login = () => {
 
   useEffect(() => {
     if (loginData) {
-      getUser(loginData.id)
-        .then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
+      getUser(loginData.id).then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
     }
   }, [loginData, navigate, getUser]);
 
   return (
     <PageWrapper>
-      <Loader isLoading={isLoading} />
-      <Header text={'Login'} />
-      <ContentWrapper jc={'space-between'} fullWidth>
-
-        <Column gap={'8px'} fullWidth>
+      <Header text={"Login"} isLoading={isLoading} />
+      <ContentWrapper jc={"space-between"} fullWidth>
+        <Column gap={"8px"} fullWidth>
           <RequiredText>
             <span>*</span>
-            {t('requiredText')}
+            {t("requiredText")}
           </RequiredText>
 
           <Input
             required
             disabled={isLoading}
-            name='login'
+            name="login"
             value={form.login}
             validator={requiredValidator}
-            placeholder={t('usernameOrEmailAddress')}
+            placeholder={t("usernameOrEmailAddress")}
             onTextChange={onInputChange}
             onValidationChange={onValidationChange}
           />
@@ -89,27 +85,23 @@ const Login = () => {
           <Input
             required
             disabled={isLoading}
-            name={'password'}
-            type={'password'}
+            name={"password"}
+            type={"password"}
             value={form.password}
             validator={requiredValidator}
-            placeholder={t('password')}
+            placeholder={t("password")}
             onTextChange={onInputChange}
             onValidationChange={onValidationChange}
           />
 
-          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
-            {t('forgotPassword')}
-          </ForgotPasswordLink>
+          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>{t("forgotPassword")}</ForgotPasswordLink>
 
-          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
-            {t('noAccount')}
-          </NoAccountLink>
+          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>{t("noAccount")}</NoAccountLink>
         </Column>
 
-        <Row jc={'flex-end'} fullWidth>
+        <Row jc={"flex-end"} fullWidth>
           <Button onClick={onFormSubmit} disabled={isDisabled || isLoading}>
-            {t('signIn')}
+            {t("signIn")}
           </Button>
         </Row>
       </ContentWrapper>
