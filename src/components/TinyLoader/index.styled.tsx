@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const TinyLoaderStyled = styled.div`
   .loader-line {
@@ -11,7 +11,7 @@ export const TinyLoaderStyled = styled.div`
   }
 
   .loader-line:before {
-    content: "";
+    content: '';
     position: absolute;
     left: -50%;
     height: 5px;

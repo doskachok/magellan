@@ -1,7 +1,7 @@
-import { LeftActionWrapper, RightActionWrapper, HeaderTextWrapper, Wrapper } from "./index.styled";
-import TinyLoader from "../TinyLoader";
+import { LeftActionWrapper, RightActionWrapper, HeaderTextWrapper, Wrapper } from './index.styled';
+import TinyLoader from '../TinyLoader';
 
-import { ReactElement } from "react";
+import { ReactElement } from 'react';
 
 interface Props {
   text: string;

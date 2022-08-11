@@ -1,4 +1,4 @@
-import { TinyLoaderStyled } from "./index.styled";
+import { TinyLoaderStyled } from './index.styled';
 
 interface Props {
   isLoading: boolean;
