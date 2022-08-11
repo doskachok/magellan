@@ -57,7 +57,8 @@ const Login = () => {
 
   useEffect(() => {
     if (loginData) {
-      getUser(loginData.id).then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
+      getUser(loginData.id)
+        .then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
     }
   }, [loginData, navigate, getUser]);
 
@@ -94,9 +95,13 @@ const Login = () => {
             onValidationChange={onValidationChange}
           />
 
-          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>{t('forgotPassword')}</ForgotPasswordLink>
+          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
+            {t('forgotPassword')}
+          </ForgotPasswordLink>
 
-          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>{t('noAccount')}</NoAccountLink>
+          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
+            {t('noAccount')}
+          </NoAccountLink>
         </Column>
 
         <Row jc={'flex-end'} fullWidth>

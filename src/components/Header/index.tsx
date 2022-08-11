@@ -14,11 +14,17 @@ const Header = ({ text, leftActionComponent, rightActionComponent, isLoading }: 
   return (
     <div style={{ width: "100%" }}>
       <Wrapper jc={"space-between"} ai={"flex-end"}>
-        <LeftActionWrapper>{leftActionComponent}</LeftActionWrapper>
+        <LeftActionWrapper>
+          {leftActionComponent}
+        </LeftActionWrapper>
 
-        <HeaderTextWrapper>{text}</HeaderTextWrapper>
+        <HeaderTextWrapper>
+          {text}
+        </HeaderTextWrapper>
 
-        <RightActionWrapper>{rightActionComponent}</RightActionWrapper>
+        <RightActionWrapper>
+          {rightActionComponent}
+        </RightActionWrapper>
       </Wrapper>
 
       <TinyLoader isLoading={isLoading ?? false} />
