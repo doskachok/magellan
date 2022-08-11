@@ -21,7 +21,7 @@ function App() {
         <SnackbarProvider
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'center',
           }}
         >
           <BrowserRouter>
