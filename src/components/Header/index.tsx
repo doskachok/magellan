@@ -2,18 +2,19 @@ import { LeftActionWrapper, RightActionWrapper, HeaderTextWrapper, Wrapper } fro
 import TinyLoader from '../TinyLoader';
 
 import { ReactElement } from 'react';
+import { Column } from '../Containers';
 
 interface Props {
   text: string;
-  isLoading?: boolean | null;
+  isLoading?: boolean;
   leftActionComponent?: ReactElement<any> | null;
   rightActionComponent?: ReactElement<any> | null;
 }
 
-const Header = ({ text, leftActionComponent, rightActionComponent, isLoading }: Props) => {
+const Header = ({ text, leftActionComponent, rightActionComponent, isLoading = false }: Props) => {
   return (
-    <div style={{ width: "100%" }}>
-      <Wrapper jc={"space-between"} ai={"flex-end"}>
+    <Column fullWidth>
+      <Wrapper jc={'space-between'} ai={'flex-end'}>
         <LeftActionWrapper>
           {leftActionComponent}
         </LeftActionWrapper>
@@ -27,8 +28,8 @@ const Header = ({ text, leftActionComponent, rightActionComponent, isLoading }: 
         </RightActionWrapper>
       </Wrapper>
 
-      <TinyLoader isLoading={isLoading ?? false} />
-    </div>
+      <TinyLoader isLoading={isLoading} />
+    </Column>
   );
 };
 
