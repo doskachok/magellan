@@ -6,6 +6,10 @@ declare module 'styled-components' {
       primary: string;
       reversed: string;
 
+      loader: {
+        background: string;
+      },
+
       button: {
         focused: string;
         primary: string;

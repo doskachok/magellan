@@ -32,20 +32,20 @@ const Login = () => {
     password: false,
   });
 
-  const [login, {data: loginData}] = useLoginMutation();
+  const [login, { data: loginData, isLoading }] = useLoginMutation();
   const [getUser] = useLazyUserQuery();
 
-  const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
+  const isDisabled = useMemo(() => Object.values(validation).some((el) => !el), [validation]);
 
   const onInputChange = useCallback((name: string, value: string) => {
-    setForm(form => ({
+    setForm((form) => ({
       ...form,
       [name]: value,
     }));
   }, []);
 
   const onValidationChange = useCallback((name: string, value: boolean) => {
-    setValidation(validation => ({
+    setValidation((validation) => ({
       ...validation,
       [name]: value,
     }));
@@ -64,9 +64,8 @@ const Login = () => {
 
   return (
     <PageWrapper>
-      <Header text={'Login'} />
+      <Header text={'Login'} isLoading={isLoading} />
       <ContentWrapper jc={'space-between'} fullWidth>
-
         <Column gap={'8px'} fullWidth>
           <RequiredText>
             <span>*</span>
@@ -75,6 +74,7 @@ const Login = () => {
 
           <Input
             required
+            disabled={isLoading}
             name='login'
             value={form.login}
             validator={requiredValidator}
@@ -85,6 +85,7 @@ const Login = () => {
 
           <Input
             required
+            disabled={isLoading}
             name={'password'}
             type={'password'}
             value={form.password}
@@ -104,7 +105,7 @@ const Login = () => {
         </Column>
 
         <Row jc={'flex-end'} fullWidth>
-          <Button onClick={onFormSubmit} disabled={isDisabled}>
+          <Button onClick={onFormSubmit} disabled={isDisabled || isLoading}>
             {t('signIn')}
           </Button>
         </Row>

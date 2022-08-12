@@ -1,29 +1,35 @@
-import {  LeftActionWrapper, RightActionWrapper, HeaderTextWrapper, Wrapper } from './index.styled';
+import { LeftActionWrapper, RightActionWrapper, HeaderTextWrapper, Wrapper } from './index.styled';
+import TinyLoader from '../TinyLoader';
 
 import { ReactElement } from 'react';
+import { Column } from '../Containers';
 
 interface Props {
   text: string;
+  isLoading?: boolean;
   leftActionComponent?: ReactElement<any> | null;
   rightActionComponent?: ReactElement<any> | null;
 }
 
-const Header = ({ text, leftActionComponent, rightActionComponent }: Props) => {
+const Header = ({ text, leftActionComponent, rightActionComponent, isLoading = false }: Props) => {
   return (
-    <Wrapper jc={'space-between'} ai={'flex-end'}>
-      <LeftActionWrapper>
-        {leftActionComponent}
-      </LeftActionWrapper>
+    <Column fullWidth>
+      <Wrapper jc={'space-between'} ai={'flex-end'}>
+        <LeftActionWrapper>
+          {leftActionComponent}
+        </LeftActionWrapper>
 
-      <HeaderTextWrapper>
-        {text}
-      </HeaderTextWrapper>
+        <HeaderTextWrapper>
+          {text}
+        </HeaderTextWrapper>
 
-      <RightActionWrapper>
-        {rightActionComponent}
-      </RightActionWrapper>
+        <RightActionWrapper>
+          {rightActionComponent}
+        </RightActionWrapper>
+      </Wrapper>
 
-    </Wrapper>
+      <TinyLoader isLoading={isLoading} />
+    </Column>
   );
 };
 

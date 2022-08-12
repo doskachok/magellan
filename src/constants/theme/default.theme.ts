@@ -8,6 +8,10 @@ const defaultTheme: DefaultTheme = {
     primary: PRIMARY_COLOR,
     reversed: REVERSED_COLOR,
 
+    loader: {
+      background: '#d3d3d370',
+    },
+
     button: {
       focused: '#00854D',
       primary: '#00A862',
