@@ -9,7 +9,7 @@ i18n
     lng: 'en',
     fallbackLng: 'en',
     keySeparator: false,
-    ns: ['auth', 'validation'],
+    ns: ['auth', 'validation', 'groups'],
     defaultNS: 'common',
     updateMissing: true,
     interpolation: {
