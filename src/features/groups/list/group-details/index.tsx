@@ -1,11 +1,12 @@
 
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Row } from '../../../../components/Containers';
 import { ITransactionGroup, ITransactionGroupListItem } from '../../types';
 import {
   AddMembersWrapper,
+  Avatar,
   ContentWrapper,
   GroupCurrencyText,
   GroupDetailsBackground,
@@ -14,7 +15,7 @@ import {
   MainInfoWrapper,
   SaveButtonWrapper
 } from './index.styled';
-import { ReactComponent as AddAvatarSVG } from '../../../../assets/images/add-avatar.svg';
+import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
 import { ReactComponent as ArrowRightSVG } from '../../../../assets/images/arrow-right.svg';
 import Select from '../../../../components/Select';
 import { TextUnderline } from '../../../../components/Text';
@@ -24,6 +25,9 @@ import Button from '../../../../components/Button';
 import { requiredValidator } from '../../../auth/validation';
 import Input from '../../../../components/Input';
 import GroupMembers from '../group-members';
+import { getDownloadFileUrl } from '../../../../helpers/urlHelper';
+import FileUploader, { IFileUploaderRef } from '../../../file-uploader';
+import Loader from '../../../../components/Loader';
 
 interface IValidation {
   name: boolean;
@@ -39,9 +43,11 @@ export interface IGroupDetailsProps {
 const GroupDetails = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembersModeChange }: IGroupDetailsProps) => {
   const { t } = useTranslation('groups');
 
+  const logoUploaderRef = useRef<IFileUploaderRef>();
+
   const [getGroupById] = useLazyGetTransactionGroupByIdQuery();
-  const [createGroup, { data: createdGroup }] = useCreateTransactionGroupMutation();
-  const [updateGroup, { data: updatedGroup }] = useUpdateTransactionGroupMutation();
+  const [createGroup, { data: createdGroup, isLoading: isGroupCreating }] = useCreateTransactionGroupMutation();
+  const [updateGroup, { data: updatedGroup, isLoading: isGroupUpdating }] = useUpdateTransactionGroupMutation();
 
   const [form, setForm] = useState<ITransactionGroup>({
     id: groupListItem?.id || '',
@@ -49,8 +55,15 @@ const GroupDetails = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMe
     currencyCode: groupListItem?.currencyCode || currencies[0].value,
     ownerId: '',
     participants: [],
-    transactions: []
+    transactions: [],
+    avatarId: groupListItem?.avatarId
   });
+
+  const [logoSrc, setLogoSrc] = useState<string | null>(groupListItem?.avatarId
+    ? getDownloadFileUrl(groupListItem?.avatarId)
+    : AddAvatarSVG);
+  const [isLogoSelected, setIsLogoSelected] = useState<boolean>(false);
+  const [isLogoUploading, setIsLogoUploading] = useState<boolean>(false);
 
   const [validation, setValidation] = useState<IValidation>({
     name: false
@@ -65,9 +78,21 @@ const GroupDetails = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMe
     }));
   }, []);
 
-  const onFormSubmit = () => {
-    form.id ? updateGroup(form) : createGroup(form);
-  };
+  const onControlChange = useCallback((name: string, value: string) => {
+    setForm(form => ({
+      ...form,
+      [name]: value,
+    }));
+  }, []);
+
+  const onFormSubmit = useCallback(() => {
+    if (isLogoSelected) {
+      logoUploaderRef!.current!.uploadFile();
+    } else {
+      form.id ? updateGroup(form) : createGroup(form);
+    }
+  }, [form, updateGroup, createGroup, isLogoSelected]);
+
 
   useEffect(() => {
     if (createdGroup) {
@@ -87,13 +112,26 @@ const GroupDetails = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMe
     }
   }, [groupListItem, getGroupById]);
 
-  const onControlChange = useCallback((name: string, value: string) => {
-    setForm(form => ({
-      ...form,
-      [name]: value,
-    }));
+
+  const onLogoSelected = useCallback((file: File, fileData: string) => {
+    setLogoSrc(fileData);
+    setIsLogoSelected(true);
   }, []);
 
+  const onLogoUploadingChanged = useCallback((isUploading: boolean) => {
+    setIsLogoUploading(isUploading);
+  }, []);
+
+  const onLogoUploaded = useCallback((fileId: string) => {
+    const formToSave = {
+      ...form,
+      avatarId: fileId,
+    };
+
+    formToSave.id ? updateGroup(formToSave) : createGroup(formToSave);
+  }, [form, updateGroup, createGroup]);
+
+  
   const onAddGroupMembersClick = useCallback(() => {
     onGroupMembersModeChange(true);
   }, [onGroupMembersModeChange]);
@@ -104,7 +142,13 @@ const GroupDetails = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMe
         <MainInfoWrapper fullWidth>
           <GroupInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
             <Row jc={'center'} fullWidth>
-              <AddAvatarSVG />
+              <FileUploader 
+                ref={logoUploaderRef} 
+                onFileSelected={onLogoSelected} 
+                onFileUploaded={onLogoUploaded} 
+                onUploadingChange={onLogoUploadingChanged}>
+                <Avatar src={logoSrc as string} alt={logoSrc as string} />
+              </FileUploader>
             </Row>
 
             <Row jc={'center'} fullWidth>
@@ -162,6 +206,8 @@ const GroupDetails = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMe
         isAddGroupMembersMode &&
         <GroupMembers groupId={form.id} />
       }
+
+      <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating}/>
     </ContentWrapper>
   );
 };

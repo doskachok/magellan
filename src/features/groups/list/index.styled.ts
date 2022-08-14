@@ -26,4 +26,5 @@ export const FilterTabItemsWrapper = styled(Column)`
 
 export const GroupDetailsWrapper = styled(Column)`
   position: absolute;
+  height: 100%;
 `;
