@@ -5,7 +5,7 @@ import { TextRegular } from '../../../../components/Text';
 export const ContentWrapper = styled(Column)`
   overflow-y: auto;
   overflow-x: hidden;
-  height: 90vh;
+  height: 100%;
 `;
 
 interface IGroupDetailsWrapperProps {
@@ -50,4 +50,10 @@ export const AddMembersWrapper = styled(Row)`
 export const SaveButtonWrapper = styled(Row)`
   margin-top: 1rem;
   margin-bottom: 2rem;
+`;
+
+export const Avatar = styled.img`
+  height: 10.5rem;
+  width: 10.5rem;
+  border-radius: 50%;
 `;

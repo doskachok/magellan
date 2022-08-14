@@ -11,8 +11,8 @@ const Loader = ({isLoading}: Props) => {
         <svg viewBox="-25 -25 100 100">
           <defs>
             <linearGradient id="gr-simple" x1="0" y1="0" x2="100%" y2="100%">
-              <stop stop-color="rgba(255,255,255,.2)" offset="10%"/>
-              <stop stop-color="rgba(255,255,255,.7)" offset="90%"/>
+              <stop stopColor="rgba(255,255,255,.2)" offset="10%"/>
+              <stop stopColor="rgba(255,255,255,.7)" offset="90%"/>
             </linearGradient>
           </defs>	
           <circle className="cls-1" cx="26" cy="27" r="26" stroke="url(#gr-simple)"/>

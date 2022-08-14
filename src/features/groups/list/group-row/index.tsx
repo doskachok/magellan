@@ -2,6 +2,8 @@
 import { GroupLogo, GroupName, GroupRowWrapper } from './index.styled';
 import { memo, useCallback } from 'react';
 import { ITransactionGroupListItem } from '../../types';
+import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
+import { getDownloadFileUrl } from '../../../../helpers/urlHelper';
 
 export interface IGroupRowProps {
   item: ITransactionGroupListItem,
@@ -15,7 +17,7 @@ const GroupRow = ({ item, onClick }: IGroupRowProps) => {
 
   return (
     <GroupRowWrapper onClick={onRowClick} ai="center" fullWidth>
-      <GroupLogo src={'https://picsum.photos/200/300?random=' + item.id}/>
+      <GroupLogo src={item.avatarId ? getDownloadFileUrl(item.avatarId) : AddAvatarSVG}/>
       <GroupName>
         {item.name}
       </GroupName>
