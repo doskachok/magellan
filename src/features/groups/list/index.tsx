@@ -15,6 +15,7 @@ import { TextRegular } from '../../../components/Text';
 import { useDispatch, useSelector } from 'react-redux';
 import { groupsListSelector, saveGroup } from '../slice';
 import BottomNavigation from '../../../components/BottomNavigation';
+import Loader from '../../../components/Loader';
 
 interface IFilterTab {
   key: string;
@@ -32,7 +33,7 @@ const GroupsList = () => {
   const groups = useSelector(groupsListSelector);
   const dispatch = useDispatch();
 
-  const [loadGroups] = useLazyGetTransactionGroupsQuery();
+  const [loadGroups, { isLoading }] = useLazyGetTransactionGroupsQuery();
 
   const [activeTab, setActiveTab] = useState<IFilterTab>(filterTabs[0]);
 
@@ -101,8 +102,9 @@ const GroupsList = () => {
 
   return (
     <PageWrapper>
-      <Header text={headerText} leftActionComponent={leftAction} rightActionComponent={rightAction} />
-
+      <Header text={headerText} leftActionComponent={leftAction} rightActionComponent={rightAction} isLoading={isLoading} />
+      <Loader isLoading={isLoading} />
+      
       <ContentWrapper fullWidth>
         {
           !isGroupDetailsMode &&
@@ -117,7 +119,7 @@ const GroupsList = () => {
               {filteredGroups.map(g => <GroupRow key={g.id} item={g} onClick={onGroupClick} />)}
 
               {
-                filteredGroups.length ?
+                filteredGroups.length || isLoading ?
                   null :
                   <Row jc={'center'} fullWidth>
                     <TextRegular>
