@@ -53,8 +53,9 @@ export const SaveButtonWrapper = styled(Row)`
 `;
 
 export const Avatar = styled.img`
-  height: 10.5rem;
-  width: 10.5rem;
+  height: 13rem;
+  width: 13rem;
   border-radius: 50%;
+  outline: solid 5px white;
   object-fit: cover;
 `;
