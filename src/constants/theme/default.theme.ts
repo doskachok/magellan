@@ -27,7 +27,10 @@ const defaultTheme: DefaultTheme = {
       title: 'rgba(0, 0, 0, 0.5)',
       border: {
         default: 'rgba(0, 0, 0, 0.5)',
-      }
+      },
+      notification: {
+        success: '#28a745',
+      },
     },
 
     select: {
