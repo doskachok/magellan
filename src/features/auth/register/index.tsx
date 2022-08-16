@@ -1,20 +1,30 @@
-import {useState, useMemo, useCallback, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import {ROUTES} from '../../../constants/routes';
+import { ROUTES } from '../../../constants/routes';
 
 import Header from '../../../components/Header';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 
-import {Column, PageWrapper, Row} from '../../../components/Containers';
-import {ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText} from './index.styled';
+import { Column, PageWrapper, Row } from '../../../components/Containers';
+import {
+  ContentWrapper,
+  PasswordRequirementsText,
+  PasswordRequirementsWrapper,
+  RequiredText,
+} from './index.styled';
 
-import {useRegisterMutation} from '../api';
+import { useRegisterMutation } from '../api';
 
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-import {usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator} from '../validation';
+import {
+  usernameValidator,
+  emailValidator,
+  passwordValidator,
+  createConfirmPasswordValidator,
+} from '../validation';
 
 interface IForm {
   username: string;
@@ -37,7 +47,7 @@ interface IPasswordRequirements {
 }
 
 const Register = () => {
-  const {t} = useTranslation('auth');
+  const { t } = useTranslation('auth');
   const navigate = useNavigate();
 
   const [form, setForm] = useState<IForm>({
@@ -54,35 +64,44 @@ const Register = () => {
     passwordConfirmation: false,
   });
 
-  const [passwordRequirements, setPasswordRequirements] = useState<IPasswordRequirements>({
-    length: false,
-    capitalLetter: false,
-    number: false,
-  });
+  const [passwordRequirements, setPasswordRequirements] =
+    useState<IPasswordRequirements>({
+      length: false,
+      capitalLetter: false,
+      number: false,
+    });
 
-  const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
+  const confirmPasswordValidator = useMemo(
+    () => createConfirmPasswordValidator(form.password),
+    [form.password]
+  );
 
   const [register] = useRegisterMutation();
 
-  const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
+  const isDisabled = useMemo(
+    () => Object.values(validation).some((el) => !el),
+    [validation]
+  );
 
   const onInputChange = useCallback((name: string, value: string) => {
-    setForm(form => ({
+    setForm((form) => ({
       ...form,
       [name]: value,
     }));
   }, []);
 
   const onValidationChange = useCallback((name: string, value: boolean) => {
-    setValidation(validation => ({
+    setValidation((validation) => ({
       ...validation,
       [name]: value,
     }));
   }, []);
 
   const onFromSubmit = () => {
-    register(form)
-      .then(() => navigate(ROUTES.AUTH.ROOT));
+    register(form).then((response: any) => {
+      const state = { isRegistered: !response.error };
+      navigate(ROUTES.AUTH.ROOT, { state });
+    });
   };
 
   useEffect(() => {
@@ -98,7 +117,6 @@ const Register = () => {
     <PageWrapper>
       <Header text={t('signup')} />
       <ContentWrapper jc={'space-between'} fullWidth>
-
         <Column gap={'8px'} fullWidth>
           <RequiredText>
             <span>*</span>
@@ -154,7 +172,9 @@ const Register = () => {
             <PasswordRequirementsText fulfilled={passwordRequirements.length}>
               {t('atLeast8Chars')}
             </PasswordRequirementsText>
-            <PasswordRequirementsText fulfilled={passwordRequirements.capitalLetter}>
+            <PasswordRequirementsText
+              fulfilled={passwordRequirements.capitalLetter}
+            >
               {t('containCapitalLetter')}
             </PasswordRequirementsText>
             <PasswordRequirementsText fulfilled={passwordRequirements.number}>

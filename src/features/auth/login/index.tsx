@@ -2,16 +2,22 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 
 import Header from '../../../components/Header';
 import { Column, PageWrapper, Row } from '../../../components/Containers';
-import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
+import {
+  ContentWrapper,
+  ForgotPasswordLink,
+  NoAccountLink,
+  RequiredText,
+} from './index.styled';
 
 import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazyUserQuery } from '../api';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 import { requiredValidator } from '../validation';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../../constants/routes';
 import { ILoginForm } from '../types';
+import { Notification } from '../../../components/Notification';
 
 interface IValidation {
   login: boolean;
@@ -21,7 +27,8 @@ interface IValidation {
 const Login = () => {
   const { t } = useTranslation('auth');
   const navigate = useNavigate();
-
+  const location = useLocation();
+  console.log(location);
   const [form, setForm] = useState<ILoginForm>({
     login: '',
     password: '',
@@ -35,7 +42,10 @@ const Login = () => {
   const [login, { data: loginData, isLoading }] = useLoginMutation();
   const [getUser] = useLazyUserQuery();
 
-  const isDisabled = useMemo(() => Object.values(validation).some((el) => !el), [validation]);
+  const isDisabled = useMemo(
+    () => Object.values(validation).some((el) => !el),
+    [validation]
+  );
 
   const onInputChange = useCallback((name: string, value: string) => {
     setForm((form) => ({
@@ -57,14 +67,16 @@ const Login = () => {
 
   useEffect(() => {
     if (loginData) {
-      getUser(loginData.id)
-        .then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
+      getUser(loginData.id).then(() =>
+        navigate(ROUTES.GROUPS.ROOT, { replace: true })
+      );
     }
   }, [loginData, navigate, getUser]);
 
   return (
     <PageWrapper>
       <Header text={'Login'} isLoading={isLoading} />
+      <Notification />
       <ContentWrapper jc={'space-between'} fullWidth>
         <Column gap={'8px'} fullWidth>
           <RequiredText>
@@ -75,7 +87,7 @@ const Login = () => {
           <Input
             required
             disabled={isLoading}
-            name='login'
+            name="login"
             value={form.login}
             validator={requiredValidator}
             placeholder={t('usernameOrEmailAddress')}
@@ -95,7 +107,9 @@ const Login = () => {
             onValidationChange={onValidationChange}
           />
 
-          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
+          <ForgotPasswordLink
+            to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}
+          >
             {t('forgotPassword')}
           </ForgotPasswordLink>
 

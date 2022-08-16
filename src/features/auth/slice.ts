@@ -11,7 +11,9 @@ interface ISliceState {
 
 const initialState: ISliceState = {
   accessToken: localStorage.getItem(LocalStorageKeys.TOKEN),
-  user: JSON.parse(localStorage.getItem(LocalStorageKeys.USER) as string) as IUser,
+  user: JSON.parse(
+    localStorage.getItem(LocalStorageKeys.USER) as string
+  ) as IUser,
 };
 
 const authSlice = createSlice({
@@ -22,25 +24,32 @@ const authSlice = createSlice({
       state.accessToken = null;
       state.user = null;
       localStorage.clear();
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-    .addMatcher(
-      authApi.endpoints.login.matchFulfilled,
-      (state, { payload }: PayloadAction<IAuthPayload>) => {
-        localStorage.setItem(LocalStorageKeys.TOKEN, payload.token);
-        state.accessToken = payload.token;
-      }
-    )
-    .addMatcher(
-      authApi.endpoints.user.matchFulfilled,
-      (state, { payload }: PayloadAction<IUser>) => {
-        localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(payload));
-        state.user = payload;
-      }
-    )
-  }
+      .addMatcher(
+        authApi.endpoints.login.matchFulfilled,
+        (state, { payload }: PayloadAction<IAuthPayload>) => {
+          localStorage.setItem(LocalStorageKeys.TOKEN, payload.token);
+          state.accessToken = payload.token;
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.user.matchFulfilled,
+        (state, { payload }: PayloadAction<IUser>) => {
+          localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(payload));
+          state.user = payload;
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.user.matchFulfilled,
+        (state, { payload }: PayloadAction<IUser>) => {
+          localStorage.setItem(LocalStorageKeys.USER, JSON.stringify(payload));
+          state.user = payload;
+        }
+      );
+  },
 });
 
 export const { logOut } = authSlice.actions;

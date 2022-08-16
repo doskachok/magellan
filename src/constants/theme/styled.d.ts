@@ -8,54 +8,57 @@ declare module 'styled-components' {
 
       loader: {
         background: string;
-      },
+      };
 
       button: {
         focused: string;
         primary: string;
         disabled: string;
         shadow: string;
-      },
+      };
 
       text: {
         primary: string;
         secondary: string;
         link: string;
         error: string;
-        title: string,
+        title: string;
         border: {
-          default: string
-        }
-      },
+          default: string;
+        };
+        notification: {
+          success: string;
+        };
+      };
 
       select: {
         border: {
           default: string;
           reversed: string;
-        },
+        };
         color: {
-          default: string,
-          reversed: string,
-        },
-        placeholder: {
-          default: string,
+          default: string;
           reversed: string;
-        }
-      },
+        };
+        placeholder: {
+          default: string;
+          reversed: string;
+        };
+      };
 
       input: {
         border: {
           default: string;
           reversed: string;
           error: string;
-        },
+        };
         color: {
-          reversed: string,
-        },
+          reversed: string;
+        };
         placeholder: {
           reversed: string;
-        }
-      }
+        };
+      };
     };
   }
 }

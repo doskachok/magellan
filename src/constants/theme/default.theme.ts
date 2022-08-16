@@ -27,13 +27,16 @@ const defaultTheme: DefaultTheme = {
       title: 'rgba(0, 0, 0, 0.5)',
       border: {
         default: 'rgba(0, 0, 0, 0.5)',
-      }
+      },
+      notification: {
+        success: '#28a745',
+      },
     },
 
     select: {
       border: {
         default: 'rgba(0, 0, 0, 0.5)',
-        reversed: REVERSED_COLOR
+        reversed: REVERSED_COLOR,
       },
       color: {
         default: '#000000',
@@ -42,7 +45,7 @@ const defaultTheme: DefaultTheme = {
       placeholder: {
         default: '#000000',
         reversed: REVERSED_COLOR,
-      }
+      },
     },
 
     input: {
@@ -56,9 +59,9 @@ const defaultTheme: DefaultTheme = {
       },
       placeholder: {
         reversed: REVERSED_COLOR,
-      }
+      },
     },
-  }
+  },
 };
 
 export default defaultTheme;
