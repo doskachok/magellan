@@ -10,7 +10,7 @@ import { ApiTags } from '../constants/api-tags';
 import { RootState } from './index';
 import { addError } from './errorSlice';
 import { tokenReceived, logOut, userReceived } from '../features/auth/slice'
-import { IAuthPayload } from '../features/auth/types';
+import { IAuthPayload, IUser } from '../features/auth/types';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -34,15 +34,19 @@ const baseQueryWithReAuth: BaseQueryFn<
   = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}
 ) => {
   let result = await baseQuery(args, api, extraOptions);
+  const loggedUserId = (api.getState() as RootState).auth.userId;
 
-  console.log('args', args);
-  console.log('api', api);
+  if ((args as FetchArgs).url === 'users/authorize') 
+    api.dispatch(tokenReceived(result.data as IAuthPayload));
+
+  if ((args as FetchArgs).url === `users/${loggedUserId}`)
+    api.dispatch(userReceived(result.data as IUser));
 
   if (result.error && result.error.status === 401) {
       const refreshed = await baseQuery({ url: 'users/refreshed-token'}, api, extraOptions);
 
       if (refreshed.data) {
-        api.dispatch(tokenReceived(refreshed.data));
+        api.dispatch(tokenReceived(refreshed.data as IAuthPayload));
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logOut());
