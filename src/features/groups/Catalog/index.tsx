@@ -16,6 +16,7 @@ import Loader from '../../../components/Loader';
 import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupEditWrapper, GroupsListWrapper } from './index.styled';
 import FilterTab from './FilterTab';
 import GroupRow from './GroupRow';
+import Navigation from '../../../components/Navigation';
 
 interface IFilterTab {
   key: string;
