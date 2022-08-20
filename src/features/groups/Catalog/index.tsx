@@ -140,6 +140,8 @@ const GroupsList = () => {
           </GroupEditWrapper>
         }
       </ContentWrapper>
+
+      <Navigation visible={true}></Navigation>
     </PageWrapper>
   );
 };
