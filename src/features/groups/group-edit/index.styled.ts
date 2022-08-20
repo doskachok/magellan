@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Column, Row } from '../../../../components/Containers';
-import { TextRegular } from '../../../../components/Text';
+import { Column, Row } from '../../../components/Containers';
+import { TextRegular } from '../../../components/Text';
 
 export const ContentWrapper = styled(Column)`
   overflow-y: auto;
@@ -8,11 +8,11 @@ export const ContentWrapper = styled(Column)`
   height: 100%;
 `;
 
-interface IGroupDetailsWrapperProps {
+interface IGroupEditWrapperProps {
   hidden: boolean;
 };
 
-export const GroupDetailsWrapper = styled(Column) <IGroupDetailsWrapperProps>`
+export const GroupEditWrapper = styled(Column) <IGroupEditWrapperProps>`
   ${props => props.hidden && css`
     display: none;
   `};
@@ -33,7 +33,7 @@ export const GroupCurrencyText = styled(TextRegular)`
   width: 100%;
 `;
 
-export const GroupDetailsBackground = styled(Row)`
+export const GroupEditBackground = styled(Row)`
   border-radius: 100%;
   background: ${props => props.theme.colors.primary};
   width: 120vw;

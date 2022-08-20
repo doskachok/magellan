@@ -2,13 +2,13 @@
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../../../../components/Button';
-import { Column, Row } from '../../../../components/Containers';
-import { TextRegular } from '../../../../components/Text';
-import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
+import Button from '../../../components/Button';
+import { Column, Row } from '../../../components/Containers';
+import { TextRegular } from '../../../components/Text';
+import AddAvatarSVG from '../../../assets/images/add-avatar.svg';
 import { Avatar, ContentWrapper } from './index.styled';
-import { useGetTransactionGroupByIdQuery } from '../../api';
-import { getDownloadFileUrl } from '../../../../helpers/urlHelper';
+import { useGetTransactionGroupByIdQuery } from '../api';
+import { getDownloadFileUrl } from '../../../helpers/urlHelper';
 
 export interface IGroupMembersProps {
   groupId: string
