@@ -4,18 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLazyGetTransactionGroupsQuery } from '../api';
 import Header from '../../../components/Header';
 import { PageWrapper, Row } from '../../../components/Containers';
-import { FilterTabsWrapper, ContentWrapper, GroupEditWrapper, GroupsListWrapper, FilterTabItemsWrapper } from './index.styled';
-import GroupRow from './group-row';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
-import FilterTab from './filter-tab';
 import { ReactComponent as PlusIconSVG } from '../../../assets/images/plus-icon.svg';
 import { ReactComponent as BackIconSVG } from '../../../assets/images/back-icon.svg';
-import GroupEdit from '../group-edit';
+import GroupEdit from '../Edit';
 import { TextRegular } from '../../../components/Text';
 import { useDispatch, useSelector } from 'react-redux';
 import { groupsListSelector, saveGroup } from '../slice';
 import BottomNavigation from '../../../components/BottomNavigation';
 import Loader from '../../../components/Loader';
+import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupEditWrapper, GroupsListWrapper } from './index.styled';
+import FilterTab from './filter-tab';
+import GroupRow from './group-row';
 
 interface IFilterTab {
   key: string;

@@ -1,6 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes';
-import GroupsList from './list';
+import GroupsList from './List';
 
 const Groups = () => {
   return (
