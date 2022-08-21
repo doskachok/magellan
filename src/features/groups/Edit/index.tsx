@@ -24,10 +24,10 @@ import { useCreateTransactionGroupMutation, useLazyGetTransactionGroupByIdQuery,
 import Button from '../../../components/Button';
 import { requiredValidator } from '../../auth/validation';
 import Input from '../../../components/Input';
-import GroupMembers from '../group-members';
 import { getDownloadFileUrl } from '../../../helpers/urlHelper';
-import FileUploader, { IFileUploaderRef } from '../../../components/file-uploader';
+import FileUploader, { IFileUploaderRef } from '../../../components/FileUploader';
 import Loader from '../../../components/Loader';
+import GroupMembers from '../Members';
 
 interface IValidation {
   name: boolean;
