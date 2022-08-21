@@ -7,7 +7,7 @@ import { PageWrapper, Row } from '../../../components/Containers';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
 import { ReactComponent as PlusIconSVG } from '../../../assets/images/plus-icon.svg';
 import { ReactComponent as BackIconSVG } from '../../../assets/images/back-icon.svg';
-import GroupEdit from '../Edit';
+import GroupEdit from '../edit';
 import { TextRegular } from '../../../components/Text';
 import { useDispatch, useSelector } from 'react-redux';
 import { groupsListSelector, saveGroup } from '../slice';
