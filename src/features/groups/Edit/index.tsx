@@ -27,7 +27,7 @@ import Input from '../../../components/Input';
 import { getDownloadFileUrl } from '../../../helpers/urlHelper';
 import FileUploader, { IFileUploaderRef } from '../../../components/FileUploader';
 import Loader from '../../../components/Loader';
-import GroupMembers from '../Members';
+import GroupMembers from '../members';
 
 interface IValidation {
   name: boolean;
