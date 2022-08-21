@@ -1,17 +1,21 @@
 import { NavigationStyled, Groups, Profile, AddExpense } from './index.styled';
+import { useNavigate } from 'react-router-dom';
 import groups from '../../assets/images/groups-icon.svg'
 import receipt from '../../assets/images/receipt-icon.svg'
 import avatar from '../../assets/images/avatar-icon.svg'
+import { ROUTES } from '../../constants/routes';
 
 interface Props {
   visible: boolean;
 }
 
 const Navigation = ({ visible }: Props) => {
+  const navigate = useNavigate();
+
   if (visible)
     return (
       <NavigationStyled>
-        <Groups>
+        <Groups onClick={() => navigate(ROUTES.GROUPS.ROOT)}>
           <img src={groups} alt="Groups" />
         </Groups>
 
