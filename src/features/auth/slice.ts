@@ -47,3 +47,4 @@ export const { logOut } = authSlice.actions;
 export default authSlice.reducer;
 
 export const userSelector = (store: RootState) => store.auth.user;
+export const tokenSelector = (store: RootState) => store.auth.accessToken;
