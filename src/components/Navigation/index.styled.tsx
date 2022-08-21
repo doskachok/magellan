@@ -20,6 +20,7 @@ export const Groups = styled.div`
 `
 
 export const AddExpense = styled.button`
+  z-index: 1;
   border: none;
   padding: 13px 16px 16px 12px;
   margin-top: -17px;
