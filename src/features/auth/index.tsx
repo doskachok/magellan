@@ -1,8 +1,8 @@
 import {Route, Routes} from 'react-router-dom';
 import {ROUTES} from '../../constants/routes';
 
-import Login from './login';
-import Register from './register';
+import Login from './Login';
+import Register from './Register';
 
 const Auth = () => {
   return (

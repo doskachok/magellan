@@ -1,4 +1,3 @@
-
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -27,7 +26,7 @@ import Input from '../../../components/Input';
 import { getDownloadFileUrl } from '../../../helpers/urlHelper';
 import FileUploader, { IFileUploaderRef } from '../../../components/FileUploader';
 import Loader from '../../../components/Loader';
-import GroupMembers from '../members';
+import GroupMembers from '../Members';
 
 interface IValidation {
   name: boolean;
@@ -131,7 +130,7 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
     formToSave.id ? updateGroup(formToSave) : createGroup(formToSave);
   }, [form, updateGroup, createGroup]);
 
-  
+
   const onAddGroupMembersClick = useCallback(() => {
     onGroupMembersModeChange(true);
   }, [onGroupMembersModeChange]);
@@ -142,10 +141,10 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
         <MainInfoWrapper fullWidth>
           <GroupInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
             <Row jc={'center'} fullWidth>
-              <FileUploader 
-                ref={logoUploaderRef} 
-                onFileSelected={onLogoSelected} 
-                onFileUploaded={onLogoUploaded} 
+              <FileUploader
+                ref={logoUploaderRef}
+                onFileSelected={onLogoSelected}
+                onFileUploaded={onLogoUploaded}
                 onUploadingChange={onLogoUploadingChanged}>
                 <Avatar src={logoSrc as string} alt={logoSrc as string} />
               </FileUploader>

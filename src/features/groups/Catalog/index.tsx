@@ -7,15 +7,15 @@ import { PageWrapper, Row } from '../../../components/Containers';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
 import { ReactComponent as PlusIconSVG } from '../../../assets/images/plus-icon.svg';
 import { ReactComponent as BackIconSVG } from '../../../assets/images/back-icon.svg';
-import GroupEdit from '../edit';
+import GroupEdit from '../Edit';
 import { TextRegular } from '../../../components/Text';
 import { useDispatch, useSelector } from 'react-redux';
 import { groupsListSelector, saveGroup } from '../slice';
 import BottomNavigation from '../../../components/BottomNavigation';
 import Loader from '../../../components/Loader';
 import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupEditWrapper, GroupsListWrapper } from './index.styled';
-import FilterTab from './filter-tab';
-import GroupRow from './group-row';
+import FilterTab from './FilterTab';
+import GroupRow from './GroupRow';
 
 interface IFilterTab {
   key: string;
@@ -104,7 +104,7 @@ const GroupsList = () => {
     <PageWrapper>
       <Header text={headerText} leftActionComponent={leftAction} rightActionComponent={rightAction} isLoading={isLoading} />
       <Loader isLoading={isLoading} />
-      
+
       <ContentWrapper fullWidth>
         {
           !isGroupEditMode &&
