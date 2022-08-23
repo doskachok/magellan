@@ -1,5 +1,6 @@
-import {Route, Routes} from 'react-router-dom';
-import {ROUTES} from '../../constants/routes';
+import { Route, Routes } from 'react-router-dom';
+import { Notification } from '../../components/Notification';
+import { ROUTES } from '../../constants/routes';
 
 import Login from './login';
 import Register from './register';
@@ -7,8 +8,8 @@ import Register from './register';
 const Auth = () => {
   return (
     <Routes>
-      <Route index element={<Login/>} />
-      <Route path={ROUTES.AUTH.REGISTER} element={<Register/>} />
+      <Route index element={<Login />} />
+      <Route path={ROUTES.AUTH.REGISTER} element={<Register />} />
     </Routes>
   );
 };

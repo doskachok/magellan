@@ -16,7 +16,7 @@ export const NotificationWrapper = styled.div`
       height: 0;
       opacity: 0;
     }
-    30%,
+    20%,
     80% {
       height: 40px;
       opacity: 1;
@@ -28,6 +28,6 @@ export const NotificationWrapper = styled.div`
   }
 `;
 
-export const NotificationText = styled(Text)`
-  color: ${(props) => props.theme.colors.text.notification.success};
+export const NotificationText = styled(Text)<{ isError?: boolean }>`
+  color: ${({ theme, isError }) => (!isError ? theme.colors.text.notification.success : theme.colors.text.error)};
 `;

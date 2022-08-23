@@ -2,12 +2,7 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 
 import Header from '../../../components/Header';
 import { Column, PageWrapper, Row } from '../../../components/Containers';
-import {
-  ContentWrapper,
-  ForgotPasswordLink,
-  NoAccountLink,
-  RequiredText,
-} from './index.styled';
+import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
 
 import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazyUserQuery } from '../api';
@@ -42,10 +37,7 @@ const Login = () => {
   const [login, { data: loginData, isLoading }] = useLoginMutation();
   const [getUser] = useLazyUserQuery();
 
-  const isDisabled = useMemo(
-    () => Object.values(validation).some((el) => !el),
-    [validation]
-  );
+  const isDisabled = useMemo(() => Object.values(validation).some((el) => !el), [validation]);
 
   const onInputChange = useCallback((name: string, value: string) => {
     setForm((form) => ({
@@ -67,9 +59,7 @@ const Login = () => {
 
   useEffect(() => {
     if (loginData) {
-      getUser(loginData.id).then(() =>
-        navigate(ROUTES.GROUPS.ROOT, { replace: true })
-      );
+      getUser(loginData.id).then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
     }
   }, [loginData, navigate, getUser]);
 
@@ -107,15 +97,11 @@ const Login = () => {
             onValidationChange={onValidationChange}
           />
 
-          <ForgotPasswordLink
-            to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}
-          >
+          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
             {t('forgotPassword')}
           </ForgotPasswordLink>
 
-          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
-            {t('noAccount')}
-          </NoAccountLink>
+          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>{t('noAccount')}</NoAccountLink>
         </Column>
 
         <Row jc={'flex-end'} fullWidth>

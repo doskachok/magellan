@@ -22,6 +22,11 @@ export const authApi = mainApi.injectEndpoints({
         body,
       })
     }),
+    refreshedToken: build.query({
+      query: () => ({
+        url: `users/refreshed-token`
+      })
+    }),
   }))
 });
 

@@ -8,23 +8,14 @@ import Input from '../../../components/Input';
 import Button from '../../../components/Button';
 
 import { Column, PageWrapper, Row } from '../../../components/Containers';
-import {
-  ContentWrapper,
-  PasswordRequirementsText,
-  PasswordRequirementsWrapper,
-  RequiredText,
-} from './index.styled';
+import { ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText } from './index.styled';
 
 import { useRegisterMutation } from '../api';
 
 import { useTranslation } from 'react-i18next';
 
-import {
-  usernameValidator,
-  emailValidator,
-  passwordValidator,
-  createConfirmPasswordValidator,
-} from '../validation';
+import { usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator } from '../validation';
+import { Notification, NotificationType } from '../../../components/Notification';
 
 interface IForm {
   username: string;
@@ -64,24 +55,17 @@ const Register = () => {
     passwordConfirmation: false,
   });
 
-  const [passwordRequirements, setPasswordRequirements] =
-    useState<IPasswordRequirements>({
-      length: false,
-      capitalLetter: false,
-      number: false,
-    });
+  const [passwordRequirements, setPasswordRequirements] = useState<IPasswordRequirements>({
+    length: false,
+    capitalLetter: false,
+    number: false,
+  });
 
-  const confirmPasswordValidator = useMemo(
-    () => createConfirmPasswordValidator(form.password),
-    [form.password]
-  );
+  const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
 
   const [register] = useRegisterMutation();
-
-  const isDisabled = useMemo(
-    () => Object.values(validation).some((el) => !el),
-    [validation]
-  );
+  const [isEmailError, setIsEmailError] = useState(false);
+  const isDisabled = useMemo(() => Object.values(validation).some((el) => !el), [validation]);
 
   const onInputChange = useCallback((name: string, value: string) => {
     setForm((form) => ({
@@ -100,7 +84,8 @@ const Register = () => {
   const onFromSubmit = () => {
     register(form).then((response: any) => {
       const state = { isRegistered: !response.error };
-      navigate(ROUTES.AUTH.ROOT, { state });
+      const path = !response.error && ROUTES.AUTH.ROOT;
+      path ? navigate(path, { state }) : setIsEmailError(true);
     });
   };
 
@@ -112,9 +97,10 @@ const Register = () => {
     };
     setPasswordRequirements(requirements);
   }, [form.password, setPasswordRequirements]);
-
+  const emailUsedTxt = t('email_already_used', 'Try again, this email has been already used');
   return (
     <PageWrapper>
+      <Notification text={isEmailError ? emailUsedTxt : null} type={NotificationType.ERROR} />
       <Header text={t('signup')} />
       <ContentWrapper jc={'space-between'} fullWidth>
         <Column gap={'8px'} fullWidth>
@@ -166,15 +152,11 @@ const Register = () => {
           />
 
           <PasswordRequirementsWrapper fullWidth>
-            <PasswordRequirementsText>
-              {t('passwordRequirements')}
-            </PasswordRequirementsText>
+            <PasswordRequirementsText>{t('passwordRequirements')}</PasswordRequirementsText>
             <PasswordRequirementsText fulfilled={passwordRequirements.length}>
               {t('atLeast8Chars')}
             </PasswordRequirementsText>
-            <PasswordRequirementsText
-              fulfilled={passwordRequirements.capitalLetter}
-            >
+            <PasswordRequirementsText fulfilled={passwordRequirements.capitalLetter}>
               {t('containCapitalLetter')}
             </PasswordRequirementsText>
             <PasswordRequirementsText fulfilled={passwordRequirements.number}>

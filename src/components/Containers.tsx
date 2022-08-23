@@ -12,27 +12,19 @@ const Container = styled.div<ContainerProps>`
   justify-content: flex-start;
   align-items: flex-start;
 
-  ${(props) =>
-    props.fullWidth &&
-    css`
+  ${(props) => props.fullWidth && css`
       width: 100%;
     `};
 
-  ${(props) =>
-    props.gap &&
-    css`
+  ${(props) => props.gap && css`
       gap: ${props.gap};
     `};
 
-  ${(props) =>
-    props.jc &&
-    css`
+  ${(props) => props.jc && css`
       justify-content: ${props.jc};
     `};
 
-  ${(props) =>
-    props.ai &&
-    css`
+  ${(props) => props.ai && css`
       align-items: ${props.ai};
     `};
 `;
