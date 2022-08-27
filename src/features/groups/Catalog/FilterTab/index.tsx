@@ -1,7 +1,7 @@
 
 import { memo, useCallback } from 'react';
+import { FilterTabText, FilterTabUnderline, FilterTabWrapper } from './index.styled';
 
-import { FilterTabWrapper, FilterTabText, FilterTabUnderline } from './index.styled';
 
 export interface IFilterTabProps {
   tabId: string,

@@ -1,15 +1,13 @@
-
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../../../../components/Button';
-import { Column, Row } from '../../../../components/Containers';
-import { TextRegular } from '../../../../components/Text';
-import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
+import Button from '../../../components/Button';
+import { Column, Row } from '../../../components/Containers';
+import { TextRegular } from '../../../components/Text';
+import AddAvatarSVG from '../../../assets/images/add-avatar.svg';
 import { Avatar, ContentWrapper } from './index.styled';
-import { useGetTransactionGroupByIdQuery } from '../../api';
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { useGetTransactionGroupByIdQuery } from '../api';
+import { getDownloadFileUrl } from '../../../helpers/urlHelper';
 
 export interface IGroupMembersProps {
   groupId: string
@@ -29,15 +27,7 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
       <Column fullWidth>
         {data?.participants?.map(p =>
           <Row key={p.id} jc={'space-between'} ai={'center'} fullWidth>
-            {
-              !!p.avatarId &&
-              <Avatar src={`${BASE_URL}storage/${p.avatarId}`} alt={`${BASE_URL}storage/${p.avatarId}`} />
-            }
-
-            {
-              !p.avatarId &&
-              <Avatar src={AddAvatarSVG} alt={AddAvatarSVG} />
-            }
+            <Avatar src={p.avatarId ? getDownloadFileUrl(p.avatarId) : AddAvatarSVG} alt={'avatar'} />
 
             <TextRegular>
               {p.name || p.email}
