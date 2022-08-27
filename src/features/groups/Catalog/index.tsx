@@ -41,7 +41,7 @@ const GroupsList = () => {
   const [isAddGroupMembersMode, setIsAddGroupMembersMode] = useState<boolean>(false);
   const [editedGroup, setEditedGroup] = useState<ITransactionGroupListItem | null>(null);
 
-  const listView = !(isGroupDetailsMode || isAddGroupMembersMode || editedGroup);
+  const listView = !(isGroupEditMode || isAddGroupMembersMode || editedGroup);
 
   const filteredGroups = useMemo(() => activeTab.filter(groups || []), [
     groups, activeTab
