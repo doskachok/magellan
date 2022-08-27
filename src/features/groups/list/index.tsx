@@ -14,7 +14,7 @@ import GroupDetails from './group-details';
 import { TextRegular } from '../../../components/Text';
 import { useDispatch, useSelector } from 'react-redux';
 import { groupsListSelector, saveGroup } from '../slice';
-import Navigation from '../../../components/Navigation';
+import BottomNavigation from '../../../components/BottomNavigation';
 
 interface IFilterTab {
   key: string;
@@ -142,7 +142,7 @@ const GroupsList = () => {
         }
       </ContentWrapper>
 
-      <Navigation visible={listView}></Navigation>
+      <BottomNavigation visible={listView}></BottomNavigation>
     </PageWrapper>
   );
 };

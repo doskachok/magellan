@@ -1,7 +1,7 @@
 import { Row } from '../Containers';
 import styled from 'styled-components';
 
-export const NavigationStyled = styled(Row)`
+export const BottomNavigationStyled = styled(Row)`
   height: 55px;
   width: 100%;
   border-top: solid 1px lightgrey;
