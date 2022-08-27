@@ -17,6 +17,7 @@ import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupEditWrap
 import FilterTab from './FilterTab';
 import GroupRow from './GroupRow';
 import Navigation from '../../../components/Navigation';
+import BottomNavigation from '../../../components/BottomNavigation';
 
 interface IFilterTab {
   key: string;
