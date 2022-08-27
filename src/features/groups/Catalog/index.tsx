@@ -15,6 +15,7 @@ import Loader from '../../../components/Loader';
 import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupEditWrapper, GroupsListWrapper } from './index.styled';
 import FilterTab from './FilterTab';
 import GroupRow from './GroupRow';
+import BottomNavigation from '../../../components/BottomNavigation';
 
 interface IFilterTab {
   key: string;
@@ -143,7 +144,7 @@ const GroupsList = () => {
         }
       </ContentWrapper>
 
-      <Navigation visible={listView}></Navigation>
+      <BottomNavigation visible={listView}></BottomNavigation>
     </PageWrapper>
   );
 };
