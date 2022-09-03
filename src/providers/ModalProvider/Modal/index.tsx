@@ -22,7 +22,7 @@ const Modal = ({ id, show, children }: IProps) => {
     if (!show) {
       const timer = setTimeout(() => {
         deleteModal(id);
-      }, 300);
+      }, 300); // Time needed to finish modal closing animation
 
       return () => clearTimeout(timer);
     }
@@ -35,7 +35,7 @@ const Modal = ({ id, show, children }: IProps) => {
   }, [closeModal, id]);
 
   return (
-    <ModalBackground id={`${id}`} show={show} onClick={(e) => backgroundClick(e)}>
+    <ModalBackground id={`${id}`} show={show} onClick={backgroundClick}>
       <ModalContainer>
         <ModalContent show={show}>
           {children}

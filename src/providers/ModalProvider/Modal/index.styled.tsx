@@ -1,8 +1,18 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 interface IModalBackgroundProps {
   show: boolean;
 }
+
+const fadeInOpacity = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
 
 export const ModalBackground = styled.div<IModalBackgroundProps>`
   width: 100%;
@@ -10,13 +20,12 @@ export const ModalBackground = styled.div<IModalBackgroundProps>`
   position: absolute;
   background: rgba(0, 0, 0, 0.2);
   opacity: 0;
-  z-index: 1020;
   top: 0;
   transition: all .3s ease-in-out;
   ${props => props.show && css`
     opacity: 1;
   `};
-  animation: fadeInOpacity 0.3s ease-in;
+  animation: ${fadeInOpacity} 0.3s ease-in;
 `;
 
 export const ModalContainer = styled.div`
@@ -27,6 +36,18 @@ export const ModalContainer = styled.div`
 interface IModalContentProps {
   show: boolean;
 }
+
+const fadeIn = keyframes`
+  from {
+    margin-top: -100%;
+    opacity: 0;
+  }
+
+  to {
+    margin-top: 0%;
+    opacity: 1;
+  }
+`;
 
 export const ModalContent = styled.div<IModalContentProps>`
   width: 100%;
@@ -40,25 +61,5 @@ export const ModalContent = styled.div<IModalContentProps>`
     opacity: 1;
     margin-top: 0%;
   `};
-  animation: fadeIn 0.3s ease-in;
-
-  @keyframes fadeIn {
-    0% {
-      margin-top: -100%;
-      opacity: 0;
-    }
-    100% {
-      margin-top: 0%;
-      opacity: 1;
-    }
-  };
-
-  @keyframes fadeInOpacity {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  };
+  animation: ${fadeIn} 0.3s ease-in;
 `;

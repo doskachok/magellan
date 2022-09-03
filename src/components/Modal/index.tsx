@@ -7,7 +7,7 @@ export const ModalHeader = styled(Row)`
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
-  background: white;
+  background: ${props => props.theme.colors.modal.background.default};
   width: 100%;
   border-top-left-radius: ${radius};
   border-top-right-radius: ${radius};
@@ -16,7 +16,7 @@ export const ModalHeader = styled(Row)`
 export const ModalBody = styled.div`
   display: flex;
   padding: 0.5rem;
-  background: white;
+  background: ${props => props.theme.colors.modal.background.default};
   width: 100%;
 `;
 
@@ -25,7 +25,7 @@ export const ModalFooter = styled(Row)`
   align-items: center;
   padding: 0.5rem;
   width: 100%;
-  background: aliceblue;
+  background: ${props => props.theme.colors.modal.background.default};
   border-bottom-left-radius: ${radius};
   border-bottom-right-radius: ${radius};
 `;
