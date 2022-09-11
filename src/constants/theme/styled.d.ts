@@ -57,8 +57,13 @@ declare module 'styled-components' {
         };
         placeholder: {
           reversed: string;
-        };
-      };
+        }
+      },
+      modal: {
+        background: {
+          default: string
+        }
+      }
     };
   }
 }

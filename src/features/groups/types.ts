@@ -2,6 +2,7 @@ export interface ITransactionGroupListItem {
   id: string;
   name: string;
   currencyCode: string;
+  avatarId?: string;
   yourPart: number;
 }
 

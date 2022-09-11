@@ -9,7 +9,6 @@ export const LoaderStyled = styled.div`
   display: flex;
   align-items: center;
   place-content: center;
-  background-color: ${props => props.theme.colors.loader.background};
 
   svg {
     width: 110px;

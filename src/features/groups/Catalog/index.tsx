@@ -4,16 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLazyGetTransactionGroupsQuery } from '../api';
 import Header from '../../../components/Header';
 import { PageWrapper, Row } from '../../../components/Containers';
-import { FilterTabsWrapper, ContentWrapper, GroupDetailsWrapper, GroupsListWrapper, FilterTabItemsWrapper } from './index.styled';
-import GroupRow from './group-row';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
-import FilterTab from './filter-tab';
 import { ReactComponent as PlusIconSVG } from '../../../assets/images/plus-icon.svg';
 import { ReactComponent as BackIconSVG } from '../../../assets/images/back-icon.svg';
-import GroupDetails from './group-details';
+import GroupEdit from '../Edit';
 import { TextRegular } from '../../../components/Text';
 import { useDispatch, useSelector } from 'react-redux';
 import { groupsListSelector, saveGroup } from '../slice';
+import Loader from '../../../components/Loader';
+import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupEditWrapper, GroupsListWrapper } from './index.styled';
+import FilterTab from './FilterTab';
+import GroupRow from './GroupRow';
+import BottomNavigation from '../../../components/BottomNavigation';
 
 interface IFilterTab {
   key: string;
@@ -31,13 +33,15 @@ const GroupsList = () => {
   const groups = useSelector(groupsListSelector);
   const dispatch = useDispatch();
 
-  const [loadGroups] = useLazyGetTransactionGroupsQuery();
+  const [loadGroups, { isLoading }] = useLazyGetTransactionGroupsQuery();
 
   const [activeTab, setActiveTab] = useState<IFilterTab>(filterTabs[0]);
 
-  const [isGroupDetailsMode, setIsGroupDetailsMode] = useState<boolean>(false);
+  const [isGroupEditMode, setIsGroupEditMode] = useState<boolean>(false);
   const [isAddGroupMembersMode, setIsAddGroupMembersMode] = useState<boolean>(false);
   const [editedGroup, setEditedGroup] = useState<ITransactionGroupListItem | null>(null);
+
+  const listView = !(isGroupEditMode || isAddGroupMembersMode || editedGroup);
 
   const filteredGroups = useMemo(() => activeTab.filter(groups || []), [
     groups, activeTab
@@ -48,20 +52,20 @@ const GroupsList = () => {
   }, [setActiveTab]);
 
   const onAddIconClick = useCallback(() => {
-    setIsGroupDetailsMode(true);
-  }, [setIsGroupDetailsMode]);
+    setIsGroupEditMode(true);
+  }, [setIsGroupEditMode]);
 
   const onBackIconClick = useCallback(() => {
     if (isAddGroupMembersMode) {
       setIsAddGroupMembersMode(false);
-    } else if (isGroupDetailsMode) {
-      setIsGroupDetailsMode(false);
+    } else if (isGroupEditMode) {
+      setIsGroupEditMode(false);
       setEditedGroup(null);
     }
-  }, [isAddGroupMembersMode, isGroupDetailsMode]);
+  }, [isAddGroupMembersMode, isGroupEditMode]);
 
   const onGroupSaved = useCallback((group: ITransactionGroup) => {
-    setIsGroupDetailsMode(false);
+    setIsGroupEditMode(false);
     setEditedGroup(null);
 
     dispatch(saveGroup(group));
@@ -73,24 +77,24 @@ const GroupsList = () => {
 
   const onGroupClick = useCallback((group: ITransactionGroupListItem) => {
     setEditedGroup(group);
-    setIsGroupDetailsMode(true);
+    setIsGroupEditMode(true);
   }, []);
 
   const headerText = useMemo(() => isAddGroupMembersMode ?
     t('groupMembers') :
-    isGroupDetailsMode ?
+    isGroupEditMode ?
       editedGroup ? t('updateGroup') : t('createGroup') :
-      t('groups'), [isAddGroupMembersMode, isGroupDetailsMode, editedGroup, t]);
+      t('groups'), [isAddGroupMembersMode, isGroupEditMode, editedGroup, t]);
 
-  const leftAction = useMemo(() => (isGroupDetailsMode || isAddGroupMembersMode) ?
+  const leftAction = useMemo(() => (isGroupEditMode || isAddGroupMembersMode) ?
     <BackIconSVG onClick={onBackIconClick} /> :
     null,
-    [isGroupDetailsMode, isAddGroupMembersMode, onBackIconClick]);
+    [isGroupEditMode, isAddGroupMembersMode, onBackIconClick]);
 
-  const rightAction = useMemo(() => (!isGroupDetailsMode && !isAddGroupMembersMode) ?
+  const rightAction = useMemo(() => (!isGroupEditMode && !isAddGroupMembersMode) ?
     <PlusIconSVG onClick={onAddIconClick} /> :
     null,
-    [isGroupDetailsMode, isAddGroupMembersMode, onAddIconClick]);
+    [isGroupEditMode, isAddGroupMembersMode, onAddIconClick]);
 
   useEffect(() => {
     loadGroups();
@@ -98,11 +102,12 @@ const GroupsList = () => {
 
   return (
     <PageWrapper>
-      <Header text={headerText} leftActionComponent={leftAction} rightActionComponent={rightAction} />
+      <Header text={headerText} leftActionComponent={leftAction} rightActionComponent={rightAction} isLoading={isLoading} />
+      <Loader isLoading={isLoading} />
 
       <ContentWrapper fullWidth>
         {
-          !isGroupDetailsMode &&
+          !isGroupEditMode &&
           <GroupsListWrapper fullWidth>
             <FilterTabsWrapper jc={'space-between'} fullWidth>
               {filterTabs.map(({ key }) => {
@@ -114,7 +119,7 @@ const GroupsList = () => {
               {filteredGroups.map(g => <GroupRow key={g.id} item={g} onClick={onGroupClick} />)}
 
               {
-                filteredGroups.length ?
+                filteredGroups.length || isLoading ?
                   null :
                   <Row jc={'center'} fullWidth>
                     <TextRegular>
@@ -127,17 +132,19 @@ const GroupsList = () => {
         }
 
         {
-          isGroupDetailsMode &&
-          <GroupDetailsWrapper fullWidth>
-            <GroupDetails
+          isGroupEditMode &&
+          <GroupEditWrapper fullWidth>
+            <GroupEdit
               groupListItem={editedGroup}
               onSaved={onGroupSaved}
               isAddGroupMembersMode={isAddGroupMembersMode}
               onGroupMembersModeChange={onAddMembersModeChange}
             />
-          </GroupDetailsWrapper>
+          </GroupEditWrapper>
         }
       </ContentWrapper>
+
+      <BottomNavigation visible={listView}></BottomNavigation>
     </PageWrapper>
   );
 };

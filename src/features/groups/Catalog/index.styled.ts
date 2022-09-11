@@ -24,6 +24,7 @@ export const FilterTabItemsWrapper = styled(Column)`
   padding-bottom: 2rem;
 `;
 
-export const GroupDetailsWrapper = styled(Column)`
+export const GroupEditWrapper = styled(Column)`
   position: absolute;
+  height: 100%;
 `;

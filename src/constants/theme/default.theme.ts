@@ -61,7 +61,12 @@ const defaultTheme: DefaultTheme = {
         reversed: REVERSED_COLOR,
       },
     },
-  },
+    modal: {
+      background: {
+        default: '#FFFFFF'
+      }
+    }
+  }
 };
 
 export default defaultTheme;
