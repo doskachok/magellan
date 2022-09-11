@@ -1,3 +1,5 @@
+import { IUser } from "../../types/user-types";
+
 export interface ITransactionGroupListItem {
   id: string;
   name: string;
@@ -11,7 +13,7 @@ export interface ITransactionGroup {
   name: string;
   currencyCode: string;
   avatarId?: string;
-  participants: ITransactionGroupMember[];
+  participants: IUser[];
   ownerId: string;
   transactions: ITransaction[];
 }
@@ -22,14 +24,6 @@ export interface ITransaction {
   paymentDateUtc: Date;
   currencyCode: string;
   totalAmount: number;
-}
-
-export interface ITransactionGroupMember {
-  id: string;
-  name: string;
-  email: string;
-  username: string;
-  avatarId: string;
 }
 
 export interface ICreateTransactionGroup {

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Row } from '../Containers';
 
 const radius = '10px';
@@ -13,11 +13,18 @@ export const ModalHeader = styled(Row)`
   border-top-right-radius: ${radius};
 `;
 
-export const ModalBody = styled.div`
+interface IModalBodyProps {
+  isSingle?: boolean;
+}
+
+export const ModalBody = styled.div<IModalBodyProps>`
   display: flex;
   padding: 0.5rem;
   background: ${props => props.theme.colors.modal.background.default};
   width: 100%;
+  ${props => props.isSingle && css`
+    border-radius: ${radius};
+  `};
 `;
 
 export const ModalFooter = styled(Row)`

@@ -1,12 +1,15 @@
 import { DefaultTheme } from 'styled-components';
 
 const PRIMARY_COLOR = '#379970';
+const SECONDARY_COLOR = '#FFFFFF';
 const REVERSED_COLOR = 'rgba(255, 255, 255, 0.5)';
 
 const defaultTheme: DefaultTheme = {
   colors: {
     primary: PRIMARY_COLOR,
+    secondary: SECONDARY_COLOR,
     reversed: REVERSED_COLOR,
+    selectedItem: '#AEE8E4',
 
     loader: {
       background: '#d3d3d370',
@@ -17,11 +20,13 @@ const defaultTheme: DefaultTheme = {
       primary: '#00A862',
       disabled: '#C4C4C4',
       shadow: 'rgba(0, 0, 0, 0.25)',
+      remove: 'rgba(255, 0, 0, 0.5)',
+      removeFocused: 'rgba(255, 0, 0, 0.7)',
     },
 
     text: {
       primary: '#000000',
-      secondary: '#FFFFFF',
+      secondary: SECONDARY_COLOR,
       link: PRIMARY_COLOR,
       error: '#FF2121',
       title: 'rgba(0, 0, 0, 0.5)',
@@ -60,7 +65,7 @@ const defaultTheme: DefaultTheme = {
     },
     modal: {
       background: {
-        default: '#FFFFFF'
+        default: SECONDARY_COLOR
       }
     }
   }

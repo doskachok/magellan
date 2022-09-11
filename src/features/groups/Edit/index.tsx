@@ -135,6 +135,10 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
     onGroupMembersModeChange(true);
   }, [onGroupMembersModeChange]);
 
+  const onMembersChanged = useCallback(() => {
+    getGroupById(groupListItem!.id);
+  }, [getGroupById, groupListItem]);
+
   return (
     <ContentWrapper fullWidth>
       <GroupEditWrapper hidden={isAddGroupMembersMode} fullWidth>
@@ -203,10 +207,10 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
 
       {
         isAddGroupMembersMode &&
-        <GroupMembers groupId={form.id} />
+        <GroupMembers groupId={form.id} onMemberAdded={onMembersChanged} onMemberRemoved={onMembersChanged} />
       }
 
-      <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating}/>
+      <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating} />
     </ContentWrapper>
   );
 };

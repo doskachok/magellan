@@ -3,14 +3,19 @@
   "all": "All",
   "iLent": "I lent",
   "iBorrowed": "I borrowed",
-  "noGroups" : "No groups yet",
+  "noGroups": "No groups yet",
   "createGroup": "Create a group",
-  "updateGroup" : "Update a group",
+  "updateGroup": "Update a group",
   "groupMembers": "Group members",
   "groupName": "Group name",
   "mainCurrency": "Main currency",
   "addGroupMembers": "Add group members",
+  "removeMember": "Remove",
   "addMembers": "Add members",
   "noMembers": "No members",
-  "saveGroup": "Save group"
+  "saveGroup": "Save group",
+  "findNewPeopleHere": "Find new people here...",
+  "enterUsernameOrEmail": "Enter username or email",
+  "orLookAlreadyKnown": "...or look though already known",
+  "noAlreadyKnownUsers": "...oops, no already known users"
 }

@@ -10,7 +10,8 @@ import { ApiTags } from '../constants/api-tags';
 import { RootState } from './index';
 import { addError } from './errorSlice';
 import { tokenReceived, logOut, userReceived } from '../features/auth/slice'
-import { IAuthPayload, IUser } from '../features/auth/types';
+import { IAuthPayload } from '../features/auth/types';
+import { IUser } from '../types/user-types';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 

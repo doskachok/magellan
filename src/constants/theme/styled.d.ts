@@ -4,7 +4,9 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       primary: string;
+      secondary: string;
       reversed: string;
+      selectedItem: string;
 
       loader: {
         background: string;
@@ -15,6 +17,8 @@ declare module 'styled-components' {
         primary: string;
         disabled: string;
         shadow: string;
+        remove: string;
+        removeFocused: string;
       },
 
       text: {

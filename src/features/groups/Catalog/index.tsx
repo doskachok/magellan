@@ -98,7 +98,7 @@ const GroupsList = () => {
 
   useEffect(() => {
     loadGroups();
-  }, [loadGroups])
+  }, [loadGroups]);
 
   return (
     <PageWrapper>
