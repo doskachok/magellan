@@ -12,21 +12,19 @@ const Container = styled.div<ContainerProps>`
   justify-content: flex-start;
   align-items: flex-start;
 
-  ${(props) => props.fullWidth && css`
-      width: 100%;
-    `};
+  ${props => props.fullWidth && css`
+  width: 100%;
+`};
 
-  ${(props) => props.gap && css`
-      gap: ${props.gap};
-    `};
-
-  ${(props) => props.jc && css`
-      justify-content: ${props.jc};
-    `};
-
-  ${(props) => props.ai && css`
-      align-items: ${props.ai};
-    `};
+  ${props => props.gap && css`
+    gap: ${props.gap};
+  `};
+  ${props => props.jc && css`
+    justify-content: ${props.jc};
+  `};
+  ${props => props.ai && css`
+    align-items: ${props.ai};
+  `};
 `;
 
 export const Row = styled(Container)`
