@@ -1,4 +1,4 @@
-import { createContext, ReactElement, useState, useContext, useCallback } from 'react';
+import { createContext, ReactElement, useState, useContext, useCallback, ReactNode } from 'react';
 import Modal from './Modal';
 
 export interface IModalsContext {
@@ -9,7 +9,7 @@ export interface IModalsContext {
 
 const ModalContext = createContext({} as IModalsContext);
 
-const ModalProvider = ({ children }: { children: JSX.Element }) => {
+const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [modals, setModals] = useState<{ [id: number]: { content: ReactElement<any>, show: boolean, onClose?: () => void } }>({});
 
   const showModal = useCallback((modalContent: ReactElement<any>, onClose?: () => void) => {
