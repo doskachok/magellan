@@ -36,10 +36,10 @@ const baseQueryWithReAuth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
   const loggedUserId = (api.getState() as RootState).auth.userId;
 
-  if ((args as FetchArgs).url === 'users/authorize') 
+  if ((args as FetchArgs).url === 'users/authorize' && result.data)
     api.dispatch(tokenReceived(result.data as IAuthPayload));
 
-  if ((args as FetchArgs).url === `users/${loggedUserId}`)
+  if ((args as FetchArgs).url === `users/${loggedUserId}` && result.data)
     api.dispatch(userReceived(result.data as IUser));
 
   if (result.error && result.error.status === 401) {
