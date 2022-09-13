@@ -22,6 +22,8 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   const [getGroup, {data: group, isLoading: isGroupLoading }] = useLazyGetTransactionGroupByIdQuery();
   const [addMember, { isLoading: isMemberAdding }] = useAddParticipantMutation();
   const [removeMember, { isLoading: isMemberRemoving }] = useRemoveParticipantMutation();
+  const [addMemberModalId, setAddMemberModalId] = useState<number | null>(null);
+
   const [selected, setSelected] = useState<IUser | null>(null);
 
   const handleMemberToAddSelected = useCallback((member: IUser) => {
@@ -31,8 +33,9 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   }, [addMember, groupId, getGroup]);
 
   const onAddMember = useCallback(() => {
-    modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
-  }, [modalContext, handleMemberToAddSelected]);
+    const modalId = modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
+    setAddMemberModalId(modalId);
+  }, [modalContext, handleMemberToAddSelected, setAddMemberModalId]);
 
   const onRemoveMember = useCallback(() => {
     removeMember({ groupId, userId: selected!.id }).then(() => {
@@ -48,6 +51,15 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   useEffect(() => {
     getGroup(groupId);
   }, [groupId, getGroup]);
+
+  useEffect(() => {
+    return () => {
+      if (addMemberModalId) {
+        modalContext.closeModal(addMemberModalId);
+        setAddMemberModalId(null);
+      }
+    };
+  }, [addMemberModalId, modalContext]);
 
   return (
     <ContentWrapper jc={'space-between'} fullWidth>
