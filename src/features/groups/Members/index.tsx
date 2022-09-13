@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '../../../components/Button';
@@ -24,6 +24,7 @@ const GroupMembers = ({ groupId, onMemberAdded, onMemberRemoved }: IGroupMembers
   const { data } = useGetTransactionGroupByIdQuery(groupId);
   const [addMember, { isLoading: isMemberAdding }] = useAddParticipantMutation();
   const [removeMember, { isLoading: isMemberRemoving }] = useRemoveParticipantMutation();
+  const [addMemberModalId, setAddMemberModalId] = useState<number | null>(null);
 
   const [selected, setSelected] = useState<IUser | null>(null);
 
@@ -38,8 +39,9 @@ const GroupMembers = ({ groupId, onMemberAdded, onMemberRemoved }: IGroupMembers
   const modalContext = useModal();
 
   const onAddMember = useCallback(() => {
-    modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
-  }, [modalContext, handleMemberToAddSelected]);
+    const modalId = modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
+    setAddMemberModalId(modalId);
+  }, [modalContext, handleMemberToAddSelected, setAddMemberModalId]);
 
   const onRemoveMember = useCallback(() => {
     removeMember({ groupId, userId: selected!.id }).then(() => {
@@ -47,6 +49,15 @@ const GroupMembers = ({ groupId, onMemberAdded, onMemberRemoved }: IGroupMembers
       setSelected(null);
     });
   }, [groupId, selected, removeMember, onMemberRemoved]);
+
+  useEffect(() => {
+    return () => {
+      if (addMemberModalId) {
+        modalContext.closeModal(addMemberModalId);
+        setAddMemberModalId(null);
+      }
+    };
+  }, [addMemberModalId, modalContext]);
 
   return (
     <Wrapper jc={'space-between'} fullWidth>

@@ -16,7 +16,7 @@ const fadeInOpacity = keyframes`
 
 export const ModalBackground = styled.div<IModalBackgroundProps>`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   position: absolute;
   background: rgba(0, 0, 0, 0.2);
   opacity: 0;
@@ -30,7 +30,7 @@ export const ModalBackground = styled.div<IModalBackgroundProps>`
 
 export const ModalContainer = styled.div`
   width: 100%;
-  padding: 3rem 1rem;
+  padding: 5rem 1rem 1rem 1rem;
 `;
 
 interface IModalContentProps {
