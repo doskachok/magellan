@@ -25,8 +25,11 @@ declare module 'styled-components' {
         title: string,
         border: {
           default: string
-        }
-      },
+        };
+        notification: {
+          success: string;
+        };
+      };
 
       select: {
         border: {

@@ -15,6 +15,7 @@ import {useRegisterMutation} from '../api';
 import {useTranslation} from 'react-i18next';
 
 import {usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator} from '../validation';
+import { Notification, NotificationType } from '../../../components/Notification';
 
 interface IForm {
   username: string;
@@ -64,6 +65,7 @@ const Register = () => {
 
   const [register] = useRegisterMutation();
 
+  const [isEmailError, setIsEmailError] = useState(false);
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
 
   const onInputChange = useCallback((name: string, value: string) => {
@@ -81,8 +83,11 @@ const Register = () => {
   }, []);
 
   const onFromSubmit = () => {
-    register(form)
-      .then(() => navigate(ROUTES.AUTH.ROOT));
+    register(form).then((response: any) => {
+      const state = { isRegistered: !response.error };
+      const path = !response.error && ROUTES.AUTH.ROOT;
+      path ? navigate(path, { state }) : setIsEmailError(true);
+    });
   };
 
   useEffect(() => {
@@ -94,8 +99,11 @@ const Register = () => {
     setPasswordRequirements(requirements);
   }, [form.password, setPasswordRequirements]);
 
+  const emailUsedTxt = t('email_already_used', 'Try again, this email has been already used');
+
   return (
     <PageWrapper>
+      <Notification text={isEmailError ? emailUsedTxt : null} type={NotificationType.ERROR} />
       <Header text={t('signup')} />
       <ContentWrapper jc={'space-between'} fullWidth>
 
