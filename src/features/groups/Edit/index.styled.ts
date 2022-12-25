@@ -53,9 +53,12 @@ export const SaveButtonWrapper = styled(Row)`
 `;
 
 export const Avatar = styled.img`
-  height: 13rem;
-  width: 13rem;
+  height: 150px;
+  width: 150px;
   border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -khtml-border-radius: 50%;
   outline: solid 5px white;
   object-fit: cover;
 `;
