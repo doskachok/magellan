@@ -1,18 +1,17 @@
 import { useCallback, useMemo, useState, useEffect } from 'react';
 
-import Header from '../../../components/Header';
-import { Column, PageWrapper, Row } from '../../../components/Containers';
+import Header from 'components/Header';
+import { Column, PageWrapper, Row } from 'components/Containers';
 import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
 
 import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazyUserQuery } from '../api';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
+import { Input, Button } from 'components';
 import { requiredValidator } from '../validation';
 import { useNavigate } from 'react-router-dom';
-import { ROUTES } from '../../../constants/routes';
+import { ROUTES } from 'constants/routes';
 import { ILoginForm } from '../types';
-import { Notification } from '../../../components/Notification';
+import { Notification } from 'components/Notification';
 
 interface IValidation {
   login: boolean;

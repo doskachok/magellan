@@ -1,11 +1,10 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Row } from '../../../components/Containers';
+import { Row } from 'components/Containers';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
 import {
   AddMembersWrapper,
-  Avatar,
   ContentWrapper,
   GroupCurrencyText,
   GroupEditBackground,
@@ -14,19 +13,15 @@ import {
   MainInfoWrapper,
   SaveButtonWrapper
 } from './index.styled';
-import AddAvatarSVG from '../../../assets/images/add-avatar.svg';
-import { ReactComponent as ArrowRightSVG } from '../../../assets/images/arrow-right.svg';
-import Select from '../../../components/Select';
-import { TextUnderline } from '../../../components/Text';
-import currencies from '../../../constants/currencies';
+import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
+import currencies from 'constants/currencies';
 import { useCreateTransactionGroupMutation, useLazyGetTransactionGroupByIdQuery, useUpdateTransactionGroupMutation } from '../api';
-import Button from '../../../components/Button';
 import { requiredValidator } from '../../auth/validation';
-import Input from '../../../components/Input';
-import { getDownloadFileUrl } from '../../../helpers/urlHelper';
-import FileUploader, { IFileUploaderRef } from '../../../components/FileUploader';
-import Loader from '../../../components/Loader';
+import { getDownloadFileUrl } from 'helpers/urlHelper';
+import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
+import Loader from 'components/Loader';
 import GroupMembers from '../Members';
+import { Image, ImageSize, Button, Input, TextUnderline, Select } from 'components';
 
 interface IValidation {
   name: boolean;
