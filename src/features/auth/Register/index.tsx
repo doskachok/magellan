@@ -1,13 +1,12 @@
 import {useState, useMemo, useCallback, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-import {ROUTES} from '../../../constants/routes';
+import {ROUTES} from 'constants/routes';
 
-import Header from '../../../components/Header';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
+import Header from 'components/Header';
+import { Input, Button } from 'components';
 
-import {Column, PageWrapper, Row} from '../../../components/Containers';
+import {Column, PageWrapper, Row} from 'components/Containers';
 import {ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText} from './index.styled';
 
 import {useRegisterMutation} from '../api';
@@ -15,7 +14,7 @@ import {useRegisterMutation} from '../api';
 import {useTranslation} from 'react-i18next';
 
 import {usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator} from '../validation';
-import { Notification, NotificationType } from '../../../components/Notification';
+import { Notification, NotificationType } from 'components/Notification';
 
 interface IForm {
   username: string;

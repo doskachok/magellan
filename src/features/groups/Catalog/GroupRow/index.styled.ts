@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row } from '../../../../components/Containers';
+import { Row } from 'components/Containers';
 
 export const GroupRowWrapper = styled(Row)`
   gap: 21px;

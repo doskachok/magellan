@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Column, PageContentWrapper, Row } from '../../../components/Containers';
+import { Column, PageContentWrapper, Row } from 'components/Containers';
 
 export const ContentWrapper = styled(Column)`
   position: relative;

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Column, Row } from '../../../components/Containers';
-import { TextRegular } from '../../../components/Text';
+import { Column, Row } from 'components/Containers';
+import { TextRegular } from 'components';
 
 export const ContentWrapper = styled(Column)`
   overflow-y: auto;

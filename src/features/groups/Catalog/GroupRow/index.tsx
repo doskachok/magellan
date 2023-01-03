@@ -1,9 +1,9 @@
 
-import { GroupLogo, GroupName, GroupRowWrapper } from './index.styled';
+import { GroupName, GroupRowWrapper } from './index.styled';
 import { memo, useCallback } from 'react';
 import { ITransactionGroupListItem } from '../../types';
-import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
-import { getDownloadFileUrl } from '../../../../helpers/urlHelper';
+import { getDownloadFileUrl } from 'helpers/urlHelper';
+import { Image, ImageSize } from 'components';
 
 export interface IGroupRowProps {
   item: ITransactionGroupListItem,

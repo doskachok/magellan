@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
-import {ValidationKeys} from '../../constants/validationKeys';
+import {ValidationKeys} from 'constants/validationKeys';
 
 YupPassword(yup);
 

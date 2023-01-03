@@ -1,5 +1,5 @@
-import { ApiTags } from '../../constants/api-tags';
-import mainApi from '../../store/api';
+import { ApiTags } from 'constants/api-tags';
+import mainApi from 'store/api';
 import { ICreateTransactionGroup, ITransactionGroup, ITransactionGroupListItem, IUpdateTransactionGroup } from './types';
 
 const API_URL = `transaction-groups`;
