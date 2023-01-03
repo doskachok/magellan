@@ -17,7 +17,11 @@ const GroupRow = ({ item, onClick }: IGroupRowProps) => {
 
   return (
     <GroupRowWrapper onClick={onRowClick} ai="center" fullWidth>
-      <GroupLogo src={item.avatarId ? getDownloadFileUrl(item.avatarId) : AddAvatarSVG}/>
+        <Image 
+          src={getDownloadFileUrl(item.avatarId)}
+          framed={false}
+          size={ImageSize.Small}
+        />
       <GroupName>
         {item.name}
       </GroupName>
