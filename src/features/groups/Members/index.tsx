@@ -25,7 +25,11 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
       <Column fullWidth>
         {data?.participants?.map(p =>
           <Row key={p.id} jc={'space-between'} ai={'center'} fullWidth>
-            <Avatar src={p.avatarId ? getDownloadFileUrl(p.avatarId) : AddAvatarSVG} alt={'avatar'} />
+            <Image 
+              src={getDownloadFileUrl(p.avatarId)}
+              framed={false}
+              size={ImageSize.Small}
+            />
 
             <TextRegular>
               {p.name || p.email}

@@ -53,9 +53,7 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
     avatarId: groupListItem?.avatarId
   });
 
-  const [logoSrc, setLogoSrc] = useState<string | null>(groupListItem?.avatarId
-    ? getDownloadFileUrl(groupListItem?.avatarId)
-    : AddAvatarSVG);
+  const [logoSrc, setLogoSrc] = useState<string | null>(getDownloadFileUrl(groupListItem?.avatarId));
   const [isLogoSelected, setIsLogoSelected] = useState<boolean>(false);
   const [isLogoUploading, setIsLogoUploading] = useState<boolean>(false);
 
@@ -141,7 +139,10 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
                 onFileSelected={onLogoSelected}
                 onFileUploaded={onLogoUploaded}
                 onUploadingChange={onLogoUploadingChanged}>
-                <Avatar src={logoSrc as string} alt={logoSrc as string} />
+                <Image 
+                  src={logoSrc}
+                  size={ImageSize.Large}
+                />
               </FileUploader>
             </Row>
 
