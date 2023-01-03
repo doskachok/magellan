@@ -7,10 +7,11 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
+import { BackgroundSyncPlugin } from 'workbox-background-sync'
 import { clientsClaim, setCacheNameDetails  } from 'workbox-core';
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies';
+import { StaleWhileRevalidate, NetworkFirst, NetworkOnly } from 'workbox-strategies';
 
 setCacheNameDetails({
   prefix: 'magellan-cache',
@@ -33,12 +34,35 @@ self.addEventListener('message', (event) => {
   }
 });
 
-registerRoute( // static resources
+ // Static resources
+registerRoute(
   ({url}) => url.origin === self.location.origin,
   new StaleWhileRevalidate()
 );
 
-registerRoute( // dynamic resources
-  ({url}) => url.origin !== self.location.origin,
-  new NetworkFirst()
-);
+const bgSyncHttpMethods = ['POST', 'PUT', 'PATCH', 'DELETE'];
+const noBgSyncHttpMethods = ['GET', 'HEAD'];
+
+const bgSyncPlugin = new BackgroundSyncPlugin('magellanQueue', {
+  maxRetentionTime: 72 * 60,  // Retry for max of 72 Hours (specified in minutes)
+})
+
+ // Dynamic resources with backgorund sync, no caching
+for (let method of bgSyncHttpMethods) {
+  registerRoute(
+    ({ url }) => url.origin !== self.location.origin,
+    new NetworkOnly({
+      plugins: [bgSyncPlugin]
+    }),
+    method
+  );
+}
+
+// Dynamic resources with caching, no background sync
+for (let method of noBgSyncHttpMethods) {
+  registerRoute( 
+    ({ url }) => url.origin !== self.location.origin,
+    new NetworkFirst(),
+    method
+  );
+}
