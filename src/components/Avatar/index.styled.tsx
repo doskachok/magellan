@@ -1,19 +1,19 @@
 import styled, { css } from 'styled-components';
 import { Row } from '../Containers';
 
-export interface IImageProps {
+export interface IAvatarProps {
   rounded: boolean;
   framed: boolean;
-  size: ImageSize
+  size: AvatarSize
 };
 
-export enum ImageSize {
+export enum AvatarSize {
   Small = 0,
   Medium = 1,
   Large = 2,
 }
 
-export const ImageStyled = styled(Row)<IImageProps>`
+export const ImageStyled = styled(Row)<IAvatarProps>`
   ${props => props.rounded && css`border-radius: 50%;`}
   ${props => props.framed && css`border: solid 5px white;`}
 
@@ -25,11 +25,15 @@ export const ImageStyled = styled(Row)<IImageProps>`
   }
 `;
 
-function sizeTranslator(size: ImageSize): string {
+const largeAvatarSize: string = '14rem';
+const mediumAvatarSize: string = '7rem';
+const smallAvatarSize: string = '3rem';
+
+function sizeTranslator(size: AvatarSize): string {
   switch(size) {
-    case ImageSize.Large: return '14rem';
-    case ImageSize.Medium: return '7rem';
-    case ImageSize.Small: return '3rem';
-    default: return '0rem';
+    case AvatarSize.Large: return largeAvatarSize;
+    case AvatarSize.Medium: return mediumAvatarSize;
+    case AvatarSize.Small:
+    default: return smallAvatarSize;
   }
 }

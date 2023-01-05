@@ -21,7 +21,7 @@ import { getDownloadFileUrl } from 'helpers/urlHelper';
 import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
 import Loader from 'components/Loader';
 import GroupMembers from '../Members';
-import { Image, ImageSize, Button, Input, TextUnderline, Select } from 'components';
+import { Avatar, AvatarSize, Button, Input, TextUnderline, Select } from 'components';
 
 interface IValidation {
   name: boolean;
@@ -139,9 +139,11 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
                 onFileSelected={onLogoSelected}
                 onFileUploaded={onLogoUploaded}
                 onUploadingChange={onLogoUploadingChanged}>
-                <Image 
+                <Avatar 
                   src={logoSrc}
-                  size={ImageSize.Large}
+                  framed={true}
+                  rounded={true}
+                  size={AvatarSize.Large}
                 />
               </FileUploader>
             </Row>

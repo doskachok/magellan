@@ -5,7 +5,7 @@ import { Column, Row } from 'components/Containers';
 import { ContentWrapper } from './index.styled';
 import { useGetTransactionGroupByIdQuery } from '../api';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
-import { Image, ImageSize, TextRegular, Button } from 'components';
+import { Avatar, AvatarSize, TextRegular, Button } from 'components';
 
 export interface IGroupMembersProps {
   groupId: string
@@ -25,10 +25,10 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
       <Column fullWidth>
         {data?.participants?.map(p =>
           <Row key={p.id} jc={'space-between'} ai={'center'} fullWidth>
-            <Image 
+            <Avatar 
               src={getDownloadFileUrl(p.avatarId)}
-              framed={false}
-              size={ImageSize.Small}
+              rounded={true}
+              size={AvatarSize.Small}
             />
 
             <TextRegular>
