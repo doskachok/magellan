@@ -1,24 +1,18 @@
-import {useSnackbar} from 'notistack';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import toast from 'react-hot-toast';
 import {RootState} from './index';
 
 const ErrorNotifier = () => {
   const dispatch = useDispatch();
-  const {enqueueSnackbar, closeSnackbar} = useSnackbar();
   const {notifications = [], prevCount = 0} =  useSelector((state: RootState) => state.errors);
 
   useEffect(() => {
     if (notifications.length > prevCount) {
-      const {message, key} = notifications[notifications.length - 1];
-      enqueueSnackbar(message, {
-        variant: 'error',
-        preventDuplicate: true,
-        autoHideDuration: 3000,
-        key: key,
-      })
+      const {message} = notifications[notifications.length - 1];
+      toast.error(message);
     }
-  }, [closeSnackbar, dispatch, enqueueSnackbar, notifications, prevCount]);
+  }, [dispatch, notifications, prevCount]);
 
   return null;
 };
