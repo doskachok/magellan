@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { SnackbarProvider } from 'notistack';
+import { Toaster } from 'react-hot-toast';
 
 import theme from './constants/theme/default.theme';
 
@@ -26,23 +26,22 @@ function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <ModalProvider>
-          <SnackbarProvider
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
+          <BrowserRouter>
+            <Routes>
+              <Route path={ROUTES.ROOT} element={<PrivateRoutes />}>
+                <Route index element={<Navigate to={ROUTES.GROUPS.ROOT} />} />
+                <Route path={`${ROUTES.GROUPS.ROOT}/*`} element={<Groups />} />
+              </Route>
+              <Route path={`${ROUTES.AUTH.ROOT}/*`} element={<Auth />} />
+            </Routes>
+            <ErrorNotifier />
+          </BrowserRouter>
+          <Toaster
+            position='bottom-center'
+            toastOptions={{
+              duration: 3000,
             }}
-          >
-            <BrowserRouter>
-              <Routes>
-                <Route path={ROUTES.ROOT} element={<PrivateRoutes />}>
-                  <Route index element={<Navigate to={ROUTES.GROUPS.ROOT} />} />
-                  <Route path={`${ROUTES.GROUPS.ROOT}/*`} element={<Groups />} />
-                </Route>
-                <Route path={`${ROUTES.AUTH.ROOT}/*`} element={<Auth />} />
-              </Routes>
-              <ErrorNotifier />
-            </BrowserRouter>
-          </SnackbarProvider>
+          />
         </ModalProvider>
       </ThemeProvider>
     </Provider>
