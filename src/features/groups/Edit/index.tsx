@@ -1,11 +1,10 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Row } from '../../../components/Containers';
+import { Row } from 'components/Containers';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
 import {
   AddMembersWrapper,
-  Avatar,
   ContentWrapper,
   GroupCurrencyText,
   GroupEditBackground,
@@ -14,19 +13,15 @@ import {
   MainInfoWrapper,
   SaveButtonWrapper
 } from './index.styled';
-import AddAvatarSVG from '../../../assets/images/add-avatar.svg';
-import { ReactComponent as ArrowRightSVG } from '../../../assets/images/arrow-right.svg';
-import Select from '../../../components/Select';
-import { TextUnderline } from '../../../components/Text';
-import currencies from '../../../constants/currencies';
+import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
+import currencies from 'constants/currencies';
 import { useCreateTransactionGroupMutation, useLazyGetTransactionGroupByIdQuery, useUpdateTransactionGroupMutation } from '../api';
-import Button from '../../../components/Button';
 import { requiredValidator } from '../../auth/validation';
-import Input from '../../../components/Input';
-import { getDownloadFileUrl } from '../../../helpers/urlHelper';
-import FileUploader, { IFileUploaderRef } from '../../../components/FileUploader';
-import Loader from '../../../components/Loader';
+import { getDownloadFileUrl } from 'helpers/urlHelper';
+import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
+import Loader from 'components/Loader';
 import GroupMembers from '../Members';
+import { Avatar, AvatarSize, Button, Input, TextUnderline, Select } from 'components';
 
 interface IValidation {
   name: boolean;
@@ -58,9 +53,7 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
     avatarId: groupListItem?.avatarId
   });
 
-  const [logoSrc, setLogoSrc] = useState<string | null>(groupListItem?.avatarId
-    ? getDownloadFileUrl(groupListItem?.avatarId)
-    : AddAvatarSVG);
+  const [logoSrc, setLogoSrc] = useState<string | null>(getDownloadFileUrl(groupListItem?.avatarId));
   const [isLogoSelected, setIsLogoSelected] = useState<boolean>(false);
   const [isLogoUploading, setIsLogoUploading] = useState<boolean>(false);
 
@@ -146,7 +139,12 @@ const GroupEdit = ({ groupListItem, onSaved, isAddGroupMembersMode, onGroupMembe
                 onFileSelected={onLogoSelected}
                 onFileUploaded={onLogoUploaded}
                 onUploadingChange={onLogoUploadingChanged}>
-                <Avatar src={logoSrc as string} alt={logoSrc as string} />
+                <Avatar 
+                  src={logoSrc}
+                  framed={true}
+                  rounded={true}
+                  size={AvatarSize.Large}
+                />
               </FileUploader>
             </Row>
 

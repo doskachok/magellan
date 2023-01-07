@@ -1,8 +1,5 @@
 <svg width="162" height="162" viewBox="0 0 162 162" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<circle cx="81" cy="81" r="79" stroke="white" stroke-width="4"/>
-<mask id="mask0_452_1092" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="4" y="4" width="154" height="154">
-<circle cx="81" cy="81" r="77" fill="#379970"/>
-</mask>
+<circle cx="81" cy="81" r="79"/>
 <g mask="url(#mask0_452_1092)">
 <g filter="url(#filter0_d_452_1092)">
 <rect x="-2.34784" y="-3.52173" width="169.043" height="169.043" fill="url(#pattern0)" fill-opacity="0.75" shape-rendering="crispEdges"/>

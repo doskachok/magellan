@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { Column, Row } from '../../../components/Containers';
-import { TextRegular } from '../../../components/Text';
+import { Column, Row } from 'components/Containers';
+import { TextRegular } from 'components';
 
 export const ContentWrapper = styled(Column)`
   overflow-y: auto;
@@ -50,12 +50,4 @@ export const AddMembersWrapper = styled(Row)`
 export const SaveButtonWrapper = styled(Row)`
   margin-top: 1rem;
   margin-bottom: 2rem;
-`;
-
-export const Avatar = styled.img`
-  height: 13rem;
-  width: 13rem;
-  border-radius: 50%;
-  outline: solid 5px white;
-  object-fit: cover;
 `;

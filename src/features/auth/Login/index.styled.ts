@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { PageContentWrapper } from '../../../components/Containers';
-import { TextLink } from '../../../components/Link';
-import { TextRegular } from '../../../components/Text';
+import { PageContentWrapper } from 'components/Containers';
+import { TextLink, TextRegular } from 'components';
 
 export const ContentWrapper = styled(PageContentWrapper)`
   padding-top: 120px;

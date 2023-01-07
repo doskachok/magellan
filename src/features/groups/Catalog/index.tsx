@@ -2,20 +2,20 @@ import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useLazyGetTransactionGroupsQuery } from '../api';
-import Header from '../../../components/Header';
-import { PageWrapper, Row } from '../../../components/Containers';
+import Header from 'components/Header';
+import { PageWrapper, Row } from 'components/Containers';
 import { ITransactionGroup, ITransactionGroupListItem } from '../types';
-import { ReactComponent as PlusIconSVG } from '../../../assets/images/plus-icon.svg';
-import { ReactComponent as BackIconSVG } from '../../../assets/images/back-icon.svg';
+import { ReactComponent as PlusIconSVG } from 'assets/images/plus-icon.svg';
+import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import GroupEdit from '../Edit';
-import { TextRegular } from '../../../components/Text';
+import { TextRegular } from 'components';
 import { useDispatch, useSelector } from 'react-redux';
 import { groupsListSelector, saveGroup } from '../slice';
-import Loader from '../../../components/Loader';
+import Loader from 'components/Loader';
 import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupEditWrapper, GroupsListWrapper } from './index.styled';
 import FilterTab from './FilterTab';
 import GroupRow from './GroupRow';
-import BottomNavigation from '../../../components/BottomNavigation';
+import BottomNavigation from 'components/BottomNavigation';
 
 interface IFilterTab {
   key: string;

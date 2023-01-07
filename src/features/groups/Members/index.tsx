@@ -1,13 +1,11 @@
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import Button from '../../../components/Button';
-import { Column, Row } from '../../../components/Containers';
-import { TextRegular } from '../../../components/Text';
-import AddAvatarSVG from '../../../assets/images/add-avatar.svg';
-import { Avatar, ContentWrapper } from './index.styled';
+import { Column, Row } from 'components/Containers';
+import { ContentWrapper } from './index.styled';
 import { useGetTransactionGroupByIdQuery } from '../api';
-import { getDownloadFileUrl } from '../../../helpers/urlHelper';
+import { getDownloadFileUrl } from 'helpers/urlHelper';
+import { Avatar, AvatarSize, TextRegular, Button } from 'components';
 
 export interface IGroupMembersProps {
   groupId: string
@@ -27,7 +25,11 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
       <Column fullWidth>
         {data?.participants?.map(p =>
           <Row key={p.id} jc={'space-between'} ai={'center'} fullWidth>
-            <Avatar src={p.avatarId ? getDownloadFileUrl(p.avatarId) : AddAvatarSVG} alt={'avatar'} />
+            <Avatar 
+              src={getDownloadFileUrl(p.avatarId)}
+              rounded={true}
+              size={AvatarSize.Small}
+            />
 
             <TextRegular>
               {p.name || p.email}

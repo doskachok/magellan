@@ -1,9 +1,9 @@
 
-import { GroupLogo, GroupName, GroupRowWrapper } from './index.styled';
+import { GroupName, GroupRowWrapper } from './index.styled';
 import { memo, useCallback } from 'react';
 import { ITransactionGroupListItem } from '../../types';
-import AddAvatarSVG from '../../../../assets/images/add-avatar.svg';
-import { getDownloadFileUrl } from '../../../../helpers/urlHelper';
+import { getDownloadFileUrl } from 'helpers/urlHelper';
+import { Avatar, AvatarSize } from 'components';
 
 export interface IGroupRowProps {
   item: ITransactionGroupListItem,
@@ -17,7 +17,11 @@ const GroupRow = ({ item, onClick }: IGroupRowProps) => {
 
   return (
     <GroupRowWrapper onClick={onRowClick} ai="center" fullWidth>
-      <GroupLogo src={item.avatarId ? getDownloadFileUrl(item.avatarId) : AddAvatarSVG}/>
+        <Avatar 
+          src={getDownloadFileUrl(item.avatarId)}
+          rounded={true}
+          size={AvatarSize.Small}
+        />
       <GroupName>
         {item.name}
       </GroupName>
