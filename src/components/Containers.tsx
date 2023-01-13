@@ -38,6 +38,10 @@ export const Column = styled(Container)`
 `;
 
 export const PageWrapper = styled(Column)`
+  @supports (-webkit-hyphens:none) {
+    min-height: -webkit-fill-available;
+  }
+  
   min-height: 100vh;
   width: 100%;
 `;
