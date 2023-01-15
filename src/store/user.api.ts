@@ -19,6 +19,6 @@ export const usersApi = mainApi.injectEndpoints({
 });
 
 export const {
-  useLazyGetKnownsUsersQuery,
+  useGetKnownsUsersQuery,
   useLazyGetUsersQuery
 } = usersApi;

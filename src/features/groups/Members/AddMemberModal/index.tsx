@@ -1,12 +1,13 @@
-import { memo, useCallback, useEffect } from 'react';
+import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import Autocomplete from '../../../../components/Autocomplete';
-import { useLazyGetKnownsUsersQuery, useLazyGetUsersQuery } from '../../../../store/user.api';
+import { useGetKnownsUsersQuery, useLazyGetUsersQuery } from '../../../../store/user.api';
 import { IUser } from '../../../../types/user-types';
 import UserRow from '../UserRow';
 import { MembersModalBody, ModalBodyElementWrapper, ModalSeparator, ModalText, ModalWrapper } from './index.styled';
 import Loader from '../../../../components/Loader';
 import { Column } from '../../../../components/Containers';
+import { IAutocompleteSuggestion } from '../../../../components/Autocomplete/types';
 
 export interface IProps {
   onMemberSelected: (member: IUser) => void;
@@ -17,14 +18,15 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
 
   const [getUsers] = useLazyGetUsersQuery();
 
-  const [getKnownsUsers, { data: knownsUsers, isLoading: isKnownsUsersLoading }] = useLazyGetKnownsUsersQuery();
+  const { data: knownsUsers, isLoading: isKnownsUsersLoading } = useGetKnownsUsersQuery();
 
-  const handleSuggestionSelected = useCallback((suggestion: IUser) => {
-    onMemberSelected(suggestion);
+  const handleSuggestionSelected = useCallback((suggestion: IAutocompleteSuggestion) => {
+    const user = suggestion as IUser;
+    onMemberSelected(user);
   }, [onMemberSelected]);
 
-  const suggestionTemplate = useCallback((suggestion: IUser) => {
-    return <UserRow reversedTheme={true} user={suggestion} />
+  const suggestionTemplate = useCallback((suggestion: IAutocompleteSuggestion) => {
+    return <UserRow reversedTheme={true} user={suggestion as IUser} />
   }, []);
 
   const usersSearchSource = (searchQuery: string) => new Promise<IUser[]>((resolve, reject) => {
@@ -32,10 +34,6 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
       .then(data => resolve(data.data || []))
       .catch(err => reject(err));
   });
-
-  useEffect(() => {
-    getKnownsUsers();
-  }, [getKnownsUsers]);
 
   return (
     <ModalWrapper>

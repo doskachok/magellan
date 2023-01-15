@@ -2,7 +2,8 @@ import {
   useState,
   useCallback,
   memo,
-  ReactElement
+  ReactElement,
+  useRef
 } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -12,9 +13,10 @@ import SearchIconSVG from '../../assets/images/search-icon.svg';
 
 interface Props {
   placeholder?: string;
-  onSuggestionSelected: (suggestion: any) => void;
-  suggestionTemplate?: (suggestion: any) => ReactElement<any>;
+  onSuggestionSelected: (suggestion: IAutocompleteSuggestion) => void;
+  suggestionTemplate?: (suggestion: IAutocompleteSuggestion) => ReactElement<any>;
   reversedTheme?: boolean;
+  name?: string;
   suggestionsSource: (searchQuery: string) => Promise<IAutocompleteSuggestion[]>;
 }
 
@@ -26,6 +28,7 @@ const Autocomplete = ({
   suggestionTemplate,
   reversedTheme,
   placeholder,
+  name = 'autocomplete',
   suggestionsSource
 }: Props) => {
   const { t } = useTranslation('common');
@@ -33,7 +36,7 @@ const Autocomplete = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
   const [isSuggestionsOpened, setIsSuggestionsOpened] = useState<boolean>(false);
-  const [searchTimer, setSearchTimer] = useState<any>();
+  const searchTimer = useRef<any>();
 
   const handleInputFocus = useCallback(() => {
     setIsSuggestionsOpened(true);
@@ -54,11 +57,11 @@ const Autocomplete = ({
       return;
     }
 
-    if (searchTimer) {
-      clearTimeout(searchTimer);
+    if (searchTimer.current) {
+      clearTimeout(searchTimer.current);
     }
 
-    const timer = setTimeout(() => {
+    searchTimer.current = setTimeout(() => {
       setIsLoading(true);
 
       suggestionsSource(v).then(data => {
@@ -68,11 +71,9 @@ const Autocomplete = ({
         setIsLoading(false);
       });
     }, SEARCH_DELAY_MS);
+  }, [suggestionsSource, setSuggestions, setValue, setIsLoading, searchTimer]);
 
-    setSearchTimer(timer);
-  }, [suggestionsSource, setSuggestions, setValue, setIsLoading, searchTimer, setSearchTimer]);
-
-  const handleSuggestionSelected = (suggestion: any) => {
+  const handleSuggestionSelected = (suggestion: IAutocompleteSuggestion) => {
     onSuggestionSelected(suggestion);
   };
 
@@ -81,7 +82,7 @@ const Autocomplete = ({
       <AutocompleteInput
         placeholder={placeholder}
         value={value}
-        name='autocomplete'
+        name={name}
         onTextChange={handleTextChange}
         reversedTheme={reversedTheme}
         onFocus={handleInputFocus}
