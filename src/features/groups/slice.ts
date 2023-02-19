@@ -40,3 +40,5 @@ export const { saveGroup } = groupsSlice.actions;
 export default groupsSlice.reducer;
 
 export const groupsListSelector = (store: RootState) => store.groups.list;
+export const selectGroupById = (groupId: string) => (store: RootState) => 
+  store.groups.list.find(g => g.id === groupId);

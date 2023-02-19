@@ -6,10 +6,10 @@ import avatar from '../../assets/images/avatar-icon.svg'
 import { ROUTES } from '../../constants/routes';
 
 interface Props {
-  visible: boolean;
+  visible?: boolean;
 }
 
-const BottomNavigation = ({ visible }: Props) => {
+const BottomNavigation = ({ visible = true }: Props) => {
   const navigate = useNavigate();
 
   if (visible)

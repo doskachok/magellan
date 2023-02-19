@@ -8,6 +8,8 @@ export const ROUTES = {
   GROUPS: {
     ROOT: '/groups',
     LIST: 'list',
+    EDIT: 'edit',
+    CREATE: 'create',
     MEMBERS: 'members'
   }
 };
