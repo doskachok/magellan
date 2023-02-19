@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -22,6 +23,8 @@ import { ITransactionGroup } from '../types';
 import { saveGroup } from '../slice'
 import { getDownloadFileUrl } from 'helpers/urlHelper';
 
+import { ROUTES } from 'constants/routes';
+
 interface IProps {
   group: ITransactionGroup | undefined;
 }
@@ -33,6 +36,7 @@ interface IValidation {
 const Form = ({ group }: IProps) => {
   const { t } = useTranslation('groups');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logoUploaderRef = useRef<IFileUploaderRef>();
 
@@ -103,8 +107,9 @@ const Form = ({ group }: IProps) => {
     
     if (newGroup) {
       dispatch(saveGroup(newGroup));
+      navigate(ROUTES.GROUPS.ROOT, { replace: true });
     }
-  }, [createdGroup, updatedGroup, dispatch]);
+  }, [createdGroup, updatedGroup, dispatch, navigate]);
   
   useEffect(() => {
     if (group) {
