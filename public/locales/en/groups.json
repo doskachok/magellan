@@ -10,6 +10,7 @@
   "groupName": "Group name",
   "mainCurrency": "Main currency",
   "addGroupMembers": "Add group members",
+  "editGeneralInfo": "Edit group",
   "addMembers": "Add members",
   "noMembers": "No members",
   "saveGroup": "Save group"

@@ -3,18 +3,16 @@ import { useTranslation } from 'react-i18next';
 
 import { Column, Row } from 'components/Containers';
 import { ContentWrapper } from './index.styled';
-import { useGetTransactionGroupByIdQuery } from '../api';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
 import { Avatar, AvatarSize, TextRegular, Button } from 'components';
+import {ITransactionGroup} from '../types';
 
 export interface IGroupMembersProps {
-  groupId: string
+  group: ITransactionGroup | undefined;
 }
 
-const GroupMembers = ({ groupId }: IGroupMembersProps) => {
+const GroupMembers = ({ group }: IGroupMembersProps) => {
   const { t } = useTranslation('groups');
-
-  const { data } = useGetTransactionGroupByIdQuery(groupId);
 
   const onAddMember = useCallback(() => {
 
@@ -23,7 +21,7 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   return (
     <ContentWrapper jc={'space-between'} fullWidth>
       <Column fullWidth>
-        {data?.participants?.map(p =>
+        {group?.participants?.map(p =>
           <Row key={p.id} jc={'space-between'} ai={'center'} fullWidth>
             <Avatar 
               src={getDownloadFileUrl(p.avatarId)}
@@ -42,7 +40,7 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
         )}
 
         {
-          data?.participants?.length === 0 ?
+          group?.participants?.length === 0 ?
             <Row jc={'center'} fullWidth>
               <TextRegular>
                 {t('noMembers')}

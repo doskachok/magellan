@@ -6,6 +6,7 @@ export const ContentWrapper = styled(Column)`
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
+  flex: 1;
 `;
 
 export const MainInfoWrapper = styled(Column)`
@@ -31,6 +32,14 @@ export const GroupEditBackground = styled(Row)`
   z-index: 0;
   margin-top: -55vw;
   margin-left: -10vw;
+`;
+
+export const AddMembersWrapper = styled(Row)`
+  margin: 1rem 0 3rem;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 
 export const SaveButtonWrapper = styled(Row)`
