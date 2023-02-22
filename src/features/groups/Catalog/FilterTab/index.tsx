@@ -1,4 +1,3 @@
-
 import { memo, useCallback } from 'react';
 import { FilterTabText, FilterTabUnderline, FilterTabWrapper } from './index.styled';
 

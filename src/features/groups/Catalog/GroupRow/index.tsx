@@ -1,31 +1,30 @@
-
-import { GroupName, GroupRowWrapper } from './index.styled';
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 import { ITransactionGroupListItem } from '../../types';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
 import { Avatar, AvatarSize } from 'components';
+import { RowWrapperLink } from 'components/Link';
+import { GroupName, GroupRowWrapper } from './index.styled';
+
+import { ROUTES } from 'constants/routes';
 
 export interface IGroupRowProps {
   item: ITransactionGroupListItem,
-  onClick?: (item: ITransactionGroupListItem) => void;
 }
 
-const GroupRow = ({ item, onClick }: IGroupRowProps) => {
-  const onRowClick = useCallback(() => {
-    onClick && onClick(item);
-  }, [onClick, item]);
-
+const GroupRow = ({ item }: IGroupRowProps) => {
   return (
-    <GroupRowWrapper onClick={onRowClick} ai="center" fullWidth>
-        <Avatar 
+    <RowWrapperLink to={`${ROUTES.GROUPS.EDIT}/${item.id}`}>
+      <GroupRowWrapper ai="center" fullWidth>
+        <Avatar
           src={getDownloadFileUrl(item.avatarId)}
           rounded={true}
           size={AvatarSize.Small}
         />
-      <GroupName>
-        {item.name}
-      </GroupName>
-    </GroupRowWrapper>
+        <GroupName>
+          {item.name}
+        </GroupName>
+      </GroupRowWrapper>
+    </RowWrapperLink>
   );
 };
 

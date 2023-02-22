@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled  from 'styled-components';
 import { Column, Row } from 'components/Containers';
 import { TextRegular } from 'components';
 
@@ -6,16 +6,7 @@ export const ContentWrapper = styled(Column)`
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
-`;
-
-interface IGroupEditWrapperProps {
-  hidden: boolean;
-};
-
-export const GroupEditWrapper = styled(Column) <IGroupEditWrapperProps>`
-  ${props => props.hidden && css`
-    display: none;
-  `};
+  flex: 1;
 `;
 
 export const MainInfoWrapper = styled(Column)`
@@ -44,7 +35,11 @@ export const GroupEditBackground = styled(Row)`
 `;
 
 export const AddMembersWrapper = styled(Row)`
-  margin-top: 1rem;
+  margin: 1rem 0 3rem;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 
 export const SaveButtonWrapper = styled(Row)`

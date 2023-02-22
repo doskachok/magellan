@@ -3,5 +3,5 @@ import { Column } from 'components/Containers';
 
 export const ContentWrapper = styled(Column)`
   padding: 1rem;
-  height: 88vh;
+  flex: 1;
 `;
