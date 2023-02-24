@@ -10,6 +10,7 @@ export const ROUTES = {
     LIST: 'list',
     EDIT: 'edit',
     CREATE: 'create',
-    MEMBERS: 'members'
+    MEMBERS: 'members',
+    GROUP: 'group',
   }
 };
