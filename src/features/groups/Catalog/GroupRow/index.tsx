@@ -13,7 +13,7 @@ export interface IGroupRowProps {
 
 const GroupRow = ({ item }: IGroupRowProps) => {
   return (
-    <RowWrapperLink to={`${ROUTES.GROUPS.EDIT}/${item.id}`}>
+    <RowWrapperLink to={`${ROUTES.GROUPS.GROUP}/${item.id}`}>
       <GroupRowWrapper ai="center" fullWidth>
         <Avatar
           src={getDownloadFileUrl(item.avatarId)}
