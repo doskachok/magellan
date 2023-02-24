@@ -14,3 +14,7 @@ export const ROUTES = {
     GROUP: 'group',
   }
 };
+
+export const ResolveGroupRoute = (route: string) => {
+  return `${ROUTES.GROUPS.ROOT}/${route}`;
+};
