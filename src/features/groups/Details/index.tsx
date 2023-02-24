@@ -7,6 +7,8 @@ import { ResolveGroupRoute, ROUTES } from 'constants/routes';
 import { useGetTransactionGroupByIdQuery } from '../api';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
+import BottomNavigation from 'components/BottomNavigation';
+import { ContentWrapper } from './index.styled';
 
 const GroupDetails = () => {
   const navigate = useNavigate();
@@ -31,6 +33,10 @@ const GroupDetails = () => {
         rightActionComponent={<EditIconSVG onClick={handleEditAction} />}
       />
 
+      <ContentWrapper fullWidth>
+      </ContentWrapper>
+
+      <BottomNavigation />
     </PageWrapper>
   );
 };
