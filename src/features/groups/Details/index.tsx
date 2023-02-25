@@ -15,6 +15,7 @@ import { ContentWrapper, DateText, HalfEllipse, NoTransactionsText, TransactionL
 import { datesAreOnSameDay } from 'helpers/dateUtil';
 
 import { selectedGroupSelector } from '../slice';
+import Loader from 'components/Loader';
 
 
 const GroupDetails = () => {
@@ -46,6 +47,7 @@ const GroupDetails = () => {
     <PageWrapper>
       <Header
         text={group ? group.name : ''}
+        isLoading={isLoading}
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
         rightActionComponent={<EditIconSVG onClick={handleEditAction} />}
       />
@@ -68,13 +70,15 @@ const GroupDetails = () => {
           })}
 
           {
-            group?.transactions.length ? null :
+            group?.transactions.length || isLoading ? null :
               <NoTransactionsText>
                 {t('noTransactions')}
               </NoTransactionsText>
           }
         </TransactionListContainer>
       </ContentWrapper>
+
+      <Loader isLoading={isLoading}/>
 
       <BottomNavigation />
     </PageWrapper>
