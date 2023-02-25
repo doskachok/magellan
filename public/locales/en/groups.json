@@ -13,5 +13,6 @@
   "editGeneralInfo": "Edit group",
   "addMembers": "Add members",
   "noMembers": "No members",
-  "saveGroup": "Save group"
+  "saveGroup": "Save group",
+  "noTransactions" : "No transactions have been added yet."
 }

@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { PageWrapper } from 'components/Containers';
@@ -9,11 +10,12 @@ import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
 import BottomNavigation from 'components/BottomNavigation';
 import TransactionRow from './TransactionRow';
-import { ContentWrapper, DateText, HalfEllipse, TransactionListContainer } from './index.styled';
+import { ContentWrapper, DateText, HalfEllipse, NoTransactionsText, TransactionListContainer } from './index.styled';
 import { datesAreOnSameDay } from 'helpers/dateUtil';
 
 
 const GroupDetails = () => {
+  const { t } = useTranslation('groups');
   const navigate = useNavigate();
   const { groupId } = useParams();
 
@@ -60,6 +62,13 @@ const GroupDetails = () => {
               <TransactionRow key={tr.id} transaction={tr} />
             );
           })}
+
+          {
+            group?.transactions.length ? null :
+              <NoTransactionsText>
+                {t('noTransactions')}
+              </NoTransactionsText>
+          }
         </TransactionListContainer>
       </ContentWrapper>
 

@@ -29,3 +29,10 @@ export const DateText = styled(TextRegular)`
   width: 100%;
   text-align: center;
 `;
+
+export const NoTransactionsText = styled(TextRegular)`
+  color: ${props => props.theme.colors.text.primary};
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+`;
