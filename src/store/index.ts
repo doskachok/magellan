@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import {Middleware} from 'redux';
+import logger from 'redux-logger'
 import {mainApi} from './api';
 import {errorMiddleware} from './errorMiddleware';
 import authReducer from '../features/auth/slice';
@@ -13,6 +14,7 @@ const apiReducers = {
 const middlewares: Middleware[] = [
   mainApi.middleware,
   errorMiddleware,
+  logger,
 ];
 
 const store = configureStore({
