@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
@@ -13,13 +14,16 @@ import TransactionRow from './TransactionRow';
 import { ContentWrapper, DateText, HalfEllipse, NoTransactionsText, TransactionListContainer } from './index.styled';
 import { datesAreOnSameDay } from 'helpers/dateUtil';
 
+import { selectedGroupSelector } from '../slice';
+
 
 const GroupDetails = () => {
   const { t } = useTranslation('groups');
   const navigate = useNavigate();
   const { groupId } = useParams();
 
-  const { data: group } = useGetTransactionGroupByIdQuery(groupId || '');
+  const { isLoading } = useGetTransactionGroupByIdQuery(groupId || '');
+  const group = useSelector(selectedGroupSelector);
 
   const handleBackAction = useCallback(() => {
     navigate(ROUTES.GROUPS.ROOT, { replace: true });

@@ -4,7 +4,8 @@ import { transactionGroupsApi } from './api';
 import { ITransactionGroup, ITransactionGroupListItem } from './types';
 
 interface ISliceState {
-  list: ITransactionGroupListItem[]
+  list: ITransactionGroupListItem[],
+  selectedGroup?: ITransactionGroup,
 }
 
 const initialState: ISliceState = {
@@ -33,6 +34,18 @@ const groupsSlice = createSlice({
           state.list = payload;
         }
       )
+      .addMatcher(
+        transactionGroupsApi.endpoints.getTransactionGroupById.matchFulfilled,
+        (state, { payload }: PayloadAction<ITransactionGroup>) => {
+          state.selectedGroup = payload;
+        }
+      )
+      .addMatcher(
+        transactionGroupsApi.endpoints.getTransactionGroupById.matchPending,
+        (state) => {
+          state.selectedGroup = undefined;
+        }
+      )
   }
 });
 
@@ -42,3 +55,11 @@ export default groupsSlice.reducer;
 export const groupsListSelector = (store: RootState) => store.groups.list;
 export const selectGroupById = (groupId: string) => (store: RootState) => 
   store.groups.list.find(g => g.id === groupId);
+
+export const selectedGroupSelector = (store: RootState) => store.groups.selectedGroup ? ({
+  ...store.groups.selectedGroup,
+  transactions: store.groups.selectedGroup.transactions.map(t => ({
+    ...t,
+    paymentDateUtc: new Date(t.paymentDateUtc),
+  }))
+}) : undefined;
