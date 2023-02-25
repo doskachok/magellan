@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
 import { ResolveGroupRoute, ROUTES } from 'constants/routes';
-import { useGetTransactionGroupByIdQuery } from '../api';
+import { useLazyGetTransactionGroupByIdQuery } from '../api';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
 import BottomNavigation from 'components/BottomNavigation';
@@ -23,7 +23,7 @@ const GroupDetails = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();
 
-  const { isLoading } = useGetTransactionGroupByIdQuery(groupId || '');
+  const [getGroup, { isLoading }] = useLazyGetTransactionGroupByIdQuery();
   const group = useSelector(selectedGroupSelector);
 
   const handleBackAction = useCallback(() => {
@@ -42,6 +42,10 @@ const GroupDetails = () => {
       return date.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric' });
     }
   };
+
+  useEffect(() => {
+    getGroup(groupId || '');
+  }, [getGroup, groupId])
 
   return (
     <PageWrapper>
