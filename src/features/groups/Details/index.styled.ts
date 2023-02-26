@@ -12,10 +12,9 @@ export const HalfEllipse = styled(Row)`
   border-radius: 100%;
   background: ${props => props.theme.colors.primary};
   width: 120vw;
-  height: 80vw;
+  min-height: 300px;
   z-index: 0;
-  margin-top: -55vw;
-  margin-left: -10vw;
+  margin: -210px 0 0 -10vw;
 `;
 
 export const TransactionListContainer = styled(Column)`
