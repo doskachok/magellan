@@ -12,7 +12,7 @@ import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
 import BottomNavigation from 'components/BottomNavigation';
 import TransactionRow from './TransactionRow';
 import { ContentWrapper, DateText, HalfEllipse, NoTransactionsText, TransactionListContainer } from './index.styled';
-import { datesAreOnSameDay } from 'helpers/dateUtil';
+import { createDateString, datesAreOnSameDay } from 'helpers/dateUtil';
 
 import { selectedGroupSelector } from '../slice';
 import Loader from 'components/Loader';
@@ -33,15 +33,6 @@ const GroupDetails = () => {
   const handleEditAction = useCallback(() => {
     navigate(ResolveGroupRoute(`${ROUTES.GROUPS.EDIT}/${groupId}`));
   }, [navigate, groupId]);
-
-  const createDateString = (date: Date) => {
-    if (date.getFullYear() === new Date().getFullYear()) {
-      return date.toLocaleDateString("en-GB", {day: 'numeric', month: 'long' });
-    }
-    else {
-      return date.toLocaleDateString("en-GB", {day: 'numeric', month: 'long', year: 'numeric' });
-    }
-  };
 
   useEffect(() => {
     getGroup(groupId || '');
