@@ -24,5 +24,10 @@ export const getSymbolFromCurrencyCode = (code: string) => {
 };
 
 export const getCurrencyWithSymbolString = (amount: number, code: string) => {
-  return "" + amount + ' ' + getSymbolFromCurrencyCode(code);
+  const formatter = new Intl.NumberFormat("uk", {
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  });
+
+  return `${formatter.format(amount)} ${getSymbolFromCurrencyCode(code)}`;
 };
