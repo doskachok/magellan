@@ -1,11 +1,3 @@
-export interface ITransactionGroupListItem {
-  id: string;
-  name: string;
-  currencyCode: string;
-  avatarId?: string;
-  yourPart: number;
-}
-
 export interface ITransactionGroup {
   id: string;
   name: string;
@@ -14,6 +6,10 @@ export interface ITransactionGroup {
   participants: ITransactionGroupMember[];
   ownerId: string;
   transactions: ITransaction[];
+}
+
+export interface ITransactionGroupListItem extends Omit<ITransactionGroup, 'participants' | 'ownerId' | 'transactions'> {
+  yourPart: number;
 }
 
 export interface ITransaction {
