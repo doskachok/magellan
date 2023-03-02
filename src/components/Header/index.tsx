@@ -14,7 +14,7 @@ interface Props {
 const Header = ({ text, leftActionComponent, rightActionComponent, isLoading = false }: Props) => {
   return (
     <Column fullWidth>
-      <Wrapper jc={'space-between'} ai={'flex-end'}>
+      <Wrapper jc={'space-between'} ai={'center'}>
         <LeftActionWrapper>
           {leftActionComponent}
         </LeftActionWrapper>
