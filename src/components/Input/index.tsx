@@ -8,7 +8,7 @@ import {
   useCallback,
   memo,
 } from 'react';
-import { InputStyled, RequiredIndicator, TextError, Wrapper } from './index.styled';
+import { DisplayName, InputStyled, RequiredIndicator, TextError, Wrapper } from './index.styled';
 
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,7 @@ import { AnySchema } from 'yup';
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
   name: string;
+  displayName?: string;
   onTextChange: (name: string, value: string) => void;
   onValidationChange?: (name: string, isValid: boolean) => void;
   error?: string;
@@ -40,6 +41,7 @@ const Input =
   ({
     value,
     name,
+    displayName,
     onTextChange,
     error,
     validator,
@@ -83,6 +85,8 @@ const Input =
         {(!!_error && isShowError) && <TextError>{t(_error)}</TextError>}
 
         {(required && !value) && <RequiredIndicator reversedTheme={reversedTheme}>*</RequiredIndicator>}
+
+        {(!(!!_error && isShowError) && value && displayName) && <DisplayName reversedTheme={reversedTheme}> {displayName} </DisplayName>}
 
         <InputStyled
           name={name}

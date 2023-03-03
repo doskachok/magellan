@@ -3,18 +3,37 @@ import { TextRegular } from '../Text';
 
 import { Column } from '../Containers';
 
-interface IInputProps {
+interface IInputProps extends IReversible {
   hasError?: boolean;
   reversedTheme?: boolean;
 }
 
-interface IRequiredIndicatorProps {
+interface IRequiredIndicatorProps extends IReversible {
   hasError?: boolean;
+}
+
+interface IDisplayName extends IReversible {}
+
+interface IReversible {
   reversedTheme?: boolean;
 }
 
 export const Wrapper = styled(Column)`
   position: relative;
+`;
+
+export const DisplayName = styled(TextRegular)<IDisplayName>`
+    position: absolute;
+    top: 0.6em;
+    left: 0.6em;
+    padding: 0px 10px 0px 10px;
+    color: ${props => props.theme.colors.input.border.default};
+    background-color: ${props => props.theme.colors.secondary};
+    
+    ${props => props.reversedTheme && css`
+      color: ${props => props.theme.colors.input.border.reversed};
+      background-color: ${props => props.theme.colors.primary};
+    `};
 `;
 
 export const RequiredIndicator = styled(TextRegular) <IRequiredIndicatorProps>`
@@ -24,7 +43,7 @@ export const RequiredIndicator = styled(TextRegular) <IRequiredIndicatorProps>`
   left: 8px;
 
   ${props => props.reversedTheme && css`
-    color: ${props => props.theme.colors.reversed};
+    color: ${props => props.theme.colors.secondaryFaded};
   `};
 `;
 
