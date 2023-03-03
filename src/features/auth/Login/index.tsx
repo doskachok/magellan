@@ -77,6 +77,7 @@ const Login = () => {
             required
             disabled={isLoading}
             name='login'
+            displayName={form.login.includes('@') ? t('email') : t('username') }
             value={form.login}
             validator={requiredValidator}
             placeholder={t('usernameOrEmailAddress')}
@@ -88,6 +89,7 @@ const Login = () => {
             required
             disabled={isLoading}
             name={'password'}
+            displayName={t('password')}
             type={'password'}
             value={form.password}
             validator={requiredValidator}

@@ -146,6 +146,7 @@ const Form = ({ group }: IProps) => {
                 placeholder={t('groupName')}
                 reversedTheme
                 name={'name'}
+                displayName={t('groupName')}
                 required
                 value={form.name}
                 validator={requiredValidator}

@@ -115,6 +115,7 @@ const Register = () => {
           <Input
             required
             name={'username'}
+            displayName={t('username')}
             value={form.username}
             placeholder={t('username')}
             onTextChange={onInputChange}
@@ -125,6 +126,7 @@ const Register = () => {
           <Input
             required
             name={'email'}
+            displayName={t('email')}
             value={form.email}
             placeholder={t('email')}
             onTextChange={onInputChange}
@@ -136,6 +138,7 @@ const Register = () => {
             required
             type={'password'}
             name={'password'}
+            displayName={t('password')}
             value={form.password}
             placeholder={t('password')}
             onTextChange={onInputChange}
@@ -147,6 +150,7 @@ const Register = () => {
             required
             type={'password'}
             name={'passwordConfirmation'}
+            displayName={t('passwordConfirmation')}
             value={form.passwordConfirmation}
             placeholder={t('confirmPassword')}
             onTextChange={onInputChange}
