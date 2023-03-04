@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {  Row } from 'components/Containers';
-import { TextHeader, TextRegular } from 'components';
+import { TextRegular } from 'components';
 
 export const TransactionRowContainer = styled(Row)`
   justify-content: space-between;
@@ -17,9 +17,10 @@ export const TransactionAmountText = styled(TextRegular)`
   overflow-wrap: break-word;
 `;
 
-export const TransactionNameText = styled(TextHeader)`
+export const TransactionNameText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.primary};
   flex: 1;
+  font-weight: 700;
   text-align: start;
   white-space: nowrap;
   overflow: hidden;
