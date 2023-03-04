@@ -14,7 +14,9 @@ const TransactionRow = ({ transaction }: ITransactionRowProps) => {
          {getCurrencyWithSymbolString(transaction.totalAmount, transaction.currencyCode)}
       </TransactionAmountText>
       <TransactionNameText> {transaction.name} </TransactionNameText>
-      <YourPartText> {'TODO'} </YourPartText>
+      <YourPartText amount={transaction.yourPart}>
+        {getCurrencyWithSymbolString(Math.abs(transaction.yourPart), transaction.currencyCode)}
+      </YourPartText>
     </TransactionRowContainer>
   );
 };

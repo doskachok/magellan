@@ -1,6 +1,10 @@
-import styled from 'styled-components';
-import {  Row } from 'components/Containers';
+import styled, { css } from 'styled-components';
+import { Row } from 'components/Containers';
 import { TextRegular } from 'components';
+
+interface YouPartProps {
+  amount: number;
+}
 
 export const TransactionRowContainer = styled(Row)`
   justify-content: space-between;
@@ -27,8 +31,12 @@ export const TransactionNameText = styled(TextRegular)`
   text-overflow: ellipsis;
 `;
 
-export const YourPartText = styled(TextRegular)`
-  color: ${props => props.theme.colors.primary};
+export const YourPartText = styled(TextRegular)<YouPartProps>`
   width: 4rem;
   text-align: end;
+  color: ${props => props.theme.colors.button.disabled};
+
+  ${props => props.amount && css`
+     color: ${props.amount > 0 ? props.theme.colors.text.notification.success : props.theme.colors.text.error }
+  `};
 `;
