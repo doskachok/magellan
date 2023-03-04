@@ -14,7 +14,7 @@ export const Wrapper = styled(Row)`
 export const HeaderTextWrapper = styled(TextHeader)`
   display: inline-flex;
   flex: 1;
-  justify-content: center;
+  justify-content: left;
 `
 
 export const LeftActionWrapper = styled.div`
