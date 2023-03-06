@@ -4,7 +4,8 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       primary: string;
-      reversed: string;
+      secondary: string;
+      secondaryFaded: string;
 
       loader: {
         background: string;

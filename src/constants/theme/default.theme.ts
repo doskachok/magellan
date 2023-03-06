@@ -1,12 +1,21 @@
 import { DefaultTheme } from 'styled-components';
 
-const PRIMARY_COLOR = '#379970';
-const REVERSED_COLOR = 'rgba(255, 255, 255, 0.5)';
+const PRIMARY_GREEN = '#379970';
+
+const WHITE = '#FFFFFF';
+const WHITE_FADED = 'rgba(255, 255, 255, 0.5)';
+
+const BLACK = '#000000';
+const BLACK_FADED = 'rgba(0, 0, 0, 0.5)';
+
+const SUCCESS_GREEN = '#28a745';
+const ERROR_RED = '#FF2121';
 
 const defaultTheme: DefaultTheme = {
   colors: {
-    primary: PRIMARY_COLOR,
-    reversed: REVERSED_COLOR,
+    primary: PRIMARY_GREEN,
+    secondary: WHITE,
+    secondaryFaded: WHITE_FADED,
 
     loader: {
       background: '#d3d3d370',
@@ -20,50 +29,50 @@ const defaultTheme: DefaultTheme = {
     },
 
     text: {
-      primary: '#000000',
-      secondary: '#FFFFFF',
-      link: PRIMARY_COLOR,
-      error: '#FF2121',
-      title: 'rgba(0, 0, 0, 0.5)',
+      primary: BLACK,
+      secondary: WHITE,
+      link: PRIMARY_GREEN,
+      error: ERROR_RED,
+      title: BLACK_FADED,
       border: {
-        default: 'rgba(0, 0, 0, 0.5)',
+        default: BLACK_FADED,
       },
       notification: {
-        success: '#28a745',
+        success: SUCCESS_GREEN,
       },
     },
 
     select: {
       border: {
-        default: 'rgba(0, 0, 0, 0.5)',
-        reversed: REVERSED_COLOR
+        default: BLACK_FADED,
+        reversed: WHITE_FADED
       },
       color: {
-        default: '#000000',
-        reversed: '#FFFFFF',
+        default: BLACK,
+        reversed: WHITE,
       },
       placeholder: {
-        default: '#000000',
-        reversed: REVERSED_COLOR,
+        default: BLACK,
+        reversed: WHITE_FADED,
       }
     },
 
     input: {
       border: {
-        default: 'rgba(0, 0, 0, 0.5)',
-        reversed: REVERSED_COLOR,
+        default: BLACK_FADED,
+        reversed: WHITE_FADED,
         error: 'rgba(255, 0, 0, 0.75)',
       },
       color: {
-        reversed: '#FFFFFF',
+        reversed: WHITE,
       },
       placeholder: {
-        reversed: REVERSED_COLOR,
+        reversed: WHITE_FADED,
       }
     },
     modal: {
       background: {
-        default: '#FFFFFF'
+        default: WHITE
       }
     }
   }

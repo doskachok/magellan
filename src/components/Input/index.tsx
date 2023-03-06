@@ -8,7 +8,7 @@ import {
   useCallback,
   memo,
 } from 'react';
-import { InputStyled, RequiredIndicator, TextError, Wrapper } from './index.styled';
+import { DisplayName, InputStyled, RequiredIndicator, TextError, Wrapper } from './index.styled';
 
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +17,7 @@ import { AnySchema } from 'yup';
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   value: string;
   name: string;
+  displayName?: string;
   onTextChange: (name: string, value: string) => void;
   onValidationChange?: (name: string, isValid: boolean) => void;
   error?: string;
@@ -40,6 +41,7 @@ const Input =
   ({
     value,
     name,
+    displayName,
     onTextChange,
     error,
     validator,
@@ -54,6 +56,8 @@ const Input =
     const [isShowError, setIsShowError] = useState(false);
     const [errors, setErrors] = useState<string[]>([]);
     const _error = useMemo(() => error || errors.length ? errors[0] : '', [error, errors]);
+
+    const displayError = !!_error && isShowError;
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
       onTextChange(name, event.target.value);
@@ -80,16 +84,23 @@ const Input =
 
     return (
       <Wrapper fullWidth>
-        {(!!_error && isShowError) && <TextError>{t(_error)}</TextError>}
+        {displayError && <TextError>{t(_error)}</TextError>}
 
         {(required && !value) && <RequiredIndicator reversedTheme={reversedTheme}>*</RequiredIndicator>}
+
+        {
+          (!displayError && value && displayName) && 
+          <DisplayName reversedTheme={reversedTheme}> 
+            {`${required ? '*' : ''} ${displayName}`.trim()}
+          </DisplayName>
+        }
 
         <InputStyled
           name={name}
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={!!_error && isShowError}
+          hasError={displayError}
           reversedTheme={reversedTheme}
           {...rest}
         />
