@@ -24,7 +24,7 @@ export const Wrapper = styled(Column)`
 
 export const DisplayName = styled(TextRegular)<IDisplayName>`
     position: absolute;
-    top: 0.6em;
+    top: 0.75em;
     left: 0.6em;
     padding: 0px 10px 0px 10px;
     color: ${props => props.theme.colors.input.border.default};
