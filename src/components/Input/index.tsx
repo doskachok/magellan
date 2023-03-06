@@ -57,6 +57,8 @@ const Input =
     const [errors, setErrors] = useState<string[]>([]);
     const _error = useMemo(() => error || errors.length ? errors[0] : '', [error, errors]);
 
+    const displayError = !!_error && isShowError;
+
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
       onTextChange(name, event.target.value);
       setIsShowError(false);
@@ -82,7 +84,7 @@ const Input =
 
     return (
       <Wrapper fullWidth>
-        {(!!_error && isShowError) && <TextError>{t(_error)}</TextError>}
+        {displayError && <TextError>{t(_error)}</TextError>}
 
         {(required && !value) && <RequiredIndicator reversedTheme={reversedTheme}>*</RequiredIndicator>}
 
@@ -93,7 +95,7 @@ const Input =
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
-          hasError={!!_error && isShowError}
+          hasError={displayError}
           reversedTheme={reversedTheme}
           {...rest}
         />
