@@ -88,7 +88,7 @@ const Input =
 
         {(required && !value) && <RequiredIndicator reversedTheme={reversedTheme}>*</RequiredIndicator>}
 
-        {(!(!!_error && isShowError) && value && displayName) && <DisplayName reversedTheme={reversedTheme}> {displayName} </DisplayName>}
+        {(!displayError && value && displayName) && <DisplayName reversedTheme={reversedTheme}> * {displayName} </DisplayName> }
 
         <InputStyled
           name={name}
