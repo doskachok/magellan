@@ -28,7 +28,7 @@ const Header = ({ text, leftActionComponent, rightActionComponent, avatar, isLoa
         </LeftActionWrapper>
 
         {
-          avatar &&
+          (!isLoading && avatar) &&
           <Avatar
             src={getDownloadFileUrl(avatar.avatarId)}
             rounded={true}
