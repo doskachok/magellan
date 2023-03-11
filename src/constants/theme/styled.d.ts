@@ -17,6 +17,8 @@ declare module 'styled-components' {
         primary: string;
         disabled: string;
         shadow: string;
+        remove: string;
+        removeFocused: string;
       },
 
       text: {

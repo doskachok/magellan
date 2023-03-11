@@ -41,6 +41,12 @@ export const transactionGroupsApi = mainApi.injectEndpoints({
         body: { userId: data.userId },
       }),
     }),
+    removeParticipant: build.mutation<void, { groupId: string, userId: string }>({
+      query: (data: {groupId: string, userId: string}) => ({
+        url: `${API_URL}/${data.groupId}/participants/${data.userId}`,
+        method: 'DELETE'
+      }),
+    }),
   }))
 });
 
@@ -51,4 +57,5 @@ export const {
   useCreateTransactionGroupMutation,
   useUpdateTransactionGroupMutation,
   useAddParticipantMutation,
+  useRemoveParticipantMutation,
 } = transactionGroupsApi;

@@ -2,13 +2,13 @@ import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Column, Row } from 'components/Containers';
-import { ContentWrapper } from './index.styled';
+import { ContentWrapper, RemoveBtn } from './index.styled';
 import { TextRegular, Button } from 'components';
 import {ITransactionGroup} from '../types';
 import { useModal } from 'providers/ModalProvider';
 import AddMemberModal from './AddMemberModal';
 import { IUser } from 'types/userTypes';
-import { useAddParticipantMutation } from '../api';
+import { useAddParticipantMutation, useRemoveParticipantMutation } from '../api';
 import Loader from 'components/Loader';
 import MemberRow from './MemberRow';
 
@@ -20,7 +20,8 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
   const { t } = useTranslation('groups');
   const modalContext = useModal();
 
-  const [addMember, { isLoading: isMemberAdding }] = useAddParticipantMutation();  
+  const [addMember, { isLoading: isMemberAdding }] = useAddParticipantMutation();
+  const [removeMember, { isLoading: isMemberRemoving }] = useRemoveParticipantMutation();
   const [selected, setSelected] = useState<IUser | null>(null);
 
   const handleMemberToAddSelected = useCallback((member: IUser) => {
@@ -30,6 +31,12 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
   const onAddMember = useCallback(() => {
     modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
   }, [modalContext, handleMemberToAddSelected]);
+
+  const onRemoveMember = useCallback(() => {
+    removeMember({ groupId: group?.id || '', userId: selected!.id }).then(() => {
+      setSelected(null);
+    });
+  }, [group, selected, removeMember]);
 
   const handleMemberSelected = useCallback((member: IUser) => {
     setSelected(member);
@@ -53,13 +60,20 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
         }
       </Column>
 
-      <Loader isLoading={isMemberAdding} />
+      <Loader isLoading={isMemberAdding || isMemberRemoving} />
 
-      <Row jc={'flex-end'} fullWidth>
+      <Row jc={selected ? 'space-between' : 'flex-end'} fullWidth>
+        {
+          !!selected && 
+          <RemoveBtn disabled={false} onClick={onRemoveMember}>
+            {t('removeMember')}
+          </RemoveBtn>
+        }
+
         <Button disabled={false} onClick={onAddMember}>
           {t('addMembers')}
         </Button>
-      </Row>
+        </Row>
     </ContentWrapper>
   );
 };

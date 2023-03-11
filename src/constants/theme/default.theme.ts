@@ -27,6 +27,8 @@ const defaultTheme: DefaultTheme = {
       primary: '#00A862',
       disabled: '#C4C4C4',
       shadow: 'rgba(0, 0, 0, 0.25)',
+      remove: 'rgba(255, 0, 0, 0.5)',
+      removeFocused: 'rgba(255, 0, 0, 0.7)',
     },
 
     text: {
