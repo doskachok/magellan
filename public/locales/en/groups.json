@@ -20,5 +20,6 @@
   "transactionYouBorrowed": "you borrowed",
   "findNewPeopleHere": "Find new people here...",
   "orLookAlreadyKnown": "...or look though already known",
-  "noAlreadyKnownUsers": "...oops, no already known users"
+  "noAlreadyKnownUsers": "...oops, no already known users",
+  "enterUsernameOrEmail": "Enter username or email"
 }
