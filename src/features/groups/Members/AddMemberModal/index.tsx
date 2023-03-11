@@ -35,7 +35,7 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
   
   return (
     <Column>
-      <MembersModalBody>
+      <MembersModalBody rounded={true}>
         <ModalBodyElementWrapper>
           <ModalText>{t('findNewPeopleHere')}</ModalText>
 
