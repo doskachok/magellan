@@ -16,6 +16,7 @@ const defaultTheme: DefaultTheme = {
     primary: PRIMARY_GREEN,
     secondary: WHITE,
     secondaryFaded: WHITE_FADED,
+    selectedItem: '#AEE8E4',
 
     loader: {
       background: '#d3d3d370',

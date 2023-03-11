@@ -1,16 +1,16 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Column, Row } from 'components/Containers';
 import { ContentWrapper } from './index.styled';
-import { getDownloadFileUrl } from 'helpers/urlHelper';
-import { Avatar, AvatarSize, TextRegular, Button } from 'components';
+import { TextRegular, Button } from 'components';
 import {ITransactionGroup} from '../types';
 import { useModal } from 'providers/ModalProvider';
 import AddMemberModal from './AddMemberModal';
 import { IUser } from 'types/userTypes';
 import { useAddParticipantMutation } from '../api';
 import Loader from 'components/Loader';
+import MemberRow from './MemberRow';
 
 export interface IGroupMembersProps {
   group: ITransactionGroup | undefined;
@@ -20,7 +20,8 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
   const { t } = useTranslation('groups');
   const modalContext = useModal();
 
-  const [addMember, { isLoading: isMemberAdding }] = useAddParticipantMutation();
+  const [addMember, { isLoading: isMemberAdding }] = useAddParticipantMutation();  
+  const [selected, setSelected] = useState<IUser | null>(null);
 
   const handleMemberToAddSelected = useCallback((member: IUser) => {
     addMember({ groupId: group?.id || '', userId: member.id });
@@ -30,25 +31,15 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
     modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
   }, [modalContext, handleMemberToAddSelected]);
 
+  const handleMemberSelected = useCallback((member: IUser) => {
+    setSelected(member);
+  }, [setSelected]);
+
   return (
     <ContentWrapper jc={'space-between'} fullWidth>
       <Column fullWidth>
         {group?.participants?.map(p =>
-          <Row key={p.id} jc={'space-between'} ai={'center'} fullWidth>
-            <Avatar 
-              src={getDownloadFileUrl(p.avatarId)}
-              rounded={true}
-              size={AvatarSize.Small}
-            />
-
-            <TextRegular>
-              {p.name || p.email}
-            </TextRegular>
-
-            <TextRegular>
-              $0.0
-            </TextRegular>
-          </Row>
+          <MemberRow key={p.id} isSelected={selected === p} member={p} onClick={handleMemberSelected} />
         )}
 
         {
