@@ -1,5 +1,6 @@
+import { IUser } from 'types/userTypes';
 import mainApi from '../../store/api';
-import { IAuthPayload, ILoginForm, IUser } from './types';
+import { IAuthPayload, ILoginForm } from './types';
 
 export const authApi = mainApi.injectEndpoints({
   endpoints: (build => ({
