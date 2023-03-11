@@ -6,6 +6,8 @@ import { ContentWrapper } from './index.styled';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
 import { Avatar, AvatarSize, TextRegular, Button } from 'components';
 import {ITransactionGroup} from '../types';
+import { useModal } from 'providers/ModalProvider';
+import AddMemberModal from './AddMemberModal';
 
 export interface IGroupMembersProps {
   group: ITransactionGroup | undefined;
@@ -13,10 +15,11 @@ export interface IGroupMembersProps {
 
 const GroupMembers = ({ group }: IGroupMembersProps) => {
   const { t } = useTranslation('groups');
+  const modalContext = useModal();
 
   const onAddMember = useCallback(() => {
-
-  }, []);
+    modalContext.showModal(<AddMemberModal />);
+  }, [modalContext]);
 
   return (
     <ContentWrapper jc={'space-between'} fullWidth>

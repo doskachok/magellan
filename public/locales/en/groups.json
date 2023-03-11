@@ -17,5 +17,7 @@
   "noTransactions" : "No transactions have been added yet.",
   "transactionNotInvolved": "not involved",
   "transactionYouLent": "you lent",
-  "transactionYouBorrowed": "you borrowed"
+  "transactionYouBorrowed": "you borrowed",
+  "findNewPeopleHere": "Find new people here...",
+  "orLookAlreadyKnown": "...or look though already known"
 }
