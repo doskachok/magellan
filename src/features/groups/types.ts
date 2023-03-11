@@ -18,6 +18,7 @@ export interface ITransaction {
   paymentDateUtc: Date;
   currencyCode: string;
   totalAmount: number;
+  yourPart: number;
 }
 
 export interface ITransactionGroupMember {

@@ -1,6 +1,10 @@
-import styled from 'styled-components';
-import {  Row } from 'components/Containers';
-import { TextHeader, TextRegular } from 'components';
+import styled, { css } from 'styled-components';
+import { Row } from 'components/Containers';
+import { TextRegular } from 'components';
+
+interface YouPartProps {
+  amount: number;
+}
 
 export const TransactionRowContainer = styled(Row)`
   justify-content: space-between;
@@ -11,23 +15,33 @@ export const TransactionRowContainer = styled(Row)`
 `;
 
 export const TransactionAmountText = styled(TextRegular)`
+  margin-top: 3px;
   color: ${props => props.theme.colors.text.primary};
-  width: 4.5rem;
   text-align: left;
+  font-size: 0.8em;
   overflow-wrap: break-word;
 `;
 
-export const TransactionNameText = styled(TextHeader)`
+export const TransactionNameText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.primary};
   flex: 1;
+  font-weight: 700;
   text-align: start;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-export const YourPartText = styled(TextRegular)`
-  color: ${props => props.theme.colors.primary};
-  width: 4rem;
-  text-align: end;
+export const YourPartAmount = styled(TextRegular)<YouPartProps>`
+  place-self: end;
+  color: ${props => props.theme.colors.button.disabled};
+
+  ${props => props.amount && css`
+     color: ${props.amount > 0 ? props.theme.colors.text.notification.success : props.theme.colors.text.error }
+  `};
+`;
+
+export const YourPartAmountHint = styled(YourPartAmount)`
+  font-size: 0.7em;
+  margin-bottom: 3px;
 `;

@@ -14,5 +14,8 @@
   "addMembers": "Add members",
   "noMembers": "No members",
   "saveGroup": "Save group",
-  "noTransactions" : "No transactions have been added yet."
+  "noTransactions" : "No transactions have been added yet.",
+  "transactionNotInvolved": "not involved",
+  "transactionYouLent": "you lent",
+  "transactionYouBorrowed": "you borrowed"
 }
