@@ -8,6 +8,9 @@ import { Avatar, AvatarSize, TextRegular, Button } from 'components';
 import {ITransactionGroup} from '../types';
 import { useModal } from 'providers/ModalProvider';
 import AddMemberModal from './AddMemberModal';
+import { IUser } from 'types/userTypes';
+import { useAddParticipantMutation } from '../api';
+import Loader from 'components/Loader';
 
 export interface IGroupMembersProps {
   group: ITransactionGroup | undefined;
@@ -17,9 +20,15 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
   const { t } = useTranslation('groups');
   const modalContext = useModal();
 
+  const [addMember, { isLoading: isMemberAdding }] = useAddParticipantMutation();
+
+  const handleMemberToAddSelected = useCallback((member: IUser) => {
+    addMember({ groupId: group?.id || '', userId: member.id });
+  }, [addMember, group]);
+
   const onAddMember = useCallback(() => {
-    modalContext.showModal(<AddMemberModal />);
-  }, [modalContext]);
+    modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
+  }, [modalContext, handleMemberToAddSelected]);
 
   return (
     <ContentWrapper jc={'space-between'} fullWidth>
@@ -52,6 +61,8 @@ const GroupMembers = ({ group }: IGroupMembersProps) => {
             : null
         }
       </Column>
+
+      <Loader isLoading={isMemberAdding} />
 
       <Row jc={'flex-end'} fullWidth>
         <Button disabled={false} onClick={onAddMember}>

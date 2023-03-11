@@ -32,7 +32,15 @@ export const transactionGroupsApi = mainApi.injectEndpoints({
         method: 'PUT',
         body,
       }),
-    })
+    }),
+
+    addParticipant: build.mutation<void, { groupId: string, userId: string }>({
+      query: (data: {groupId: string, userId: string}) => ({
+        url: `${API_URL}/${data.groupId}/participants`,
+        method: 'POST',
+        body: { userId: data.userId },
+      }),
+    }),
   }))
 });
 
@@ -41,5 +49,6 @@ export const {
   useGetTransactionGroupByIdQuery,
   useLazyGetTransactionGroupByIdQuery,
   useCreateTransactionGroupMutation,
-  useUpdateTransactionGroupMutation
+  useUpdateTransactionGroupMutation,
+  useAddParticipantMutation,
 } = transactionGroupsApi;

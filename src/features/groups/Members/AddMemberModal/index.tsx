@@ -3,10 +3,15 @@ import Loader from 'components/Loader';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetKnownsUsersQuery } from 'store/user.api';
+import { IUser } from 'types/userTypes';
 import { MembersModalBody, ModalBodyElementWrapper, ModalSeparator, ModalText } from './index.styled';
 import UserRow from './UserRow';
 
-const AddMemberModal = () => {
+export interface IProps {
+  onMemberSelected: (member: IUser) => void;
+}
+
+const AddMemberModal = ({ onMemberSelected }: IProps) => {
   const { t } = useTranslation('groups');
 
   const { data: knownsUsers, isLoading: isKnownsUsersLoading } = useGetKnownsUsersQuery();
@@ -24,7 +29,7 @@ const AddMemberModal = () => {
           <ModalText>{t('orLookAlreadyKnown')}</ModalText>
 
           <Column fullWidth gap={'0.5rem'}>
-            {knownsUsers?.map(u => <UserRow key={u.id} user={u} onClick={() => {}} />)}
+            {knownsUsers?.map(u => <UserRow key={u.id} user={u} onClick={() => onMemberSelected(u)} />)}
           </Column>
           
           <Loader isLoading={isKnownsUsersLoading} />
