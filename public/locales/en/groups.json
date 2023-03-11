@@ -3,9 +3,9 @@
   "all": "All",
   "iLent": "I lent",
   "iBorrowed": "I borrowed",
-  "noGroups" : "No groups yet",
+  "noGroups": "No groups yet",
   "createGroup": "Create a group",
-  "updateGroup" : "Update a group",
+  "updateGroup": "Update a group",
   "groupMembers": "Group members",
   "groupName": "Group name",
   "mainCurrency": "Main currency",
@@ -19,5 +19,6 @@
   "transactionYouLent": "you lent",
   "transactionYouBorrowed": "you borrowed",
   "findNewPeopleHere": "Find new people here...",
-  "orLookAlreadyKnown": "...or look though already known"
+  "orLookAlreadyKnown": "...or look though already known",
+  "noAlreadyKnownUsers": "...oops, no already known users"
 }
