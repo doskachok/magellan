@@ -6,20 +6,15 @@ import { Column } from '../Containers';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
 import Avatar from 'components/Avatar';
 import { AvatarSize } from 'components/Avatar/index.styled';
-
-interface AvatarProps {
-  avatarId?: string;
-}
-
 interface Props {
   text: string;
   isLoading?: boolean;
   leftActionComponent?: ReactElement<any> | null;
   rightActionComponent?: ReactElement<any> | null;
-  avatar?: AvatarProps;
+  avatarId?: string;
 }
 
-const Header = ({ text, leftActionComponent, rightActionComponent, avatar, isLoading = false }: Props) => {
+const Header = ({ text, leftActionComponent, rightActionComponent, avatarId, isLoading = false }: Props) => {
   return (
     <Column fullWidth>
       <Wrapper jc={'space-between'} ai={'center'}>
@@ -28,9 +23,9 @@ const Header = ({ text, leftActionComponent, rightActionComponent, avatar, isLoa
         </LeftActionWrapper>
 
         {
-          !!avatar?.avatarId &&
+          !!avatarId &&
           <Avatar
-            src={getDownloadFileUrl(avatar.avatarId)}
+            src={getDownloadFileUrl(avatarId)}
             rounded={true}
             size={AvatarSize.Small}
           />

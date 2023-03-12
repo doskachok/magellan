@@ -45,7 +45,7 @@ const GroupDetails = () => {
         isLoading={isLoading}
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
         rightActionComponent={<EditIconSVG onClick={handleEditAction} />}
-        avatar={{ avatarId: group?.avatarId }}
+        avatarId={group?.avatarId}
       />
 
       <ContentWrapper fullWidth>
