@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { IUser } from 'types/userTypes';
 import { TextRegular } from 'components/Text';
-import { Wrapper } from './index.styled';
+import { MemberName, Wrapper } from './index.styled';
 import { Avatar, AvatarSize } from 'components';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
 
@@ -13,16 +13,16 @@ export interface IProps {
 
 const MemberRow = ({ member, isSelected, onClick }: IProps) => {
   return (
-    <Wrapper isSelected={isSelected} jc={'space-between'} ai={'center'} fullWidth onClick={() => onClick(member)}>
+    <Wrapper isSelected={isSelected} fullWidth onClick={() => onClick(member)}>
       <Avatar
         src={getDownloadFileUrl(member.avatarId)}
         rounded={true}
         size={AvatarSize.Small}
       />
 
-      <TextRegular>
+      <MemberName>
         {member.name || member.email}
-      </TextRegular>
+      </MemberName>
 
       <TextRegular>
         $0.0
