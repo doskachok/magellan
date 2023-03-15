@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { ModalBody } from '../../../../components/Modal';
-import { TextRegular } from '../../../../components/Text';
+import { ModalBody } from 'components/Modal';
+import { TextRegular } from 'components/Text';
 
 export const MembersModalBody = styled(ModalBody)`
   background: ${props => props.theme.colors.primary};

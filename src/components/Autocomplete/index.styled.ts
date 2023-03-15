@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Column, Row } from '../Containers';
-import Input from '../Input';
+import { Column, Row } from 'components/Containers';
+import Input from 'components/Input';
 
 const radius = '10px';
 

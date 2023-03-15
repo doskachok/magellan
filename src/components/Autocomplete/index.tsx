@@ -2,7 +2,7 @@ import { useState, useCallback, memo, ReactElement, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { AutocompleteInput, LoadingRow, NoResultsRow, SearchIcon, SuggestionRow, SuggestionsWrapper, Wrapper } from './index.styled';
-import SearchIconSVG from '../../assets/images/search-icon.svg';
+import SearchIconSVG from 'assets/images/search-icon.svg';
 
 export interface IAutocompleteSuggestion {
   id: string | number | Date;
