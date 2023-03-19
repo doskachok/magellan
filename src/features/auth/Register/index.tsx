@@ -1,27 +1,21 @@
-import {useState, useMemo, useCallback, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import {ROUTES} from 'constants/routes';
+import { ROUTES } from 'constants/routes';
 
 import Header from 'components/Header';
 import { Input, Button } from 'components';
 
-import {Column, PageWrapper, Row} from 'components/Containers';
-import {ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText} from './index.styled';
+import { Column, PageWrapper, Row } from 'components/Containers';
+import { ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText } from './index.styled';
 
-import {useRegisterMutation} from '../api';
+import { useRegisterMutation } from '../api';
 
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-import {usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator} from '../validation';
+import { usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator } from '../validation';
 import { Notification, NotificationType } from 'components/Notification';
-
-interface IForm {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-}
+import { IRegisterForm, IUser } from '../types';
 
 interface IValidation {
   username: boolean;
@@ -37,10 +31,10 @@ interface IPasswordRequirements {
 }
 
 const Register = () => {
-  const {t} = useTranslation('auth');
+  const { t } = useTranslation('auth');
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<IForm>({
+  const [form, setForm] = useState<IRegisterForm>({
     username: '',
     email: '',
     password: '',
@@ -62,7 +56,7 @@ const Register = () => {
 
   const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
 
-  const [register] = useRegisterMutation();
+  const [register, { data: registerData, isLoading, isSuccess, isError, error }] = useRegisterMutation();
 
   const [isEmailError, setIsEmailError] = useState(false);
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
@@ -82,12 +76,20 @@ const Register = () => {
   }, []);
 
   const onFromSubmit = () => {
-    register(form).then((response: any) => {
-      const state = { isRegistered: !response.error };
-      const path = !response.error && ROUTES.AUTH.ROOT;
-      path ? navigate(path, { state }) : setIsEmailError(true);
-    });
+    register(form);
   };
+
+  useEffect(() => {
+    if (isError) {
+      setIsEmailError(true);
+    }
+  }, [isError]);
+
+  useEffect(() => {
+    if (registerData && isSuccess) {
+      navigate(ROUTES.AUTH.ROOT, { replace: true });
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     const requirements = {
@@ -103,7 +105,7 @@ const Register = () => {
   return (
     <PageWrapper>
       <Notification text={isEmailError ? emailUsedTxt : null} type={NotificationType.ERROR} />
-      <Header text={t('signup')} />
+      <Header text={t('signup')} isLoading={isLoading} />
       <ContentWrapper jc={'space-between'} fullWidth>
 
         <Column gap={'8px'} fullWidth>
@@ -114,6 +116,7 @@ const Register = () => {
 
           <Input
             required
+            disabled={isLoading}
             name={'username'}
             displayName={t('username')}
             value={form.username}
@@ -125,6 +128,7 @@ const Register = () => {
 
           <Input
             required
+            disabled={isLoading}
             name={'email'}
             displayName={t('email')}
             value={form.email}
@@ -136,6 +140,7 @@ const Register = () => {
 
           <Input
             required
+            disabled={isLoading}
             type={'password'}
             name={'password'}
             displayName={t('password')}
@@ -148,6 +153,7 @@ const Register = () => {
 
           <Input
             required
+            disabled={isLoading}
             type={'password'}
             name={'passwordConfirmation'}
             displayName={t('passwordConfirmation')}
@@ -175,7 +181,7 @@ const Register = () => {
         </Column>
 
         <Row jc={'flex-end'} fullWidth>
-          <Button onClick={onFromSubmit} disabled={isDisabled}>
+          <Button onClick={onFromSubmit} disabled={isDisabled || isLoading}>
             {t('createAccount')}
           </Button>
         </Row>
