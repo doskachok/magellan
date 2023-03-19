@@ -82,75 +82,75 @@ const AccountSetttings = () => {
 
   return (
     <>
-    <PageWrapper>
-      <Header
-        text={t('accountSettings')}
-        leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
-      />
+      <PageWrapper>
+        <Header
+          text={t('accountSettings')}
+          leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
+        />
 
-      <ContentWrapper fullWidth>
-        <MainInfoWrapper fullWidth>
-          <AccountInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
-            <Row jc={'center'} fullWidth>
-              <FileUploader
-                ref={logoUploaderRef}
-                onFileSelected={onLogoSelected}
-                onFileUploaded={onLogoUploaded}>
-                <Avatar
-                  src={logoSrc}
-                  framed={true}
-                  rounded={true}
-                  size={AvatarSize.Large}
-                />
-              </FileUploader>
-            </Row>
-
-            <Column fullWidth>
+        <ContentWrapper fullWidth>
+          <MainInfoWrapper fullWidth>
+            <AccountInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
               <Row jc={'center'} fullWidth>
-                <Input
-                  reversedTheme
-                  name={'email'}
-                  displayName={t('email')}
-                  disabled
-                  value={form.email}
-                  onTextChange={onInputTextChanged}
-                />
+                <FileUploader
+                  ref={logoUploaderRef}
+                  onFileSelected={onLogoSelected}
+                  onFileUploaded={onLogoUploaded}>
+                  <Avatar
+                    src={logoSrc}
+                    framed={true}
+                    rounded={true}
+                    size={AvatarSize.Large}
+                  />
+                </FileUploader>
               </Row>
-              <Row jc={'center'} fullWidth>
-                <Input
-                  reversedTheme
-                  name={'username'}
-                  displayName={t('username')}
-                  disabled
-                  value={form.username}
-                  onTextChange={onInputTextChanged}
-                />
-              </Row>
-              <Row jc={'center'} fullWidth>
-                <Input
-                  reversedTheme
-                  placeholder={t('name')}
-                  name={'name'}
-                  displayName={t('name')}
-                  value={form.name}
-                  onTextChange={onInputTextChanged}
-                />
-              </Row>
-            </Column>
-          </AccountInfoWrapper>
 
-          <AccountSettingsBackground fullWidth>
-          </AccountSettingsBackground>
-        </MainInfoWrapper>
+              <Column fullWidth>
+                <Row jc={'center'} fullWidth>
+                  <Input
+                    reversedTheme
+                    name={'email'}
+                    displayName={t('email')}
+                    disabled
+                    value={form.email}
+                    onTextChange={onInputTextChanged}
+                  />
+                </Row>
+                <Row jc={'center'} fullWidth>
+                  <Input
+                    reversedTheme
+                    name={'username'}
+                    displayName={t('username')}
+                    disabled
+                    value={form.username}
+                    onTextChange={onInputTextChanged}
+                  />
+                </Row>
+                <Row jc={'center'} fullWidth>
+                  <Input
+                    reversedTheme
+                    placeholder={t('name')}
+                    name={'name'}
+                    displayName={t('name')}
+                    value={form.name}
+                    onTextChange={onInputTextChanged}
+                  />
+                </Row>
+              </Column>
+            </AccountInfoWrapper>
 
-        <SaveButtonWrapper>
-          <Button onClick={onFormSubmit} disabled={false}>
-            {t('saveChanges')}
-          </Button>
-        </SaveButtonWrapper>
-      </ContentWrapper>
-    </PageWrapper>
-    <Loader isLoading={isUserUpdating}/>
+            <AccountSettingsBackground fullWidth>
+            </AccountSettingsBackground>
+          </MainInfoWrapper>
+
+          <SaveButtonWrapper>
+            <Button onClick={onFormSubmit} disabled={false}>
+              {t('saveChanges')}
+            </Button>
+          </SaveButtonWrapper>
+        </ContentWrapper>
+      </PageWrapper>
+      <Loader isLoading={isUserUpdating} />
     </>
   );
 };
