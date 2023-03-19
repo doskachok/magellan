@@ -15,6 +15,9 @@ interface IProps {
   children: ReactElement<any>,
 };
 
+const backgroundId = (modalId: number) => `b-${modalId}`;
+const containerId = (modalId: number) => `c-${modalId}`;
+
 const Modal = ({ id, show, children }: IProps) => {
   const { deleteModal, closeModal } = useModal();
 
@@ -29,14 +32,17 @@ const Modal = ({ id, show, children }: IProps) => {
   }, [show, id, deleteModal]);
 
   const backgroundClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
-    if ((event.target as HTMLDivElement).id === `${id}`) {
+    const targetId = (event.target as HTMLDivElement).id;
+
+    if (targetId === backgroundId(id) ||
+      targetId === containerId(id)) {
       closeModal(id);
     }
   }, [closeModal, id]);
 
   return (
-    <ModalBackground id={`${id}`} show={show} onClick={backgroundClick}>
-      <ModalContainer>
+    <ModalBackground id={backgroundId(id)} show={show} onClick={backgroundClick}>
+      <ModalContainer id={containerId(id)} onClick={backgroundClick}>
         <ModalContent show={show}>
           {children}
         </ModalContent>

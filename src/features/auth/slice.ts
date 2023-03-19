@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LocalStorageKeys } from 'constants/localStorageKeys';
 import { RootState } from 'store';
-import { IAuthPayload, IUser } from './types';
+import { IUser } from 'types/userTypes';
+import { IAuthPayload } from './types';
 
 interface ISliceState {
   user: IUser | null;

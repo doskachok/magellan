@@ -16,6 +16,7 @@ const defaultTheme: DefaultTheme = {
     primary: PRIMARY_GREEN,
     secondary: WHITE,
     secondaryFaded: WHITE_FADED,
+    selectedItem: '#AEE8E4',
 
     loader: {
       background: '#d3d3d370',
@@ -26,6 +27,8 @@ const defaultTheme: DefaultTheme = {
       primary: '#00A862',
       disabled: '#C4C4C4',
       shadow: 'rgba(0, 0, 0, 0.25)',
+      remove: 'rgba(255, 0, 0, 0.5)',
+      removeFocused: 'rgba(255, 0, 0, 0.7)',
     },
 
     text: {

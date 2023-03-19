@@ -58,7 +58,7 @@ const Edit = () => {
       <ContentWrapper fullWidth>
         {mode === GroupEditMode.GeneralInfo && <GroupForm group={group} />}
 
-        {mode === GroupEditMode.Members && <Members group={group} />}
+        {mode === GroupEditMode.Members && <Members groupId={group?.id || ''} />}
 
         <AddMembersWrapper onClick={onChangeModeHandler}>
           <TextUnderline>
