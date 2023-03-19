@@ -71,6 +71,10 @@ export const InputStyled = styled.input<IInputProps>`
     font-weight: 300;
     color: ${props => props.theme.colors.text.primary};
   }
+   
+  :disabled {
+    color: ${props => props.theme.colors.input.border.default};
+  };
   
   ${props => props.hasError && css`
     margin-top: 4px;
@@ -84,6 +88,10 @@ export const InputStyled = styled.input<IInputProps>`
 
     ::placeholder {
       color: ${props => props.theme.colors.input.placeholder.reversed};
+    };
+
+    :disabled {
+      color: ${props => props.theme.colors.input.border.reversed};
     };
   `};
 `;
