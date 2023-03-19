@@ -8,5 +8,5 @@ export const Wrapper = styled(Row)`
 `;
 
 export const UserNameOrEmail = styled(TextRegular)`
-    color: ${props => props.theme.colors.secondary};
+  color: ${props => props.theme.colors.secondary};
 `;

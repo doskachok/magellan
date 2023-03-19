@@ -11,7 +11,7 @@ export const Wrapper = styled(Row) <IWrapperProps>`
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
- ${props => props.isSelected && css`
+  ${props => props.isSelected && css`
     background: ${props => props.theme.colors.selectedItem};
   `};
 `;

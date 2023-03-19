@@ -10,6 +10,6 @@ export const ContentWrapper = styled(Column)`
 export const RemoveBtn = styled(ButtonStyled)`
   background: ${props => props.theme.colors.button.remove};
   &:active {
-      background: ${props => props.theme.colors.button.removeFocused};
+    background: ${props => props.theme.colors.button.removeFocused};
   }
 `;
