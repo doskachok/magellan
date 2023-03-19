@@ -14,8 +14,7 @@ import { useRegisterMutation } from '../api';
 import { useTranslation } from 'react-i18next';
 
 import { usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator } from '../validation';
-import { Notification, NotificationType } from 'components/Notification';
-import { IRegisterForm, IUser } from '../types';
+import { IRegisterForm } from '../types';
 
 interface IValidation {
   username: boolean;
@@ -56,9 +55,8 @@ const Register = () => {
 
   const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
 
-  const [register, { data: registerData, isLoading, isSuccess, isError, error }] = useRegisterMutation();
+  const [register, { data: registerData, isLoading, isSuccess }] = useRegisterMutation();
 
-  const [isEmailError, setIsEmailError] = useState(false);
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
 
   const onInputChange = useCallback((name: string, value: string) => {
@@ -80,16 +78,10 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (isError) {
-      setIsEmailError(true);
-    }
-  }, [isError]);
-
-  useEffect(() => {
     if (registerData && isSuccess) {
       navigate(ROUTES.AUTH.ROOT, { replace: true });
     }
-  }, [isSuccess]);
+  }, [navigate, registerData, isSuccess]);
 
   useEffect(() => {
     const requirements = {
@@ -100,11 +92,8 @@ const Register = () => {
     setPasswordRequirements(requirements);
   }, [form.password, setPasswordRequirements]);
 
-  const emailUsedTxt = t('email_already_used', 'Try again, this email has been already used');
-
   return (
     <PageWrapper>
-      <Notification text={isEmailError ? emailUsedTxt : null} type={NotificationType.ERROR} />
       <Header text={t('signup')} isLoading={isLoading} />
       <ContentWrapper jc={'space-between'} fullWidth>
 
