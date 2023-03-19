@@ -7,7 +7,6 @@ import FileUploader, { IFileUploaderRef } from "components/FileUploader";
 import { Avatar, AvatarSize, Button, Input, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
-import { ROUTES } from "constants/routes";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowLeftSVG } from 'assets/images/arrow-left.svg';
 import { logOut, userReceived, userSelector } from "features/auth/slice";
@@ -40,7 +39,7 @@ const AccountSetttings = () => {
   const [updateUser, { data: updatedUser, isLoading: isUserUpdating }] = useUpdateUserMutation();
 
   const handleBackAction = useCallback(() => {
-    navigate(ROUTES.GROUPS.ROOT, { replace: true });
+    navigate(-1);
   }, [navigate]);
 
   const onLogoSelected = useCallback((file: File, fileData: string) => {
