@@ -22,6 +22,8 @@ const AccountSetttings = () => {
   const navigate = useNavigate();
   const logoUploaderRef = useRef<IFileUploaderRef>();
 
+  const user = useSelector(userSelector);
+
   const [form, setForm] = useState<IUser>({
     id: '',
     name: '',
@@ -30,11 +32,9 @@ const AccountSetttings = () => {
     avatarId: '',
   });
 
-  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+  const [logoSrc, setLogoSrc] = useState<string | null>(getDownloadFileUrl(user?.avatarId));
   const [isLogoSelected, setIsLogoSelected] = useState<boolean>(false);
-  const [isLogoUploading, setIsLogoUploading] = useState<boolean>(false);
 
-  const user = useSelector(userSelector);
   const [updateUser, { data: updatedUser, isLoading: isUserUpdating }] = useUpdateUserMutation();
 
   const handleBackAction = useCallback(() => {
@@ -46,12 +46,8 @@ const AccountSetttings = () => {
     setIsLogoSelected(true);
   }, []);
 
-  const onLogoUploadingChanged = useCallback((isUploading: boolean) => {
-    setIsLogoUploading(isUploading);
-  }, []);
-
   const onLogoUploaded = useCallback((fileId: string) => {
-    updateUser(userToUpdateUser({...form, avatarId: fileId}));
+    updateUser(userToUpdateUser({ ...form, avatarId: fileId }));
   }, [form, updateUser]);
 
   const onFormSubmit = useCallback(() => {
@@ -80,8 +76,7 @@ const AccountSetttings = () => {
       setForm(() => ({
         ...user,
       }));
-      setLogoSrc(getDownloadFileUrl(user.avatarId));
-    } 
+    }
   }, [user, setForm]);
 
   return (
@@ -98,8 +93,7 @@ const AccountSetttings = () => {
               <FileUploader
                 ref={logoUploaderRef}
                 onFileSelected={onLogoSelected}
-                onFileUploaded={onLogoUploaded}
-                onUploadingChange={onLogoUploadingChanged}>
+                onFileUploaded={onLogoUploaded}>
                 <Avatar
                   src={logoSrc}
                   framed={true}
