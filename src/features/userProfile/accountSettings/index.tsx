@@ -15,6 +15,7 @@ import { getDownloadFileUrl } from "helpers/urlHelper";
 
 import { AccountInfoWrapper, AccountSettingsBackground, ContentWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
 import { useUpdateUserMutation } from "store/user.api";
+import Loader from "components/Loader";
 
 const AccountSetttings = () => {
   const { t } = useTranslation('common');
@@ -80,6 +81,7 @@ const AccountSetttings = () => {
   }, [user, setForm]);
 
   return (
+    <>
     <PageWrapper>
       <Header
         text={t('accountSettings')}
@@ -148,6 +150,8 @@ const AccountSetttings = () => {
         </SaveButtonWrapper>
       </ContentWrapper>
     </PageWrapper>
+    <Loader isLoading={isUserUpdating}/>
+    </>
   );
 };
 
