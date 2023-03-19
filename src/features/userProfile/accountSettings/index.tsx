@@ -4,16 +4,17 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import FileUploader, { IFileUploaderRef } from "components/FileUploader";
-import { Avatar, AvatarSize, Button, Input } from "components";
+import { Avatar, AvatarSize, Button, Input, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ROUTES } from "constants/routes";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
-import { userReceived, userSelector } from "features/auth/slice";
+import { ReactComponent as ArrowLeftSVG } from 'assets/images/arrow-left.svg';
+import { logOut, userReceived, userSelector } from "features/auth/slice";
 import { IUser, userToUpdateUser } from "types/userTypes";
 import { getDownloadFileUrl } from "helpers/urlHelper";
 
-import { AccountInfoWrapper, AccountSettingsBackground, ContentWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
+import { AccountInfoWrapper, AccountSettingsBackground, ContentWrapper, LogoutWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
 import { useUpdateUserMutation } from "store/user.api";
 import Loader from "components/Loader";
 
@@ -142,6 +143,13 @@ const AccountSetttings = () => {
             <AccountSettingsBackground fullWidth>
             </AccountSettingsBackground>
           </MainInfoWrapper>
+
+          <LogoutWrapper onClick={() => dispatch(logOut())}>
+            <ArrowLeftSVG />
+            <TextUnderline>
+              {t('logout')}
+            </TextUnderline>
+          </LogoutWrapper>
 
           <SaveButtonWrapper>
             <Button onClick={onFormSubmit} disabled={false}>

@@ -29,6 +29,13 @@ export const AccountSettingsBackground = styled(Row)`
   margin-left: -10vw;
 `;
 
+export const LogoutWrapper = styled(Row)`
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
 export const SaveButtonWrapper = styled(Row)`
   justify-content: flex-end;
   width: 100%;
