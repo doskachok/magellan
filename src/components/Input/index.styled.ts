@@ -23,6 +23,7 @@ export const Wrapper = styled(Column)`
 `;
 
 export const DisplayName = styled(TextRegular)<IDisplayName>`
+    z-index: 1;
     position: absolute;
     top: 0.75em;
     left: 0.6em;
