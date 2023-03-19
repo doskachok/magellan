@@ -25,7 +25,7 @@ export const ImageStyled = styled(Row)<IAvatarProps>`
   }
 `;
 
-const largeAvatarSize: string = '14rem';
+const largeAvatarSize: string = '12rem';
 const mediumAvatarSize: string = '7rem';
 const smallAvatarSize: string = '3rem';
 
