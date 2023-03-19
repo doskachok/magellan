@@ -35,6 +35,7 @@ const AccountSetttings = () => {
 
   const [logoSrc, setLogoSrc] = useState<string | null>(getDownloadFileUrl(user?.avatarId));
   const [isLogoSelected, setIsLogoSelected] = useState<boolean>(false);
+  const [isTextChanged, setIsTextChanged] = useState<boolean>(false);
 
   const [updateUser, { data: updatedUser, isLoading: isUserUpdating }] = useUpdateUserMutation();
 
@@ -57,6 +58,9 @@ const AccountSetttings = () => {
     } else {
       updateUser(userToUpdateUser(form));
     }
+
+    setIsTextChanged(false);
+    setIsLogoSelected(false);
   }, [form, updateUser, isLogoSelected]);
 
   const onInputTextChanged = useCallback((name: string, value: string) => {
@@ -64,6 +68,8 @@ const AccountSetttings = () => {
       ...form,
       [name]: value,
     }));
+
+    setIsTextChanged(true);
   }, [setForm]);
 
   useEffect(() => {
@@ -151,7 +157,7 @@ const AccountSetttings = () => {
           </LogoutWrapper>
 
           <SaveButtonWrapper>
-            <Button onClick={onFormSubmit} disabled={false}>
+            <Button onClick={onFormSubmit} disabled={!isLogoSelected && !isTextChanged}>
               {t('saveChanges')}
             </Button>
           </SaveButtonWrapper>
