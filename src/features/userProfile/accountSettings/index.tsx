@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import FileUploader, { IFileUploaderRef } from "components/FileUploader";
-import { Avatar, AvatarSize, Button } from "components";
-import { PageWrapper, Row } from "components/Containers";
+import { Avatar, AvatarSize, Button, Input } from "components";
+import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ROUTES } from "constants/routes";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
@@ -62,6 +62,13 @@ const AccountSetttings = () => {
     }
   }, [form, updateUser, isLogoSelected]);
 
+  const onInputTextChanged = useCallback((name: string, value: string) => {
+    setForm((form) => ({
+      ...form,
+      [name]: value,
+    }));
+  }, [setForm]);
+
   useEffect(() => {
     if (updatedUser) {
       dispatch(userReceived(updatedUser));
@@ -101,6 +108,39 @@ const AccountSetttings = () => {
                 />
               </FileUploader>
             </Row>
+
+            <Column fullWidth>
+              <Row jc={'center'} fullWidth>
+                <Input
+                  reversedTheme
+                  name={'email'}
+                  displayName={t('email')}
+                  disabled
+                  value={form.email}
+                  onTextChange={onInputTextChanged}
+                />
+              </Row>
+              <Row jc={'center'} fullWidth>
+                <Input
+                  reversedTheme
+                  name={'username'}
+                  displayName={t('username')}
+                  disabled
+                  value={form.username}
+                  onTextChange={onInputTextChanged}
+                />
+              </Row>
+              <Row jc={'center'} fullWidth>
+                <Input
+                  reversedTheme
+                  placeholder={t('name')}
+                  name={'name'}
+                  displayName={t('name')}
+                  value={form.name}
+                  onTextChange={onInputTextChanged}
+                />
+              </Row>
+            </Column>
           </AccountInfoWrapper>
 
           <AccountSettingsBackground fullWidth>

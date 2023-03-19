@@ -2,5 +2,8 @@
   "noResults": "No results",
   "loading": "Loading...",
   "accountSettings": "Account settings",
-  "saveChanges": "Save changes"
+  "saveChanges": "Save changes",
+  "name": "Name",
+  "username": "Username",
+  "email": "Email"
 }
