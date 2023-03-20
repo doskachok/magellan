@@ -16,6 +16,7 @@ import { getDownloadFileUrl } from "helpers/urlHelper";
 import { AccountInfoWrapper, AccountSettingsBackground, ContentWrapper, LogoutWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
 import { useUpdateUserMutation } from "store/user.api";
 import Loader from "components/Loader";
+import toast from "react-hot-toast";
 
 const AccountSetttings = () => {
   const { t } = useTranslation('common');
@@ -61,7 +62,8 @@ const AccountSetttings = () => {
 
     setIsTextChanged(false);
     setIsLogoSelected(false);
-  }, [form, updateUser, isLogoSelected]);
+    toast.success(t('profileSaved'));
+  }, [form, updateUser, isLogoSelected, t]);
 
   const onInputTextChanged = useCallback((name: string, value: string) => {
     setForm((form) => ({

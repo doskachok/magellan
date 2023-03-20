@@ -6,5 +6,6 @@
   "name": "Name",
   "username": "Username",
   "email": "Email",
-  "logout": "Log Out"
+  "logout": "Log Out",
+  "profileSaved": "Profile data was successfully saved!"
 }
