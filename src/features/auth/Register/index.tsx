@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator } from '../validation';
 import { IRegisterForm } from '../types';
 
+import { getValidationErrorsFromApiResponse, TApiErrorResponse } from 'helpers/validationHelper';
+
 interface IValidation {
   username: boolean;
   email: boolean;
@@ -57,7 +59,8 @@ const Register = () => {
 
   const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
 
-  const [register, { data: registerData, isLoading, isSuccess }] = useRegisterMutation();
+  const [register, { data: registerData, isLoading, isSuccess, error }] = useRegisterMutation();
+  const apiValidationErrors = useMemo(() => getValidationErrorsFromApiResponse(error as TApiErrorResponse), [error]);
 
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
 
@@ -116,6 +119,7 @@ const Register = () => {
             onTextChange={onInputChange}
             validator={usernameValidator}
             onValidationChange={onValidationChange}
+            error={apiValidationErrors?.username}
           />
 
           <Input
@@ -128,8 +132,9 @@ const Register = () => {
             onTextChange={onInputChange}
             validator={emailValidator}
             onValidationChange={onValidationChange}
+            error={apiValidationErrors?.email}
           />
-
+          
           <Input
             required
             disabled={isLoading}
@@ -141,8 +146,9 @@ const Register = () => {
             onTextChange={onInputChange}
             validator={passwordValidator}
             onValidationChange={onValidationChange}
+            error={apiValidationErrors?.password}
           />
-
+          
           <Input
             required
             disabled={isLoading}
