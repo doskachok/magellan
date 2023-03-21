@@ -26,11 +26,7 @@ export const errorMiddleware: Middleware<{}, RootState> = store => next => actio
       messages.push('Network error, please try again');
     }
 
-    messages.forEach(message => {
-      store.dispatch(addError({
-        message,
-      }));
-    })
+    store.dispatch(addError(messages.map((message) => ({message}))));
   }
   return next(action);
 }
