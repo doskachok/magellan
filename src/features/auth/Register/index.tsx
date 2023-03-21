@@ -26,6 +26,7 @@ interface IValidation {
 interface IPasswordRequirements {
   length: boolean;
   capitalLetter: boolean;
+  lowercaseLetter: boolean;
   number: boolean;
 }
 
@@ -50,6 +51,7 @@ const Register = () => {
   const [passwordRequirements, setPasswordRequirements] = useState<IPasswordRequirements>({
     length: false,
     capitalLetter: false,
+    lowercaseLetter: false,
     number: false,
   });
 
@@ -87,6 +89,7 @@ const Register = () => {
     const requirements = {
       length: form.password.length >= 8,
       capitalLetter: /[A-Z]+/.test(form.password),
+      lowercaseLetter: /[a-z]+/.test(form.password),
       number: /\d+/.test(form.password),
     };
     setPasswordRequirements(requirements);
@@ -162,6 +165,9 @@ const Register = () => {
             </PasswordRequirementsText>
             <PasswordRequirementsText fulfilled={passwordRequirements.capitalLetter}>
               {t('containCapitalLetter')}
+            </PasswordRequirementsText>
+            <PasswordRequirementsText fulfilled={passwordRequirements.lowercaseLetter}>
+              {t('containLowercaseLetter')}
             </PasswordRequirementsText>
             <PasswordRequirementsText fulfilled={passwordRequirements.number}>
               {t('containNumber')}
