@@ -33,13 +33,16 @@ export const LogoutWrapper = styled(Row)`
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  margin-top: 1.5rem;
   width: 100%;
 `;
 
 export const SaveButtonWrapper = styled(Row)`
   justify-content: flex-end;
+  align-items: end;
   width: 100%;
   margin-top: 1rem;
   margin-bottom: 2rem;
   padding-right: 1.5rem;
+  flex: 1;
 `;
