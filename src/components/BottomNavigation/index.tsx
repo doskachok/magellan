@@ -23,7 +23,7 @@ const BottomNavigation = ({ visible = true }: Props) => {
           <img src={receipt} alt="AddExpense" />
         </AddExpense>
 
-        <Profile>
+        <Profile onClick={() => navigate(ROUTES.ACCOUNT_SETTINGS)}>
           <img src={avatar} alt="Profile" />
         </Profile>
       </BottomNavigationStyled>

@@ -61,6 +61,10 @@ declare module 'styled-components' {
         },
         placeholder: {
           reversed: string;
+        },
+        disabled: {
+          default: string;
+          reversed: string; 
         }
       },
       modal: {

@@ -12,7 +12,8 @@ export const ROUTES = {
     CREATE: 'create',
     MEMBERS: 'members',
     GROUP: 'group',
-  }
+  },
+  ACCOUNT_SETTINGS: '/account-settings',
 };
 
 export const ResolveGroupRoute = (route: string) => {

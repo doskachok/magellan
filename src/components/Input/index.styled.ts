@@ -23,6 +23,7 @@ export const Wrapper = styled(Column)`
 `;
 
 export const DisplayName = styled(TextRegular)<IDisplayName>`
+    z-index: 1;
     position: absolute;
     top: 0.75em;
     left: 0.6em;
@@ -71,6 +72,10 @@ export const InputStyled = styled.input<IInputProps>`
     font-weight: 300;
     color: ${props => props.theme.colors.text.primary};
   }
+   
+  :disabled {
+    color: ${props => props.theme.colors.input.disabled.default};
+  };
   
   ${props => props.hasError && css`
     margin-top: 4px;
@@ -84,6 +89,10 @@ export const InputStyled = styled.input<IInputProps>`
 
     ::placeholder {
       color: ${props => props.theme.colors.input.placeholder.reversed};
+    };
+
+    :disabled {
+      color: ${props => props.theme.colors.input.disabled.reversed};
     };
   `};
 `;

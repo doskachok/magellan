@@ -44,12 +44,13 @@ const FileUploader = forwardRef(({ onFileUploaded, onFileSelected, onUploadingCh
   } as IFileUploaderRef))
 
   useEffect(() => {
-    if (!uploadedFileId) {
+    if (!uploadedFileId || !uploadedFile) {
       return;
     }
 
+    setUploadedFile(null);
     onFileUploaded(uploadedFileId.id);
-  }, [uploadedFileId, onFileUploaded]);
+  }, [uploadedFileId, uploadedFile, onFileUploaded]);
 
   useEffect(() => {
     onUploadingChange && onUploadingChange(isFileUploading);
