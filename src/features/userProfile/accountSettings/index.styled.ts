@@ -25,7 +25,7 @@ export const AccountSettingsBackground = styled(Row)`
   width: 120vw;
   height: 80vw;
   z-index: 0;
-  margin-top: -55vw;
+  margin-top: -60vw;
   margin-left: -10vw;
 `;
 
