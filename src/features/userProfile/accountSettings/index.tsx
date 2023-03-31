@@ -98,7 +98,7 @@ const AccountSetttings = () => {
 
         <ContentWrapper fullWidth>
           <MainInfoWrapper fullWidth>
-            <AccountInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
+            <AccountInfoWrapper gap={'5px'} jc={'center'} fullWidth>
               <Row jc={'center'} fullWidth>
                 <FileUploader
                   ref={logoUploaderRef}

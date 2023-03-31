@@ -15,7 +15,7 @@ export const MainInfoWrapper = styled(Column)`
 
 export const AccountInfoWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};
-  padding: 2rem 1.5rem 0;
+  padding: 14px 1.5rem 0;
   z-index: 1;
 `;
 
