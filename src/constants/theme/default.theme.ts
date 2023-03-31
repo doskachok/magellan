@@ -71,6 +71,10 @@ const defaultTheme: DefaultTheme = {
       },
       placeholder: {
         reversed: WHITE_FADED,
+      },
+      disabled: {
+        default: BLACK_FADED,
+        reversed: WHITE_FADED
       }
     },
     modal: {

@@ -74,7 +74,7 @@ export const InputStyled = styled.input<IInputProps>`
   }
    
   :disabled {
-    color: ${props => props.theme.colors.input.border.default};
+    color: ${props => props.theme.colors.input.disabled.default};
   };
   
   ${props => props.hasError && css`
@@ -92,7 +92,7 @@ export const InputStyled = styled.input<IInputProps>`
     };
 
     :disabled {
-      color: ${props => props.theme.colors.input.border.reversed};
+      color: ${props => props.theme.colors.input.disabled.reversed};
     };
   `};
 `;
