@@ -8,7 +8,7 @@ import groupsReducer from '../features/groups/slice';
 import errorReducer from './errorSlice';
 
 const apiCallStatuses = ['pending', 'fulfilled', 'rejected'];
-const unsubscribeQueryResult = 'unsubscribeQueryResult';
+const apiCacheActionsTypes = ['unsubscribeQueryResult', 'removeQueryResult'];
 
 const buildActionLog = (action: Record<string, unknown>, typePrefix: string): Record<string, unknown> => {
   return ({
@@ -27,7 +27,7 @@ const logger = createLogger({
     if (apiCallStatuses.indexOf(actionType) !== -1)
       return buildActionLog(action, action?.meta?.arg?.endpointName);
     
-    if (actionType === unsubscribeQueryResult)
+    if (apiCacheActionsTypes.indexOf(actionType) !== -1)
       return buildActionLog(action, action?.payload?.queryCacheKey);
     
     return action;
