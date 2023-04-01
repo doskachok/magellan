@@ -18,6 +18,7 @@ import Groups from './features/groups';
 import { tokenSelector } from './features/auth/slice';
 import ModalProvider from './providers/ModalProvider';
 import AccountSettings from 'features/userProfile/accountSettings';
+import Expenses from 'features/expenses';
 
 const PrivateRoutes = () => {
   const token = useSelector(tokenSelector);
@@ -38,8 +39,9 @@ function App() {
                   <Route path={ROUTES.ROOT} element={<PrivateRoutes />}>
                     <Route index element={<Navigate to={ROUTES.GROUPS.ROOT} />} />
                     <Route path={`${ROUTES.GROUPS.ROOT}/*`} element={<Groups />} />
-                  <Route path={`${ROUTES.ACCOUNT_SETTINGS}/*`} element={<AccountSettings />} />
-              </Route>
+                    <Route path={`${ROUTES.ACCOUNT_SETTINGS}/*`} element={<AccountSettings />} />
+                    <Route path={`${ROUTES.EXPENSES.ROOT}/*`} element={<Expenses />} />
+                  </Route>
                   <Route path={`${ROUTES.AUTH.ROOT}/*`} element={<Auth />} />
                 </Routes>
                 <ErrorNotifier />

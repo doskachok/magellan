@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import groups from '../../assets/images/groups-icon.svg'
 import receipt from '../../assets/images/receipt-icon.svg'
 import avatar from '../../assets/images/avatar-icon.svg'
-import { ROUTES } from '../../constants/routes';
+import { ROUTES, ResolveExpenseRoute } from 'constants/routes';
 
 interface Props {
   visible?: boolean;
@@ -19,7 +19,7 @@ const BottomNavigation = ({ visible = true }: Props) => {
           <img src={groups} alt="Groups" />
         </Groups>
 
-        <AddExpense>
+        <AddExpense onClick={() => navigate(ResolveExpenseRoute(ROUTES.EXPENSES.ADD_MAININFO))}>
           <img src={receipt} alt="AddExpense" />
         </AddExpense>
 
