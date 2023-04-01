@@ -62,8 +62,7 @@ const AccountSetttings = () => {
 
     setIsTextChanged(false);
     setIsLogoSelected(false);
-    toast.success(t('profileSaved'));
-  }, [form, updateUser, isLogoSelected, t]);
+  }, [form, updateUser, isLogoSelected]);
 
   const onInputTextChanged = useCallback((name: string, value: string) => {
     setForm((form) => ({
@@ -77,8 +76,9 @@ const AccountSetttings = () => {
   useEffect(() => {
     if (updatedUser) {
       dispatch(userReceived(updatedUser));
+      toast.success(t('profileSaved'));
     }
-  }, [updatedUser, dispatch]);
+  }, [updatedUser, dispatch, t]);
 
   useEffect(() => {
     if (user) {
