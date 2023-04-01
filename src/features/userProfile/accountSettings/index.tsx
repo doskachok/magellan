@@ -59,9 +59,6 @@ const AccountSetttings = () => {
     } else {
       updateUser(userToUpdateUser(form));
     }
-
-    setIsTextChanged(false);
-    setIsLogoSelected(false);
   }, [form, updateUser, isLogoSelected]);
 
   const onInputTextChanged = useCallback((name: string, value: string) => {
@@ -76,6 +73,9 @@ const AccountSetttings = () => {
   useEffect(() => {
     if (updatedUser) {
       dispatch(userReceived(updatedUser));
+
+      setIsTextChanged(false);
+      setIsLogoSelected(false);
       toast.success(t('profileSaved'));
     }
   }, [updatedUser, dispatch, t]);
@@ -160,7 +160,7 @@ const AccountSetttings = () => {
           </LogoutWrapper>
 
           <SaveButtonWrapper>
-            <Button onClick={onFormSubmit} disabled={!isLogoSelected && !isTextChanged}>
+            <Button onClick={onFormSubmit} disabled={(!isLogoSelected && !isTextChanged) || isUserUpdating}>
               {t('saveChanges')}
             </Button>
           </SaveButtonWrapper>
