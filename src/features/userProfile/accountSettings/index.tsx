@@ -13,7 +13,7 @@ import { logOut, userReceived, userSelector } from "features/auth/slice";
 import { IUser, userToUpdateUser } from "types/userTypes";
 import { getDownloadFileUrl } from "helpers/urlHelper";
 
-import { AccountInfoWrapper, AccountSettingsBackground, ContentWrapper, LogoutWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
+import { AccountInfoWrapper, AccountSettingsBackground, BackgroundFiller, ContentWrapper, LogoutWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
 import { useUpdateUserMutation } from "store/user.api";
 import Loader from "components/Loader";
 import toast from "react-hot-toast";
@@ -98,7 +98,7 @@ const AccountSetttings = () => {
 
         <ContentWrapper fullWidth>
           <MainInfoWrapper fullWidth>
-            <AccountInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
+            <AccountInfoWrapper gap={'5px'} jc={'center'} fullWidth>
               <Row jc={'center'} fullWidth>
                 <FileUploader
                   ref={logoUploaderRef}
@@ -147,6 +147,7 @@ const AccountSetttings = () => {
               </Column>
             </AccountInfoWrapper>
 
+            <BackgroundFiller />
             <AccountSettingsBackground fullWidth>
             </AccountSettingsBackground>
           </MainInfoWrapper>

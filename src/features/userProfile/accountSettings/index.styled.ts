@@ -11,12 +11,19 @@ export const ContentWrapper = styled(Column)`
 
 export const MainInfoWrapper = styled(Column)`
   z-index: 1;
+  flex: 1;
 `;
 
 export const AccountInfoWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};
-  padding: 2rem 1.5rem 0;
+  padding: 14px 1.5rem 0;
   z-index: 1;
+`;
+
+export const BackgroundFiller = styled(Row)`
+  background: ${props => props.theme.colors.primary};
+  width: 100%;
+  flex: 1;
 `;
 
 export const AccountSettingsBackground = styled(Row)`
@@ -25,7 +32,7 @@ export const AccountSettingsBackground = styled(Row)`
   width: 120vw;
   height: 80vw;
   z-index: 0;
-  margin-top: -55vw;
+  margin-top: -60vw;
   margin-left: -10vw;
 `;
 
@@ -33,13 +40,15 @@ export const LogoutWrapper = styled(Row)`
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  margin-top: 1.5rem;
   width: 100%;
 `;
 
 export const SaveButtonWrapper = styled(Row)`
   justify-content: flex-end;
+  align-items: end;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
   padding-right: 1.5rem;
 `;
