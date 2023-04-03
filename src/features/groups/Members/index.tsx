@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Column, Row } from 'components/Containers';
-import { ContentWrapper, RemoveBtn } from './index.styled';
+import { ContentWrapper } from './index.styled';
 import { TextRegular, Button } from 'components';
 import { useModal } from 'providers/ModalProvider';
 import AddMemberModal from './AddMemberModal';
@@ -45,8 +45,8 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   }, [groupId, selected, removeMember, getGroup]);
 
   const handleMemberSelected = useCallback((member: IUser) => {
-    setSelected(member);
-  }, [setSelected]);
+    member !== selected ? setSelected(member) : setSelected(null);
+  }, [selected, setSelected]);
 
   useEffect(() => {
     getGroup(groupId);
@@ -65,7 +65,13 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
     <ContentWrapper jc={'space-between'} fullWidth>
       <Column fullWidth>
         {group?.participants?.map((p: IUser) =>
-          <MemberRow key={p.id} isSelected={selected === p} member={p} onClick={handleMemberSelected} />
+          <MemberRow 
+            key={p.id}
+            isSelected={selected === p}
+            member={p}
+            onClick={handleMemberSelected}
+            onRemove={onRemoveMember}
+          />
         )}
 
         {
@@ -81,18 +87,11 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
 
       <Loader isLoading={isMemberAdding || isMemberRemoving || isGroupLoading} />
 
-      <Row jc={selected ? 'space-between' : 'flex-end'} fullWidth>
-        {
-          !!selected && 
-          <RemoveBtn disabled={false} onClick={onRemoveMember}>
-            {t('removeMember')}
-          </RemoveBtn>
-        }
-
+      <Row jc='flex-end' fullWidth>
         <Button disabled={false} onClick={onAddMember}>
           {t('addMembers')}
         </Button>
-        </Row>
+      </Row>
     </ContentWrapper>
   );
 };
