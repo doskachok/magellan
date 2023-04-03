@@ -12,7 +12,7 @@
   "addGroupMembers": "Add group members",
   "editGeneralInfo": "Edit group",
   "addMembers": "Add members",
-  "removeMember": "Remove",
+  "removeMember": "Remove user?",
   "noMembers": "No members",
   "saveGroup": "Save group",
   "noTransactions" : "No transactions have been added yet.",
