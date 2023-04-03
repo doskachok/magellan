@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { IUser } from 'types/userTypes';
-import { TextHint, TextRegular } from 'components/Text';
+import { TextHint, TextRegular } from 'components';
 import { Actions, Identification, Wrapper } from './index.styled';
 import { Avatar, AvatarSize } from 'components';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
