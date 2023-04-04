@@ -1,3 +1,4 @@
+import { TextRegular } from "components";
 import { Column, Row } from "components/Containers";
 import styled from "styled-components";
 
@@ -14,6 +15,11 @@ export const MainInfoWrapper = styled(Column)`
   z-index: 1;
   padding: 14px 1.5rem 0;
   flex: 1;
+`;
+
+export const CurrencyText = styled(TextRegular)`
+  color: ${props => props.theme.colors.text.secondary};
+  width: 100%;
 `;
 
 export const BackgroundFiller = styled(Row)`

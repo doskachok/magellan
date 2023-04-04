@@ -2,14 +2,15 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { Input, TextRegular, TextUnderline } from "components";
+import { Input, Select, TextRegular, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 
-import { BackgroundFiller, ContentWrapper, HalfCircleBackground, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
+import { BackgroundFiller, ContentWrapper, CurrencyText, HalfCircleBackground, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
+import currencies from "constants/currencies";
 
 const MainInfo = () => {
   const { t } = useTranslation('expenses');
@@ -20,6 +21,10 @@ const MainInfo = () => {
   }, [navigate]);
 
   const onInputTextChanged = useCallback((name: string, value: string) => {
+    throw new Error("Not implemented.");
+  }, []);
+
+  const onCurrencyChanged = useCallback((name: string, value: string) => {
     throw new Error("Not implemented.");
   }, []);
 
@@ -36,7 +41,7 @@ const MainInfo = () => {
 
       <ContentWrapper fullWidth>
         <MainInfoWrapper fullWidth>
-          <Column fullWidth>
+          <Column gap={'1.5rem'} fullWidth>
             <TextRegular reversedColor>
               {t('mainInfoText')}
             </TextRegular>
@@ -48,6 +53,20 @@ const MainInfo = () => {
                 placeholder={t('transactionName')}
                 value=''
                 onTextChange={onInputTextChanged}
+              />
+            </Row>
+            <Row jc={'space-between'} ai={'center'} fullWidth>
+              <CurrencyText>
+                {t('currency')}
+              </CurrencyText>
+
+              <Select
+                options={currencies}
+                required
+                value={'USD'}
+                name={'currencyCode'}
+                reversedTheme={true}
+                onValueChanged={onCurrencyChanged}
               />
             </Row>
           </Column>
