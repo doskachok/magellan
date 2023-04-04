@@ -8,7 +8,7 @@ import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 
-import { BackgroundFiller, ContentWrapper, HalfCircleBackground, MainInfoWrapper, NextStepButtonWrapper } from "./mainInfo.styled";
+import { BackgroundFiller, ContentWrapper, HalfCircleBackground, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 
 const MainInfo = () => {

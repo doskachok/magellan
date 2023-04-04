@@ -1,6 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
 import {ROUTES} from 'constants/routes';
-import MainInfo from './AddExpense/mainInfo';
+import MainInfo from './AddExpense/MainInfo';
 
 const Expenses = () => {
   return (
