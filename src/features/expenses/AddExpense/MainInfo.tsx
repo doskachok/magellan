@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import { Input, TextUnderline } from "components";
+import { Input, TextRegular, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
@@ -37,6 +37,9 @@ const MainInfo = () => {
       <ContentWrapper fullWidth>
         <MainInfoWrapper fullWidth>
           <Column fullWidth>
+            <TextRegular reversedColor>
+              {t('mainInfoText')}
+            </TextRegular>
             <Row jc={'center'} fullWidth>
               <Input
                 reversedTheme

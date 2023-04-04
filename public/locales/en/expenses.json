@@ -1,5 +1,6 @@
 {
   "mainInfo": "Main info",
   "transactionName": "Transaction title",
-  "nextStep": "Next step"
+  "nextStep": "Next step",
+  "mainInfoText": "Tell us, what this transaction is about, when was is done?"
 }
