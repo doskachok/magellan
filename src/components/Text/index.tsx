@@ -1,9 +1,17 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Text = styled.p`
+interface TextProps {
+  reversedColor?: boolean;
+}
+
+export const Text = styled.p<TextProps>`
   margin: 0;
   font-family: 'Montserrat';
   color: ${props => props.theme.colors.text.primary};
+
+  ${props => props.reversedColor && css`
+    color: ${props => props.theme.colors.text.secondary};
+  `};
 `;
 
 export const TextHeader = styled(Text)`
