@@ -55,6 +55,16 @@ const MainInfo = () => {
                 onTextChange={onInputTextChanged}
               />
             </Row>
+            <Row jc={'center'} fullWidth>
+              <Input
+                reversedTheme
+                name={'date'}
+                displayName={t('transactionName')}
+                type={'date'}
+                value={''}
+                onTextChange={onInputTextChanged}
+              />
+            </Row>
             <Row jc={'space-between'} ai={'center'} fullWidth>
               <CurrencyText>
                 {t('currency')}

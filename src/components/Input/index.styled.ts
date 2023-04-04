@@ -71,10 +71,14 @@ export const InputStyled = styled.input<IInputProps>`
   ::placeholder {
     font-weight: 300;
     color: ${props => props.theme.colors.text.primary};
-  }
+  };
    
   :disabled {
     color: ${props => props.theme.colors.input.disabled.default};
+  };
+
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
   };
   
   ${props => props.hasError && css`
