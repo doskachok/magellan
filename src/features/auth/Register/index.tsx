@@ -59,7 +59,7 @@ const Register = () => {
 
   const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
 
-  const [register, { data: registerData, isLoading, isSuccess, error }] = useRegisterMutation();
+  const [register, { isLoading, isSuccess, error }] = useRegisterMutation();
   const apiValidationErrors = useMemo(() => getValidationErrorsFromApiResponse(error as TApiErrorResponse), [error]);
 
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
