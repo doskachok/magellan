@@ -1,3 +1,4 @@
+TEST
 # About
 Front-end application for simplification of calculation of expenses.
 
