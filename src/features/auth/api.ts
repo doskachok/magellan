@@ -1,4 +1,3 @@
-import { IUser } from 'types/userTypes';
 import mainApi from '../../store/api';
 import { IRegisterForm, IAuthPayload, ILoginForm, IUser } from './types';
 
