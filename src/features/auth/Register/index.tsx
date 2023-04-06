@@ -83,10 +83,10 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (registerData && isSuccess) {
+    if (isSuccess) {
       navigate(ROUTES.AUTH.ROOT, { replace: true });
     }
-  }, [navigate, registerData, isSuccess]);
+  }, [navigate, isSuccess]);
 
   useEffect(() => {
     const requirements = {
@@ -134,7 +134,7 @@ const Register = () => {
             onValidationChange={onValidationChange}
             error={apiValidationErrors?.email}
           />
-          
+
           <Input
             required
             disabled={isLoading}
@@ -148,7 +148,7 @@ const Register = () => {
             onValidationChange={onValidationChange}
             error={apiValidationErrors?.password}
           />
-          
+
           <Input
             required
             disabled={isLoading}
