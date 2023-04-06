@@ -1,5 +1,5 @@
 name: Deploy to Firebase Hosting manually on /deploy
-on:
+'on':
   issue_comment:
     types: [created]
 jobs:
@@ -16,3 +16,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MAGELLAN2022_613C2 }}'
           projectId: magellan2022-613c2
+          channelId: preview
