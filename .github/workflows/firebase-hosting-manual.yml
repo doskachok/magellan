@@ -7,7 +7,15 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/deploy')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Get PR branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+    
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
+    
       - run: npm ci && npm run build
         env:
           REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
