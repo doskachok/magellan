@@ -12,7 +12,7 @@ interface IRequiredIndicatorProps extends IReversible {
   hasError?: boolean;
 }
 
-interface IDisplayName extends IReversible {}
+interface IDisplayName extends IReversible { }
 
 interface IReversible {
   reversedTheme?: boolean;
@@ -22,7 +22,7 @@ export const Wrapper = styled(Column)`
   position: relative;
 `;
 
-export const DisplayName = styled(TextRegular)<IDisplayName>`
+export const DisplayName = styled(TextRegular) <IDisplayName>`
     z-index: 1;
     position: absolute;
     top: 0.75em;
@@ -50,6 +50,7 @@ export const RequiredIndicator = styled(TextRegular) <IRequiredIndicatorProps>`
 
 export const TextError = styled(TextRegular)`
   color: ${props => props.theme.colors.text.error};
+  font-size: 12px;
 `;
 
 export const InputStyled = styled.input<IInputProps>`
