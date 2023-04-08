@@ -10,18 +10,18 @@ export const ROUTES = {
     CREATE: 'create',
   },
   ACCOUNT_SETTINGS: '/account-settings',
-  EXPENSES: {
-    ROOT: '/expenses',
-    ADD_MAININFO: 'add-main-info',
-  },
 };
 
-export const ResolveExpenseRoute = (route: string) => {
-  return `${ROUTES.EXPENSES.ROOT}/${route}`;
-};
+export const CreateRouteString = 'create';
 
-export enum GroupRouteMode { EDIT = 'edit', NONE = '' };
+export enum GroupRouteMode { EDIT = 'edit', EXPENSES = 'expenses', NONE = '' };
 
 export const composeGroupRoute = (groupId: string, mode = GroupRouteMode.NONE) => {
   return `${ROUTES.GROUPS.ROOT}/${groupId}/${mode}`;
+};
+
+export enum ExpenseRouteMode { ADD_MAININFO = 'add-main-info', NONE = '' };
+
+export const composeExpenseRoute = (groupId: string, expenseIdOrCreate: string, mode: ExpenseRouteMode) => {
+  return `${composeGroupRoute(groupId, GroupRouteMode.EXPENSES)}/${expenseIdOrCreate}/${mode}`;
 };

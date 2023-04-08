@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Input, Select, TextUnderline } from "components";
@@ -11,10 +11,9 @@ import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { BackgroundFiller, ContentWrapper, CurrencyText, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
-import { selectedGroupSelector } from "features/groups/slice";
 import { ICreateTransaction } from "../types";
 import { newTransactionSelector } from "../slice";
-import { ROUTES, ResolveExpenseRoute } from "constants/routes";
+import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { saveTransaction } from "../slice";
 
 interface ILocationState {
@@ -28,9 +27,8 @@ const MainInfo = () => {
   const location = useLocation();
   const locationState = location.state as ILocationState;
 
-  const group = useSelector(selectedGroupSelector);
-  if (!group)
-    throw new Error("Not implemented.");
+  const {groupId: groupIdOptional} = useParams();
+  const groupId = groupIdOptional ?? '';
 
   const transaction = useSelector(newTransactionSelector);
 
@@ -38,7 +36,7 @@ const MainInfo = () => {
     name: '',
     paymentDateUtc: new Date().toISOString().split('T')[0],
     currencyCode: currencies[0].value,
-    groupId: group?.id ?? '',
+    groupId: groupId,
     payerDetails: [],
     partialsAssignments: [],
   });
@@ -56,7 +54,7 @@ const MainInfo = () => {
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
-    navigate(ResolveExpenseRoute(ROUTES.EXPENSES.ADD_MAININFO), {state: { proceed: true }});
+    navigate(composeExpenseRoute(groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO), {state: { proceed: true }});
   }
 
   useEffect(() => {  
