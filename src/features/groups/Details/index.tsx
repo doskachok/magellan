@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
-import { ResolveGroupRoute, ROUTES } from 'constants/routes';
+import { composeGroupRoute, GroupRouteMode, ROUTES } from 'constants/routes';
 import { useLazyGetTransactionGroupByIdQuery } from '../api';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
@@ -31,7 +31,7 @@ const GroupDetails = () => {
   }, [navigate]);
 
   const handleEditAction = useCallback(() => {
-    navigate(ResolveGroupRoute(`${ROUTES.GROUPS.EDIT}/${groupId}`));
+    navigate(composeGroupRoute(groupId || '', GroupRouteMode.EDIT));
   }, [navigate, groupId]);
 
   useEffect(() => {

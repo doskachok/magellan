@@ -5,7 +5,7 @@ import { Avatar, AvatarSize } from 'components';
 import { RowWrapperLink } from 'components/Link';
 import { GroupName, GroupRowWrapper } from './index.styled';
 
-import { ROUTES } from 'constants/routes';
+import { composeGroupRoute } from 'constants/routes';
 
 export interface IGroupRowProps {
   item: ITransactionGroupListItem,
@@ -13,7 +13,7 @@ export interface IGroupRowProps {
 
 const GroupRow = ({ item }: IGroupRowProps) => {
   return (
-    <RowWrapperLink to={`${ROUTES.GROUPS.GROUP}/${item.id}`}>
+    <RowWrapperLink to={composeGroupRoute(item.id)}>
       <GroupRowWrapper ai="center" fullWidth>
         <Avatar
           src={getDownloadFileUrl(item.avatarId)}
