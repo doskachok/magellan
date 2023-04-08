@@ -1,20 +1,23 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Input, Select, TextRegular, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
-
 import { BackgroundFiller, ContentWrapper, CurrencyText, HalfCircleBackground, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
+import { selectedGroupSelector } from "features/groups/slice";
 
 const MainInfo = () => {
   const { t } = useTranslation('expenses');
   const navigate = useNavigate();
+
+  const group = useSelector(selectedGroupSelector);
 
   const handleBackAction = useCallback(() => {
     navigate(-1);
@@ -31,6 +34,11 @@ const MainInfo = () => {
   const onNextStep = useCallback(() => {
     throw new Error("Not implemented.");
   }, []);
+
+  useEffect(() => {
+    if (!group)
+      throw new Error("Not implemented.");
+  }, [group])
 
   return (
     <PageWrapper>
