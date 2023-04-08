@@ -1,6 +1,6 @@
 export interface ICreateTransaction {
   name: string;
-  paymentDateUtc: Date;
+  paymentDateUtc: string;
   currencyCode: string;
   groupId: string;
   payerDetails: IPayerDetails[];

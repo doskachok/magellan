@@ -33,7 +33,7 @@ const MainInfo = () => {
 
   const [form, setForm] = useState<ICreateTransaction>({
     name: '',
-    paymentDateUtc: new Date(),
+    paymentDateUtc: new Date().toISOString().split('T')[0],
     currencyCode: currencies[0].value,
     groupId: group?.id ?? '',
     payerDetails: [],
@@ -47,7 +47,7 @@ const MainInfo = () => {
   const onControllTextChanged = useCallback((name: string, value: string) => {
     setForm(form => ({
       ...form,
-      [name]: name === 'paymentDateUtc' ? new Date(value) : value,
+      [name]: value,
     }));
   }, []);
 
@@ -76,7 +76,6 @@ const MainInfo = () => {
 
     setForm((form) => ({
       ...form,
-      paymentDateUtc: new Date(),
       groupId: group.id,
     }));
   }, [dispatch, group, transaction, locationState])
@@ -111,7 +110,7 @@ const MainInfo = () => {
                 name={'paymentDateUtc'}
                 displayName={t('paymentDateUtc')}
                 type={'date'}
-                value={form.paymentDateUtc.toISOString().split('T')[0]}
+                value={form.paymentDateUtc}
                 onTextChange={onControllTextChanged}
               />
             </Row>
