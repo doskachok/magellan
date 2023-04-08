@@ -31,22 +31,14 @@ const MainInfo = () => {
     partialsAssignments: [],
   });
 
-
   const handleBackAction = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  const onInputTextChanged = useCallback((name: string, value: string) => {
+  const onControllTextChanged = useCallback((name: string, value: string) => {
     setForm(form => ({
       ...form,
       [name]: name === 'paymentDateUtc' ? new Date(value) : value,
-    }));
-  }, []);
-
-  const onCurrencyChanged = useCallback((name: string, value: string) => {
-    setForm(form => ({
-      ...form,
-      [name]: value,
     }));
   }, []);
 
@@ -93,7 +85,7 @@ const MainInfo = () => {
                 displayName={t('transactionName')}
                 placeholder={t('transactionName')}
                 value={form.name}
-                onTextChange={onInputTextChanged}
+                onTextChange={onControllTextChanged}
               />
             </Row>
             <Row jc={'center'} fullWidth>
@@ -103,7 +95,7 @@ const MainInfo = () => {
                 displayName={t('paymentDateUtc')}
                 type={'date'}
                 value={form.paymentDateUtc.toISOString().split('T')[0]}
-                onTextChange={onInputTextChanged}
+                onTextChange={onControllTextChanged}
               />
             </Row>
             <Row jc={'space-between'} ai={'center'} fullWidth>
@@ -117,7 +109,7 @@ const MainInfo = () => {
                 value={form.currencyCode}
                 name={'currencyCode'}
                 reversedTheme={true}
-                onValueChanged={onCurrencyChanged}
+                onValueChanged={onControllTextChanged}
               />
             </Row>
           </Column>
