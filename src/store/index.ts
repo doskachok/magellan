@@ -16,6 +16,7 @@ import {mainApi} from './api';
 import {errorMiddleware} from './errorMiddleware';
 import authReducer from '../features/auth/slice';
 import groupsReducer from '../features/groups/slice';
+import expensesReducer from '../features/expenses/slice';
 import errorReducer from './errorSlice';
 
 const apiCallStatuses = ['pending', 'fulfilled', 'rejected'];
@@ -58,6 +59,7 @@ const middlewares: Middleware[] = [
 const reducer = combineReducers({
   auth: authReducer,
   groups: groupsReducer,
+  expenses: expensesReducer,
   errors: errorReducer,
   ...apiReducers,
 });

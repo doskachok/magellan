@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -12,23 +12,42 @@ import { BackgroundFiller, ContentWrapper, CurrencyText, HalfCircleBackground, M
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { selectedGroupSelector } from "features/groups/slice";
+import { ICreateTransaction } from "../types";
+import { newTransactionSelector } from "../slice";
 
 const MainInfo = () => {
   const { t } = useTranslation('expenses');
   const navigate = useNavigate();
 
   const group = useSelector(selectedGroupSelector);
+  const transaction = useSelector(newTransactionSelector);
+
+  const [form, setForm] = useState<ICreateTransaction>({
+    name: '',
+    paymentDateUtc: new Date(),
+    currencyCode: currencies[0].value,
+    groupId: group?.id ?? '',
+    payerDetails: [],
+    partialsAssignments: [],
+  });
+
 
   const handleBackAction = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
   const onInputTextChanged = useCallback((name: string, value: string) => {
-    throw new Error("Not implemented.");
+    setForm(form => ({
+      ...form,
+      [name]: name === 'paymentDateUtc' ? new Date(value) : value,
+    }));
   }, []);
 
   const onCurrencyChanged = useCallback((name: string, value: string) => {
-    throw new Error("Not implemented.");
+    setForm(form => ({
+      ...form,
+      [name]: value,
+    }));
   }, []);
 
   const onNextStep = useCallback(() => {
@@ -38,7 +57,21 @@ const MainInfo = () => {
   useEffect(() => {
     if (!group)
       throw new Error("Not implemented.");
-  }, [group])
+    
+    if (transaction) {
+      setForm((form) => ({
+        ...form,
+        ...transaction,
+      }));
+      return;
+    }
+    
+    setForm((form) => ({
+      ...form,
+      paymentDateUtc: new Date(),
+      groupId: group.id,
+    }));
+  }, [group, transaction])
 
   return (
     <PageWrapper>
@@ -56,20 +89,20 @@ const MainInfo = () => {
             <Row jc={'center'} fullWidth>
               <Input
                 reversedTheme
-                name={'transactionName'}
+                name={'name'}
                 displayName={t('transactionName')}
                 placeholder={t('transactionName')}
-                value=''
+                value={form.name}
                 onTextChange={onInputTextChanged}
               />
             </Row>
             <Row jc={'center'} fullWidth>
               <Input
                 reversedTheme
-                name={'date'}
-                displayName={t('transactionName')}
+                name={'paymentDateUtc'}
+                displayName={t('paymentDateUtc')}
                 type={'date'}
-                value={''}
+                value={form.paymentDateUtc.toISOString().split('T')[0]}
                 onTextChange={onInputTextChanged}
               />
             </Row>
@@ -81,7 +114,7 @@ const MainInfo = () => {
               <Select
                 options={currencies}
                 required
-                value={'USD'}
+                value={form.currencyCode}
                 name={'currencyCode'}
                 reversedTheme={true}
                 onValueChanged={onCurrencyChanged}
