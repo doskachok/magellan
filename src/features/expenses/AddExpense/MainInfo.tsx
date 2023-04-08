@@ -29,6 +29,9 @@ const MainInfo = () => {
   const locationState = location.state as ILocationState;
 
   const group = useSelector(selectedGroupSelector);
+  if (!group)
+    throw new Error("Not implemented.");
+
   const transaction = useSelector(newTransactionSelector);
 
   const [form, setForm] = useState<ICreateTransaction>({
@@ -57,10 +60,7 @@ const MainInfo = () => {
     navigate(ResolveExpenseRoute(ROUTES.EXPENSES.ADD_MAININFO), {state});
   }, [dispatch, navigate, form]);
 
-  useEffect(() => {
-    if (!group)
-      throw new Error("Not implemented.");
-    
+  useEffect(() => {  
     if (!locationState?.proceed || !transaction) {
       // Clean transaction
       dispatch(saveTransaction(null));
@@ -73,12 +73,7 @@ const MainInfo = () => {
       }));
       return;
     }
-
-    setForm((form) => ({
-      ...form,
-      groupId: group.id,
-    }));
-  }, [dispatch, group, transaction, locationState])
+  }, [dispatch, transaction, locationState])
 
   return (
     <PageWrapper>
