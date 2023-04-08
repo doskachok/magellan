@@ -3,12 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Input, Select, TextRegular, TextUnderline } from "components";
+import { Input, Select, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
-import { BackgroundFiller, ContentWrapper, CurrencyText, HalfCircleBackground, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
+import { BackgroundFiller, ContentWrapper, CurrencyText, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { selectedGroupSelector } from "features/groups/slice";
@@ -74,10 +74,11 @@ const MainInfo = () => {
 
       <ContentWrapper fullWidth>
         <MainInfoWrapper fullWidth>
-          <Column gap={'1.5rem'} fullWidth>
-            <TextRegular reversedColor>
+          <Column gap={'1rem'} fullWidth>
+            <MainInfoText>
               {t('mainInfoText')}
-            </TextRegular>
+            </MainInfoText>
+
             <Row jc={'center'} fullWidth>
               <Input
                 reversedTheme

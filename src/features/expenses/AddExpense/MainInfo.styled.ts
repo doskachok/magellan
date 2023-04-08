@@ -17,6 +17,13 @@ export const MainInfoWrapper = styled(Column)`
   flex: 1;
 `;
 
+export const MainInfoText = styled(TextRegular)`
+  color: ${props => props.theme.colors.text.secondary};
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 60px;
+`;
+
 export const CurrencyText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
   width: 100%;
