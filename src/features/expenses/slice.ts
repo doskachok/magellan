@@ -14,7 +14,7 @@ const expensesSlice = createSlice({
   name: 'expenses',
   initialState: initialState,
   reducers: {
-    saveTransaction: (state, { payload }: PayloadAction<ICreateTransaction>) => {
+    saveTransaction: (state, { payload }: PayloadAction<ICreateTransaction | null>) => {
       state.newTransaction = payload;
     },
   }

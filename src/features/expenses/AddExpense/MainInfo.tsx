@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Input, Select, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
@@ -14,10 +14,19 @@ import currencies from "constants/currencies";
 import { selectedGroupSelector } from "features/groups/slice";
 import { ICreateTransaction } from "../types";
 import { newTransactionSelector } from "../slice";
+import { ROUTES, ResolveExpenseRoute } from "constants/routes";
+import { saveTransaction } from "../slice";
+
+interface ILocationState {
+  proceed?: boolean;
+}
 
 const MainInfo = () => {
   const { t } = useTranslation('expenses');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location.state as ILocationState;
 
   const group = useSelector(selectedGroupSelector);
   const transaction = useSelector(newTransactionSelector);
@@ -43,19 +52,24 @@ const MainInfo = () => {
   }, []);
 
   const onNextStep = useCallback(() => {
-    throw new Error("Not implemented.");
-  }, []);
+    dispatch(saveTransaction(form));
+    const state = { proceed: true };
+    navigate(ResolveExpenseRoute(ROUTES.EXPENSES.ADD_MAININFO), {state});
+  }, [dispatch, navigate, form]);
 
   useEffect(() => {
     if (!group)
       throw new Error("Not implemented.");
     
-    if (transaction) {
+    if (locationState?.proceed && transaction) {
       setForm((form) => ({
         ...form,
         ...transaction,
       }));
       return;
+    }
+    else {
+      dispatch(saveTransaction(null));
     }
     
     setForm((form) => ({
@@ -63,7 +77,7 @@ const MainInfo = () => {
       paymentDateUtc: new Date(),
       groupId: group.id,
     }));
-  }, [group, transaction])
+  }, [dispatch, group, transaction, locationState])
 
   return (
     <PageWrapper>
