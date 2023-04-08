@@ -61,17 +61,19 @@ const MainInfo = () => {
     if (!group)
       throw new Error("Not implemented.");
     
-    if (locationState?.proceed && transaction) {
+    if (!locationState?.proceed || !transaction) {
+      // Clean transaction
+      dispatch(saveTransaction(null));
+    }
+    else {
+      // Load transaction from the slice 
       setForm((form) => ({
         ...form,
         ...transaction,
       }));
       return;
     }
-    else {
-      dispatch(saveTransaction(null));
-    }
-    
+
     setForm((form) => ({
       ...form,
       paymentDateUtc: new Date(),
