@@ -54,11 +54,10 @@ const MainInfo = () => {
     }));
   }, []);
 
-  const onNextStep = useCallback(() => {
+  const onNextStep = () => {
     dispatch(saveTransaction(form));
-    const state = { proceed: true };
-    navigate(ResolveExpenseRoute(ROUTES.EXPENSES.ADD_MAININFO), {state});
-  }, [dispatch, navigate, form]);
+    navigate(ResolveExpenseRoute(ROUTES.EXPENSES.ADD_MAININFO), {state: { proceed: true }});
+  }
 
   useEffect(() => {  
     if (!locationState?.proceed || !transaction) {
