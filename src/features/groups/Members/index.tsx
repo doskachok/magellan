@@ -2,8 +2,8 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Column, Row } from 'components/Containers';
-import { ContentWrapper } from './index.styled';
-import { TextRegular, Button } from 'components';
+import { ContentWrapper, Header } from './index.styled';
+import { TextRegular, TextSmall, Button } from 'components';
 import { useModal } from 'providers/ModalProvider';
 import AddMemberModal from './AddMemberModal';
 import { IUser } from 'types/userTypes';
@@ -64,26 +64,37 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   return (
     <ContentWrapper jc={'space-between'} fullWidth>
       <Column fullWidth>
-        {group?.participants?.map((p: IUser) =>
-          <MemberRow 
-            key={p.id}
-            isSelected={selected === p}
-            member={p}
-            onClick={handleMemberSelected}
-            onRemove={onRemoveMember}
-          />
-        )}
+        <Header fullWidth>
+            <TextSmall>
+              {t('groupMember')}
+            </TextSmall>
+            <TextSmall>
+              {t('balance')}
+            </TextSmall>
+        </Header>
 
-        {
-          group?.participants?.length === 0 ?
+        <Column fullWidth>
+          {group?.participants?.map((p: IUser) =>
+            <MemberRow 
+              key={p.id}
+              isSelected={selected === p}
+              member={p}
+              onClick={handleMemberSelected}
+              onRemove={onRemoveMember}
+            />
+          )}
+
+          {
+            group?.participants?.length === 0 ?
             <Row jc={'center'} fullWidth>
-              <TextRegular>
-                {t('noMembers')}
-              </TextRegular>
-            </Row>
-            : null
-        }
-      </Column>
+                <TextRegular>
+                  {t('noMembers')}
+                </TextRegular>
+              </Row>
+              : null
+            }
+        </Column>
+      </Column>      
 
       <Loader isLoading={isMemberAdding || isMemberRemoving || isGroupLoading} />
 
