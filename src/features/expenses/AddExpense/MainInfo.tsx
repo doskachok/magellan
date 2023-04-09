@@ -108,6 +108,7 @@ const MainInfo = () => {
                 displayName={t('transactionName')}
                 placeholder={t('transactionName')}
                 value={form.name}
+                required
                 onTextChange={onControllTextChanged}
               />
             </Row>
@@ -117,6 +118,7 @@ const MainInfo = () => {
                 name={'paymentDateUtc'}
                 displayName={t('paymentDateUtc')}
                 type={'date'}
+                required
                 value={form.paymentDateUtc}
                 onTextChange={onControllTextChanged}
               />
