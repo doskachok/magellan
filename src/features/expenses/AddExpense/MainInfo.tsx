@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
+import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
 import { BackgroundFiller, ContentWrapper, CurrencyTitle, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
@@ -17,9 +18,15 @@ import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "consta
 import { saveTransaction } from "../slice";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 import { groupsListSelector } from "features/groups/slice";
+import { requiredValidator } from "features/auth/validation";
 
 interface ILocationState {
   proceed?: boolean;
+}
+
+interface IValidation {
+  groupId: boolean;
+  name: boolean;
 }
 
 const MainInfo = () => {
@@ -45,6 +52,13 @@ const MainInfo = () => {
     partialsAssignments: [],
   });
 
+  const [validation, setValidation] = useState<IValidation>({
+    groupId: false,
+    name: false,
+  });
+
+  const isNextStepButtonDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
+
   const handleBackAction = useCallback(() => {
     navigate(-1);
   }, [navigate]);
@@ -52,6 +66,13 @@ const MainInfo = () => {
   const onControllTextChanged = useCallback((name: string, value: string) => {
     setForm(form => ({
       ...form,
+      [name]: value,
+    }));
+  }, []);
+
+  const onControllValidationChanged = useCallback((name: string, value: boolean) => {
+    setValidation(validation => ({
+      ...validation,
       [name]: value,
     }));
   }, []);
@@ -98,6 +119,8 @@ const MainInfo = () => {
                 name={'groupId'}
                 reversedTheme={true}
                 onValueChanged={onControllTextChanged}
+                validator={requiredValidator}
+                onValidationChange={onControllValidationChanged}
               />
             </Row>
 
@@ -110,6 +133,8 @@ const MainInfo = () => {
                 value={form.name}
                 required
                 onTextChange={onControllTextChanged}
+                validator={requiredValidator}
+                onValidationChange={onControllValidationChanged}
               />
             </Row>
             <Row jc={'center'} fullWidth>
@@ -143,12 +168,25 @@ const MainInfo = () => {
         </MainInfoWrapper>
         <HalfCircleBackground />
 
-        <NextStepButtonWrapper onClick={onNextStep}>
-          <TextUnderline>
-            {t('nextStep')}
-          </TextUnderline>
-          <ArrowRightSVG />
-        </NextStepButtonWrapper>
+        {
+          !isNextStepButtonDisabled &&
+          <NextStepButtonWrapper onClick={onNextStep}>
+            <TextUnderline>
+              {t('nextStep')}
+            </TextUnderline>
+            <ArrowRightSVG />
+          </NextStepButtonWrapper>
+        }
+
+        {
+          !!isNextStepButtonDisabled &&
+          <NextStepButtonWrapper>
+            <TextUnderline disabled>
+              {t('nextStep')}
+            </TextUnderline>
+            <ArrowRightDisabledSVG />
+          </NextStepButtonWrapper>
+        }
       </ContentWrapper>
 
       <BottomNavigation/>

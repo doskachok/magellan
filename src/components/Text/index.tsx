@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 interface TextProps {
   reversedColor?: boolean;
+  disabled?: boolean;
 }
 
 export const Text = styled.p<TextProps>`
@@ -31,4 +32,8 @@ export const TextUnderline = styled(TextRegular)`
   line-height: 20px;
   text-decoration-line: underline;
   color: ${props => props.theme.colors.text.link};
+
+  ${props => props.disabled && css`
+    color: ${props => props.theme.colors.input.disabled.default};
+  `};
 `;
