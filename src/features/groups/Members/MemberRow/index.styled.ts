@@ -11,7 +11,7 @@ export const Wrapper = styled(Row) <IWrapperProps>`
   gap: 0.5rem;
   padding: 0.5rem;
   ${props => props.isSelected && css`
-    background: ${props => props.theme.colors.selectedItem};
+    outline: solid 1px ${props => props.theme.colors.primary};
     border-radius: 7px;
   `};
 `;
@@ -23,6 +23,8 @@ export const Identification = styled.div`
 `;
 
 export const Actions = styled.div`
+  text-align: right;
+  align-items: center;
   display: flex;
   gap: 0.8rem;
 `;
