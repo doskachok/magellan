@@ -18,6 +18,19 @@ export const TextRegular = styled(Text)`
   font-size: 16px;
 `;
 
+export const TextSmall = styled(Text)`
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+`;
+
+export const TextHint = styled(Text)`
+  font-style: normal;
+  font-weight: 100;
+  font-size: 11px;
+  color: ${props => props.theme.colors.text.title};
+`;
+
 export const TextUnderline = styled(TextRegular)`
   font-weight: 700;
   line-height: 20px;

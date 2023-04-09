@@ -2,14 +2,15 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Column, Row } from 'components/Containers';
-import { ContentWrapper, RemoveBtn } from './index.styled';
-import { TextRegular, Button } from 'components';
+import { ContentWrapper, Header } from './index.styled';
+import { TextRegular, TextSmall, Button } from 'components';
 import { useModal } from 'providers/ModalProvider';
 import AddMemberModal from './AddMemberModal';
 import { IUser } from 'types/userTypes';
 import { useAddParticipantMutation, useLazyGetTransactionGroupByIdQuery, useRemoveParticipantMutation } from '../api';
 import Loader from 'components/Loader';
 import MemberRow from './MemberRow';
+import toast from "react-hot-toast";
 
 export interface IGroupMembersProps {
   groupId: string;
@@ -29,8 +30,9 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   const handleMemberToAddSelected = useCallback((member: IUser) => {
     addMember({ groupId, userId: member.id }).then(() => {
       getGroup(groupId);
+      toast.success(t('memberAdded'));
     });
-  }, [addMember, groupId, getGroup]);
+  }, [addMember, groupId, getGroup, t]);
 
   const onAddMember = useCallback(() => {
     const modalId = modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
@@ -41,12 +43,13 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
     removeMember({ groupId, userId: selected!.id }).then(() => {
       setSelected(null);
       getGroup(groupId);
+      toast.success(t('memberRemoved'));
     });
-  }, [groupId, selected, removeMember, getGroup]);
+  }, [groupId, selected, removeMember, getGroup, t]);
 
   const handleMemberSelected = useCallback((member: IUser) => {
-    setSelected(member);
-  }, [setSelected]);
+    member !== selected ? setSelected(member) : setSelected(null);
+  }, [selected, setSelected]);
 
   useEffect(() => {
     getGroup(groupId);
@@ -64,35 +67,45 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   return (
     <ContentWrapper jc={'space-between'} fullWidth>
       <Column fullWidth>
-        {group?.participants?.map((p: IUser) =>
-          <MemberRow key={p.id} isSelected={selected === p} member={p} onClick={handleMemberSelected} />
-        )}
+        <Header fullWidth>
+            <TextSmall>
+              {t('groupMember')}
+            </TextSmall>
+            <TextSmall>
+              {t('balance')}
+            </TextSmall>
+        </Header>
 
-        {
-          group?.participants?.length === 0 ?
+        <Column fullWidth>
+          {group?.participants?.map((p: IUser) =>
+            <MemberRow 
+              key={p.id}
+              isSelected={selected === p}
+              member={p}
+              onClick={handleMemberSelected}
+              onRemove={onRemoveMember}
+            />
+          )}
+
+          {
+            group?.participants?.length === 0 ?
             <Row jc={'center'} fullWidth>
-              <TextRegular>
-                {t('noMembers')}
-              </TextRegular>
-            </Row>
-            : null
-        }
-      </Column>
+                <TextRegular>
+                  {t('noMembers')}
+                </TextRegular>
+              </Row>
+              : null
+            }
+        </Column>
+      </Column>      
 
       <Loader isLoading={isMemberAdding || isMemberRemoving || isGroupLoading} />
 
-      <Row jc={selected ? 'space-between' : 'flex-end'} fullWidth>
-        {
-          !!selected && 
-          <RemoveBtn disabled={false} onClick={onRemoveMember}>
-            {t('removeMember')}
-          </RemoveBtn>
-        }
-
+      <Row jc='flex-end' fullWidth>
         <Button disabled={false} onClick={onAddMember}>
           {t('addMembers')}
         </Button>
-        </Row>
+      </Row>
     </ContentWrapper>
   );
 };

@@ -1,15 +1,15 @@
 import styled from 'styled-components';
-import { Column } from 'components/Containers';
-import { ButtonStyled } from 'components/Button/index.styled';
+import { Column, Row } from 'components/Containers';
 
 export const ContentWrapper = styled(Column)`
   padding: 1rem;
   flex: 1;
 `;
 
-export const RemoveBtn = styled(ButtonStyled)`
-  background: ${props => props.theme.colors.button.remove};
-  &:active {
-    background: ${props => props.theme.colors.button.removeFocused};
-  }
+export const Header = styled(Row)`
+  padding-left: 10px;
+  padding-bottom: 10px;
+  padding-right: 40px;
+  display: flex;
+  justify-content: space-between;
 `;

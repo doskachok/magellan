@@ -7,12 +7,15 @@
   "createGroup": "Create a group",
   "updateGroup": "Update a group",
   "groupMembers": "Group members",
+  "groupMember": "Group member",
   "groupName": "Group name",
   "mainCurrency": "Main currency",
   "addGroupMembers": "Add group members",
   "editGeneralInfo": "Edit group",
   "addMembers": "Add members",
-  "removeMember": "Remove",
+  "memberAdded": "Member has been added",
+  "removeMember": "Remove user?",
+  "memberRemoved": "Member has been removed",
   "noMembers": "No members",
   "saveGroup": "Save group",
   "noTransactions" : "No transactions have been added yet.",
@@ -22,5 +25,7 @@
   "findNewPeopleHere": "Find new people here...",
   "orLookAlreadyKnown": "...or look though already known",
   "noAlreadyKnownUsers": "...oops, no already known users",
-  "enterUsernameOrEmail": "Enter username or email"
+  "enterUsernameOrEmail": "Enter username or email",
+  "balance": "Balance"
+  
 }
