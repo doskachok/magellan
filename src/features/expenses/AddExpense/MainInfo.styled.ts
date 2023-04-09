@@ -21,12 +21,13 @@ export const MainInfoText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
   width: 100%;
   margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `;
 
 export const CurrencyTitle = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
   width: 100%;
+  margin-top: 23px;
 `;
 
 export const BackgroundFiller = styled(Row)`

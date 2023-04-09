@@ -6,6 +6,7 @@ import { Column } from '../Containers';
 interface ISelectProps {
   reversedTheme?: boolean;
   isOpened?: boolean;
+  hasError?: boolean;
 }
 
 export const Wrapper = styled(Column)`
@@ -32,6 +33,7 @@ export const SelectLabel = styled.label<ISelectProps>`
   height: 48px;
   width: 100%;
   padding: 0.7rem;
+  margin-top: 23px;
   outline: none;
 
   font-weight: 500;
@@ -50,6 +52,11 @@ export const SelectLabel = styled.label<ISelectProps>`
       transform: rotate(180deg);
       transition: transform 0.3s;
     }
+  `};
+
+  ${props => props.hasError && css`
+    margin-top: 4px;
+    border-color: ${props => props.theme.colors.input.border.error};
   `};
 
   ${props => props.reversedTheme && css`

@@ -22,6 +22,7 @@ export const GroupInfoWrapper = styled(Column)`
 export const GroupCurrencyText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
   width: 100%;
+  margin-top: 23px;
 `;
 
 export const GroupEditBackground = styled(Row)`
