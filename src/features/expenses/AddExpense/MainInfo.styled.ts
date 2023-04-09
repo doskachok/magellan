@@ -24,7 +24,7 @@ export const MainInfoText = styled(TextRegular)`
   margin-bottom: 30px;
 `;
 
-export const CurrencyText = styled(TextRegular)`
+export const CurrencyTitle = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
   width: 100%;
 `;

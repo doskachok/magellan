@@ -8,7 +8,7 @@ import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
-import { BackgroundFiller, ContentWrapper, CurrencyText, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
+import { BackgroundFiller, ContentWrapper, CurrencyTitle, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
@@ -122,9 +122,9 @@ const MainInfo = () => {
               />
             </Row>
             <Row jc={'space-between'} ai={'center'} fullWidth>
-              <CurrencyText>
+              <CurrencyTitle>
                 {t('currency')}
-              </CurrencyText>
+              </CurrencyTitle>
 
               <Select
                 options={currencies}
