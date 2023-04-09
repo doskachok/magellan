@@ -13,6 +13,7 @@ export const ROUTES = {
 };
 
 export const CreateRouteString = 'create';
+export const NoneRouteString = 'none';
 
 export enum GroupRouteMode { EDIT = 'edit', EXPENSES = 'expenses', NONE = '' };
 

@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import groups from '../../assets/images/groups-icon.svg'
 import receipt from '../../assets/images/receipt-icon.svg'
 import avatar from '../../assets/images/avatar-icon.svg'
-import { CreateRouteString, ExpenseRouteMode, ROUTES, composeExpenseRoute } from 'constants/routes';
+import { CreateRouteString, ExpenseRouteMode, NoneRouteString, ROUTES, composeExpenseRoute } from 'constants/routes';
 
 interface Props {
   visible?: boolean;
@@ -14,9 +14,7 @@ const BottomNavigation = ({ visible = true }: Props) => {
   const { groupId } = useParams();
 
   const onAddExpenseClick = () => {
-    if (!groupId)
-      return;
-    navigate(composeExpenseRoute(groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+    navigate(composeExpenseRoute(groupId ?? NoneRouteString, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
   };
 
   if (visible)

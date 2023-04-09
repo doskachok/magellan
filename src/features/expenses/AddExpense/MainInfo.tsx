@@ -58,7 +58,7 @@ const MainInfo = () => {
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
-    navigate(composeExpenseRoute(groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO), {state: { proceed: true }});
+    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO), {state: { proceed: true }});
   }
 
   useEffect(() => {  
@@ -94,7 +94,7 @@ const MainInfo = () => {
               <Select
                 options={groupList.map((group) => ({ value: group.id, title: group.name }))}
                 required
-                value={form.groupId}
+                value={form.groupId ?? ''}
                 name={'groupId'}
                 reversedTheme={true}
                 onValueChanged={onControllTextChanged}
