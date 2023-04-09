@@ -16,6 +16,7 @@ import { newTransactionSelector } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { saveTransaction } from "../slice";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
+import { groupsListSelector } from "features/groups/slice";
 
 interface ILocationState {
   proceed?: boolean;
@@ -33,6 +34,7 @@ const MainInfo = () => {
 
   const group = useGetTransactionGroupByIdQuery(groupId);
   const transaction = useSelector(newTransactionSelector);
+  const groupList = useSelector(groupsListSelector);
 
   const [form, setForm] = useState<ICreateTransaction>({
     name: '',
@@ -87,6 +89,17 @@ const MainInfo = () => {
             <MainInfoText>
               {t('mainInfoText')}
             </MainInfoText>
+
+            <Row jc={'center'} fullWidth>
+              <Select
+                options={groupList.map((group) => ({ value: group.id, title: group.name }))}
+                required
+                value={form.groupId}
+                name={'groupId'}
+                reversedTheme={true}
+                onValueChanged={onControllTextChanged}
+              />
+            </Row>
 
             <Row jc={'center'} fullWidth>
               <Input
