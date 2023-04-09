@@ -7,6 +7,7 @@
   "createGroup": "Create a group",
   "updateGroup": "Update a group",
   "groupMembers": "Group members",
+  "groupMember": "Group member",
   "groupName": "Group name",
   "mainCurrency": "Main currency",
   "addGroupMembers": "Add group members",
@@ -22,5 +23,7 @@
   "findNewPeopleHere": "Find new people here...",
   "orLookAlreadyKnown": "...or look though already known",
   "noAlreadyKnownUsers": "...oops, no already known users",
-  "enterUsernameOrEmail": "Enter username or email"
+  "enterUsernameOrEmail": "Enter username or email",
+  "balance": "Balance"
+  
 }
