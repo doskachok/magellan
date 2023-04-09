@@ -18,6 +18,12 @@ export const TextRegular = styled(Text)`
   font-size: 16px;
 `;
 
+export const TextSmall = styled(Text)`
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+`;
+
 export const TextHint = styled(Text)`
   font-style: normal;
   font-weight: 100;
