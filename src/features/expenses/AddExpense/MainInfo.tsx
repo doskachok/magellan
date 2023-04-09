@@ -15,6 +15,7 @@ import { ICreateTransaction } from "../types";
 import { newTransactionSelector } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { saveTransaction } from "../slice";
+import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 
 interface ILocationState {
   proceed?: boolean;
@@ -30,12 +31,13 @@ const MainInfo = () => {
   const {groupId: groupIdOptional} = useParams();
   const groupId = groupIdOptional ?? '';
 
+  const group = useGetTransactionGroupByIdQuery(groupId);
   const transaction = useSelector(newTransactionSelector);
 
   const [form, setForm] = useState<ICreateTransaction>({
     name: '',
     paymentDateUtc: new Date().toISOString().split('T')[0],
-    currencyCode: currencies[0].value,
+    currencyCode: group.data?.currencyCode ?? currencies[0].value,
     groupId: groupId,
     payerDetails: [],
     partialsAssignments: [],
@@ -70,7 +72,7 @@ const MainInfo = () => {
       }));
       return;
     }
-  }, [dispatch, transaction, locationState])
+  }, [dispatch, transaction, locationState]);
 
   return (
     <PageWrapper>
