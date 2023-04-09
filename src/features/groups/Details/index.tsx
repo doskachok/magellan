@@ -51,7 +51,7 @@ const GroupDetails = () => {
       <ContentWrapper fullWidth>
         <HalfEllipse fullWidth />
         <TransactionListContainer>
-          {group?.transactions.map((tr, index, array) => {
+          {group?.transactions?.map((tr, index, array) => {
             if (index === 0 || !datesAreOnSameDay(tr.paymentDateUtc, array[index - 1].paymentDateUtc)) {
               return (
                 <React.Fragment key={tr.id}>
@@ -66,7 +66,7 @@ const GroupDetails = () => {
           })}
 
           {
-            group?.transactions.length || isLoading ? null :
+            group?.transactions?.length || isLoading ? null :
               <NoTransactionsText>
                 {t('noTransactions')}
               </NoTransactionsText>

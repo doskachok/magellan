@@ -58,7 +58,7 @@ export const selectGroupById = (groupId: string) => (store: RootState) =>
 
 export const selectedGroupSelector = (store: RootState) => store.groups.selectedGroup ? ({
   ...store.groups.selectedGroup,
-  transactions: store.groups.selectedGroup.transactions.map(t => ({
+  transactions: store.groups.selectedGroup.transactions?.map(t => ({
     ...t,
     paymentDateUtc: new Date(t.paymentDateUtc),
   }))
