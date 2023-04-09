@@ -10,6 +10,7 @@ import { IUser } from 'types/userTypes';
 import { useAddParticipantMutation, useLazyGetTransactionGroupByIdQuery, useRemoveParticipantMutation } from '../api';
 import Loader from 'components/Loader';
 import MemberRow from './MemberRow';
+import toast from "react-hot-toast";
 
 export interface IGroupMembersProps {
   groupId: string;
@@ -29,8 +30,9 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   const handleMemberToAddSelected = useCallback((member: IUser) => {
     addMember({ groupId, userId: member.id }).then(() => {
       getGroup(groupId);
+      toast.success(t('memberAdded'));
     });
-  }, [addMember, groupId, getGroup]);
+  }, [addMember, groupId, getGroup, t]);
 
   const onAddMember = useCallback(() => {
     const modalId = modalContext.showModal(<AddMemberModal onMemberSelected={handleMemberToAddSelected} />);
@@ -41,8 +43,9 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
     removeMember({ groupId, userId: selected!.id }).then(() => {
       setSelected(null);
       getGroup(groupId);
+      toast.success(t('memberRemoved'));
     });
-  }, [groupId, selected, removeMember, getGroup]);
+  }, [groupId, selected, removeMember, getGroup, t]);
 
   const handleMemberSelected = useCallback((member: IUser) => {
     member !== selected ? setSelected(member) : setSelected(null);
