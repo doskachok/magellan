@@ -8,7 +8,7 @@ import {
   useEffect,
   useMemo,
 } from 'react';
-import { SelectLabel, SelectStyled, Wrapper } from './index.styled';
+import { DisplayName, SelectLabel, SelectStyled, Wrapper } from './index.styled';
 import { ReactComponent as AngleDownSVG } from '../../assets/images/angle-down.svg';
 import { useState } from 'react';
 import { AnySchema } from 'yup';
@@ -24,6 +24,8 @@ interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   validator?: AnySchema;
   onValidationChange?: (name: string, isValid: boolean) => void;
   error?: string;
+  displayName?: string;
+  required?: boolean;
 }
 
 const validate = (schema: AnySchema, value: string): Promise<string[]> => {
@@ -44,9 +46,11 @@ const Select =
     options = [],
     onValueChanged,
     reversedTheme = false,
+    required = false,
     validator,
     onValidationChange,
     error,
+    displayName,
     onClick,
     onBlur,
     ...rest
@@ -94,6 +98,13 @@ const Select =
     return (
       <Wrapper fullWidth>
         {displayError && <TextError>{t(_error)}</TextError>}
+
+        {
+          (!displayError && value && displayName) && 
+          <DisplayName reversedTheme={reversedTheme}> 
+            {`${required ? '*' : ''} ${displayName}`.trim()}
+          </DisplayName>
+        }
 
         <SelectLabel reversedTheme={reversedTheme} isOpened={isOpened} hasError={displayError}>
           <span>{options.find(v => v.value === value)?.title}</span>

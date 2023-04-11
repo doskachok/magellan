@@ -3,11 +3,17 @@ import { TextRegular } from '../Text';
 
 import { Column } from '../Containers';
 
-interface ISelectProps {
+interface IReversible {
   reversedTheme?: boolean;
+}
+
+interface ISelectProps extends IReversible {
   isOpened?: boolean;
   hasError?: boolean;
 }
+
+interface IDisplayName extends IReversible {}
+
 
 export const Wrapper = styled(Column)`
   position: relative;
@@ -22,6 +28,21 @@ export const RequiredIndicator = styled(TextRegular) <ISelectProps>`
   ${props => props.reversedTheme && css`
     color: ${props => props.theme.colors.select.color.reversed};
   `};
+`;
+
+export const DisplayName = styled(TextRegular)<IDisplayName>`
+    z-index: 1;
+    position: absolute;
+    top: 0.75em;
+    left: 0.6em;
+    padding: 0px 10px 0px 10px;
+    color: ${props => props.theme.colors.input.border.default};
+    background-color: ${props => props.theme.colors.secondary};
+    
+    ${props => props.reversedTheme && css`
+      color: ${props => props.theme.colors.input.border.reversed};
+      background-color: ${props => props.theme.colors.primary};
+    `};
 `;
 
 export const SelectLabel = styled.label<ISelectProps>`

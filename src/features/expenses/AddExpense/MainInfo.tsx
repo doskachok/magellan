@@ -117,6 +117,7 @@ const MainInfo = () => {
                 required
                 value={form.groupId ?? ''}
                 name={'groupId'}
+                displayName={t('group')}
                 reversedTheme={true}
                 onValueChanged={onControllTextChanged}
                 validator={requiredValidator}
