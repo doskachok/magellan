@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Input, Select, TextUnderline } from "components";
@@ -20,10 +20,6 @@ import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 import { groupsListSelector } from "features/groups/slice";
 import { requiredValidator } from "features/auth/validation";
 
-interface ILocationState {
-  proceed?: boolean;
-}
-
 interface IValidation {
   groupId: boolean;
   name: boolean;
@@ -33,8 +29,6 @@ const MainInfo = () => {
   const { t } = useTranslation('expenses');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const locationState = location.state as ILocationState;
 
   const {groupId: groupIdOptional} = useParams();
   const groupId = groupIdOptional ?? '';
@@ -50,6 +44,7 @@ const MainInfo = () => {
     groupId: groupId,
     payerDetails: [],
     partialsAssignments: [],
+    ...(transaction ? transaction : {}), // Load transaction from the slice
   });
 
   const [validation, setValidation] = useState<IValidation>({
@@ -79,23 +74,8 @@ const MainInfo = () => {
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
-    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO), {state: { proceed: true }});
+    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
   }
-
-  useEffect(() => {  
-    if (!locationState?.proceed || !transaction) {
-      // Clean transaction
-      dispatch(saveTransaction(null));
-    }
-    else {
-      // Load transaction from the slice 
-      setForm((form) => ({
-        ...form,
-        ...transaction,
-      }));
-      return;
-    }
-  }, [dispatch, transaction, locationState]);
 
   return (
     <PageWrapper>
