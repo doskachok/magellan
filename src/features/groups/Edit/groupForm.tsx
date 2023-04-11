@@ -125,7 +125,7 @@ const Form = ({ group }: IProps) => {
     <>
       <Column fullWidth>
         <MainInfoWrapper fullWidth>
-          <GroupInfoWrapper gap={'2.5rem'} jc={'center'} fullWidth>
+          <GroupInfoWrapper gap={'1rem'} jc={'center'} fullWidth>
             <Row jc={'center'} fullWidth>
               <FileUploader
                 ref={logoUploaderRef}

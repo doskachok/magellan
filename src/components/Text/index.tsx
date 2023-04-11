@@ -1,9 +1,18 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Text = styled.p`
+interface TextProps {
+  reversedColor?: boolean;
+  disabled?: boolean;
+}
+
+export const Text = styled.p<TextProps>`
   margin: 0;
   font-family: 'Montserrat';
   color: ${props => props.theme.colors.text.primary};
+
+  ${props => props.reversedColor && css`
+    color: ${props => props.theme.colors.text.secondary};
+  `};
 `;
 
 export const TextHeader = styled(Text)`
@@ -36,4 +45,8 @@ export const TextUnderline = styled(TextRegular)`
   line-height: 20px;
   text-decoration-line: underline;
   color: ${props => props.theme.colors.text.link};
+
+  ${props => props.disabled && css`
+    color: ${props => props.theme.colors.input.disabled.default};
+  `};
 `;

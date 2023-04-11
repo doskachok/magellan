@@ -7,15 +7,22 @@ export const ROUTES = {
   },
   GROUPS: {
     ROOT: '/groups',
-    LIST: 'list',
-    EDIT: 'edit',
     CREATE: 'create',
-    MEMBERS: 'members',
-    GROUP: 'group',
   },
   ACCOUNT_SETTINGS: '/account-settings',
 };
 
-export const ResolveGroupRoute = (route: string) => {
-  return `${ROUTES.GROUPS.ROOT}/${route}`;
+export const CreateRouteString = 'create';
+export const NoneRouteString = 'none';
+
+export enum GroupRouteMode { EDIT = 'edit', EXPENSES = 'expenses', NONE = '' };
+
+export const composeGroupRoute = (groupId: string, mode = GroupRouteMode.NONE) => {
+  return `${ROUTES.GROUPS.ROOT}/${groupId}/${mode}`;
+};
+
+export enum ExpenseRouteMode { ADD_MAININFO = 'add-main-info', NONE = '' };
+
+export const composeExpenseRoute = (groupId: string, expenseIdOrCreate: string, mode: ExpenseRouteMode) => {
+  return `${composeGroupRoute(groupId, GroupRouteMode.EXPENSES)}/${expenseIdOrCreate}/${mode}`;
 };

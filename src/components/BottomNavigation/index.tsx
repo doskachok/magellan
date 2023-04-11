@@ -1,9 +1,9 @@
 import { BottomNavigationStyled, Groups, Profile, AddExpense } from './index.styled';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import groups from '../../assets/images/groups-icon.svg'
 import receipt from '../../assets/images/receipt-icon.svg'
 import avatar from '../../assets/images/avatar-icon.svg'
-import { ROUTES } from '../../constants/routes';
+import { CreateRouteString, ExpenseRouteMode, NoneRouteString, ROUTES, composeExpenseRoute } from 'constants/routes';
 
 interface Props {
   visible?: boolean;
@@ -11,6 +11,11 @@ interface Props {
 
 const BottomNavigation = ({ visible = true }: Props) => {
   const navigate = useNavigate();
+  const { groupId } = useParams();
+
+  const onAddExpenseClick = () => {
+    navigate(composeExpenseRoute(groupId ?? NoneRouteString, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+  };
 
   if (visible)
     return (
@@ -19,7 +24,7 @@ const BottomNavigation = ({ visible = true }: Props) => {
           <img src={groups} alt="Groups" />
         </Groups>
 
-        <AddExpense>
+        <AddExpense onClick={onAddExpenseClick}>
           <img src={receipt} alt="AddExpense" />
         </AddExpense>
 
