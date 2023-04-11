@@ -5,5 +5,6 @@
   "mainInfoText": "Tell us, what this transaction is about, when was is done?",
   "paymentDateUtc": "Payment date",
   "currency": "Currency",
+  "selectGroup": "Please select group",
   "group": "Group"
 }

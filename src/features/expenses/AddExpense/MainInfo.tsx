@@ -117,6 +117,7 @@ const MainInfo = () => {
                 required
                 value={form.groupId ?? ''}
                 name={'groupId'}
+                placeholder={t('selectGroup')}
                 displayName={t('group')}
                 reversedTheme={true}
                 onValueChanged={onControllTextChanged}

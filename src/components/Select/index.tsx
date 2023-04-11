@@ -51,6 +51,7 @@ const Select =
     onValidationChange,
     error,
     displayName,
+    placeholder,
     onClick,
     onBlur,
     ...rest
@@ -107,7 +108,7 @@ const Select =
         }
 
         <SelectLabel reversedTheme={reversedTheme} isOpened={isOpened} hasError={displayError}>
-          <span>{options.find(v => v.value === value)?.title}</span>
+          <span>{options.find(v => v.value === value)?.title || placeholder}</span>
           <SelectStyled
             name={name}
             value={value}
