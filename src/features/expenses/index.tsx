@@ -1,11 +1,11 @@
-import {Route, Routes} from 'react-router-dom';
-import {CreateRouteString, ExpenseRouteMode} from 'constants/routes';
-import MainInfo from './AddExpense/MainInfo';
+import { Route, Routes } from 'react-router-dom';
+import { CreateRouteString } from 'constants/routes';
+import AddExpense from './AddExpense';
 
 const Expenses = () => {
   return (
     <Routes>
-      <Route path={`${CreateRouteString}/${ExpenseRouteMode.ADD_MAININFO}`} element={<MainInfo/>} />
+      <Route path={`${CreateRouteString}/*`} element={<AddExpense/>} />
     </Routes>
   );
 };
