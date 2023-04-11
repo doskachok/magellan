@@ -150,28 +150,15 @@ const MainInfo = () => {
         </MainInfoWrapper>
         <HalfCircleBackground />
 
-        {
-          !isNextStepButtonDisabled &&
-          <NextStepButtonWrapper onClick={onNextStep}>
-            <TextUnderline>
-              {t('nextStep')}
-            </TextUnderline>
-            <ArrowRightSVG />
-          </NextStepButtonWrapper>
-        }
-
-        {
-          !!isNextStepButtonDisabled &&
-          <NextStepButtonWrapper>
-            <TextUnderline disabled>
-              {t('nextStep')}
-            </TextUnderline>
-            <ArrowRightDisabledSVG />
-          </NextStepButtonWrapper>
-        }
+        <NextStepButtonWrapper onClick={!isNextStepButtonDisabled ? onNextStep : () => { }}>
+          <TextUnderline disabled={isNextStepButtonDisabled}>
+            {t('nextStep')}
+          </TextUnderline>
+          {!isNextStepButtonDisabled ? <ArrowRightSVG /> : <ArrowRightDisabledSVG />}
+        </NextStepButtonWrapper>
       </ContentWrapper>
 
-      <BottomNavigation/>
+      <BottomNavigation />
     </PageWrapper>
   );
 };
