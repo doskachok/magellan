@@ -3,7 +3,7 @@ import {ButtonStyled} from './index.styled';
 
 interface Props {
   onClick: () => void;
-  children: ReactElement | string;
+  children: ReactElement[] | string;
   disabled: boolean;
 }
 

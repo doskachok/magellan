@@ -1,3 +1,4 @@
+import { ButtonTransparent } from "components/Button/index.styled";
 import { Column, Row } from "components/Containers";
 import styled from "styled-components";
 
@@ -36,12 +37,13 @@ export const AccountSettingsBackground = styled(Row)`
   margin-left: -10vw;
 `;
 
-export const LogoutWrapper = styled(Row)`
-  gap: 0.5rem;
+export const LogoutButton = styled(ButtonTransparent)`
+  display: inline-flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem;
   margin-top: 1.5rem;
-  width: 100%;
 `;
 
 export const SaveButtonWrapper = styled(Row)`

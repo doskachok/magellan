@@ -29,3 +29,8 @@ export const ButtonStyled = styled.button<ButtonProps>`
     opacity: 1;
   `};
 `;
+
+export const ButtonTransparent = styled(ButtonStyled)`
+  background: transparent;
+  box-shadow: none;
+`;

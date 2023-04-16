@@ -13,7 +13,7 @@ import { logOut, userReceived, userSelector } from "features/auth/slice";
 import { IUser, userToUpdateUser } from "types/userTypes";
 import { getDownloadFileUrl } from "helpers/urlHelper";
 
-import { AccountInfoWrapper, AccountSettingsBackground, BackgroundFiller, ContentWrapper, LogoutWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
+import { AccountInfoWrapper, AccountSettingsBackground, BackgroundFiller, ContentWrapper, LogoutButton, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
 import { useUpdateUserMutation } from "store/user.api";
 import Loader from "components/Loader";
 import toast from "react-hot-toast";
@@ -152,12 +152,14 @@ const AccountSetttings = () => {
             </AccountSettingsBackground>
           </MainInfoWrapper>
 
-          <LogoutWrapper onClick={() => dispatch(logOut())}>
-            <ArrowLeftSVG />
-            <TextUnderline>
-              {t('logout')}
-            </TextUnderline>
-          </LogoutWrapper>
+          <Row fullWidth jc={'center'}>
+            <LogoutButton onClick={() => dispatch(logOut())}>
+              <ArrowLeftSVG />
+              <TextUnderline>
+                {t('logout')}
+              </TextUnderline>
+            </LogoutButton>
+          </Row>
 
           <SaveButtonWrapper>
             <Button onClick={onFormSubmit} disabled={(!isLogoSelected && !isTextChanged) || isUserUpdating}>

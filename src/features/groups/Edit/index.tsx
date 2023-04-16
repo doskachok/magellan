@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { PageWrapper } from 'components/Containers';
+import { PageWrapper, Row } from 'components/Containers';
 import Header from 'components/Header';
 
 import { useLazyGetTransactionGroupByIdQuery } from '../api';
@@ -15,9 +15,9 @@ import { ROUTES } from 'constants/routes';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 
-import { AddMembersWrapper, ContentWrapper } from './index.styled';
+import { AddMembersButton, ContentWrapper } from './index.styled';
 import Loader from 'components/Loader';
-import {TextUnderline} from 'components';
+import { TextUnderline } from 'components';
 
 enum GroupEditMode {
   GeneralInfo,
@@ -29,18 +29,18 @@ const Edit = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();
 
-  const [getGroup, {data: group, isLoading}] = useLazyGetTransactionGroupByIdQuery();
-  
+  const [getGroup, { data: group, isLoading }] = useLazyGetTransactionGroupByIdQuery();
+
   const [mode, setMode] = useState<GroupEditMode>(GroupEditMode.GeneralInfo);
-  
+
   const handleBackAction = useCallback(() => {
     navigate(ROUTES.GROUPS.ROOT, { replace: true });
   }, [navigate]);
-  
+
   const onChangeModeHandler = () => {
     setMode(mode => mode === GroupEditMode.GeneralInfo ? GroupEditMode.Members : GroupEditMode.GeneralInfo);
   }
-  
+
   useEffect(() => {
     if (groupId) {
       getGroup(groupId);
@@ -60,16 +60,18 @@ const Edit = () => {
 
         {mode === GroupEditMode.Members && <Members groupId={group?.id || ''} />}
 
-        <AddMembersWrapper onClick={onChangeModeHandler}>
-          <TextUnderline>
-            {t(mode === GroupEditMode.GeneralInfo ? 'addGroupMembers' : 'editGeneralInfo')}
-          </TextUnderline>
+        <Row fullWidth jc={'center'}>
+          <AddMembersButton onClick={onChangeModeHandler}>
+            <TextUnderline>
+              {t(mode === GroupEditMode.GeneralInfo ? 'addGroupMembers' : 'editGeneralInfo')}
+            </TextUnderline>
 
-          <ArrowRightSVG />
-        </AddMembersWrapper>
+            <ArrowRightSVG />
+          </AddMembersButton>
+        </Row>
       </ContentWrapper>
 
-      <Loader isLoading={isLoading}/>
+      <Loader isLoading={isLoading} />
     </PageWrapper>
   );
 };

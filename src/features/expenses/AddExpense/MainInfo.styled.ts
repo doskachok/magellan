@@ -1,4 +1,5 @@
-import { TextRegular } from "components";
+import { TextRegular, TextUnderline } from "components";
+import { ButtonTransparent } from "components/Button/index.styled";
 import { Column, Row } from "components/Containers";
 import styled from "styled-components";
 
@@ -46,11 +47,17 @@ export const HalfCircleBackground = styled(Row)`
   margin-left: -10vw;
 `;
 
-export const NextStepButtonWrapper = styled(Row)`
-  gap: 0.5rem;
+export const NextStepButton = styled(ButtonTransparent)`
+  display: inline-flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem;
   margin-top: 1.5rem;
   margin-bottom: 3.5rem;
-  width: 100%;
+
+  &:disabled ${TextUnderline} {
+    color: ${props => props.theme.colors.input.disabled.default};
+  }
 `;
+

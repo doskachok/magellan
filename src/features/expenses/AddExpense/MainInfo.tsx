@@ -9,7 +9,7 @@ import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, ContentWrapper, CurrencyTitle, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
+import { BackgroundFiller, ContentWrapper, CurrencyTitle, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButton } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
@@ -30,7 +30,7 @@ const MainInfo = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {groupId: groupIdOptional} = useParams();
+  const { groupId: groupIdOptional } = useParams();
   const groupId = groupIdOptional ?? '';
 
   const group = useGetTransactionGroupByIdQuery(groupId);
@@ -150,12 +150,14 @@ const MainInfo = () => {
         </MainInfoWrapper>
         <HalfCircleBackground />
 
-        <NextStepButtonWrapper onClick={!isNextStepButtonDisabled ? onNextStep : () => { }}>
-          <TextUnderline disabled={isNextStepButtonDisabled}>
-            {t('nextStep')}
-          </TextUnderline>
-          {!isNextStepButtonDisabled ? <ArrowRightSVG /> : <ArrowRightDisabledSVG />}
-        </NextStepButtonWrapper>
+        <Row fullWidth jc={'center'}>
+          <NextStepButton disabled={isNextStepButtonDisabled} onClick={onNextStep}>
+            <TextUnderline>
+              {t('nextStep')}
+            </TextUnderline>
+            {!isNextStepButtonDisabled ? <ArrowRightSVG /> : <ArrowRightDisabledSVG />}
+          </NextStepButton>
+        </Row>
       </ContentWrapper>
 
       <BottomNavigation />
