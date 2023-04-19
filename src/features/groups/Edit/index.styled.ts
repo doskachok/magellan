@@ -1,7 +1,7 @@
 import styled  from 'styled-components';
 import { Column, Row } from 'components/Containers';
 import { TextRegular } from 'components';
-import { ButtonTransparent } from 'components/Button/index.styled';
+import { ButtonTransparent } from 'components';
 
 export const ContentWrapper = styled(Column)`
   overflow-y: auto;

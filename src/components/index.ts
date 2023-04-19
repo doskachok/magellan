@@ -5,11 +5,13 @@ import Input from './Input';
 import { Text, TextHeader, TextHint, TextSmall, TextRegular, TextUnderline } from './Text';
 import { TextLink } from './Link';
 import Select from './Select';
+import { ButtonTransparent } from './Button/index.styled';
 
 export {
     Avatar,
     AvatarSize,
     Button,
+    ButtonTransparent,
     Input,
     Text,
     TextHeader,
