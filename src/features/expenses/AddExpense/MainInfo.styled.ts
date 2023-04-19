@@ -1,5 +1,5 @@
 import { TextRegular, TextUnderline } from "components";
-import { ButtonTransparent } from "components/Button/index.styled";
+import { ButtonTransparent } from "components";
 import { Column, Row } from "components/Containers";
 import styled from "styled-components";
 
