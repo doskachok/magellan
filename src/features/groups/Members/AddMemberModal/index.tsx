@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetKnownsUsersQuery, useLazyGetUsersQuery } from 'store/user.api';
 import { IUser } from 'types/userTypes';
 import { MembersModalBody, ModalBodyElementWrapper, ModalSeparator, ModalText } from './index.styled';
-import UserRow from './UserRow';
+import UserRow from 'components/UserRow';
 
 export interface IProps {
   onMemberSelected: (member: IUser) => void;
@@ -32,7 +32,7 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
       .then(data => resolve(data.data || []))
       .catch(err => reject(err));
   });
-  
+
   return (
     <Column>
       <MembersModalBody rounded={true}>
@@ -55,7 +55,7 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
           <Column fullWidth gap={'0.5rem'}>
             {knownsUsers?.map(u => <UserRow key={u.id} user={u} onClick={() => onMemberSelected(u)} />)}
           </Column>
-          
+
           <Loader isLoading={isKnownsUsersLoading} />
           {!!knownsUsers && knownsUsers.length === 0 && <ModalText>{t('noAlreadyKnownUsers')}</ModalText>}
         </ModalBodyElementWrapper>
