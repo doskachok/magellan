@@ -69,7 +69,7 @@ const AddPayers = () => {
             </AddPayersInfo>
 
             <Column fullWidth gap={'0.5rem'}>
-              {group.data?.participants?.map(u => <UserRow key={u.id} user={u} onClick={() => { }} />)}
+              {group.data?.participants?.map(u => <UserRow key={u.id} user={u} underlined onClick={() => { }} />)}
             </Column>
           </Column>
           <BackgroundFiller />

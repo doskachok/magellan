@@ -6,10 +6,11 @@ import { Avatar, AvatarSize } from 'components';
 
 export interface IProps {
   user: IUser;
+  underlined?: boolean;
   onClick?: (e?: MouseEvent<HTMLDivElement>) => void;
 }
 
-const UserRow = ({ user, onClick }: IProps) => {
+const UserRow = ({ user, underlined, onClick }: IProps) => {
   return (
     <Wrapper onClick={onClick}>
       <Avatar
@@ -18,7 +19,7 @@ const UserRow = ({ user, onClick }: IProps) => {
         size={AvatarSize.Small}
       />
 
-      <UserNameOrEmail>
+      <UserNameOrEmail underlined={underlined} >
         {user.name || user.email}
       </UserNameOrEmail>
     </Wrapper>
