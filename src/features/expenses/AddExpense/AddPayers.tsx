@@ -16,6 +16,8 @@ import { ICreateTransaction } from "../types";
 import { newTransactionSelector, saveTransaction } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
+import UserRow from "components/UserRow";
+import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 
 const AddPayers = () => {
   const { t } = useTranslation('expenses');
@@ -23,6 +25,7 @@ const AddPayers = () => {
   const navigate = useNavigate();
 
   const transaction = useSelector(newTransactionSelector);
+  const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
 
   const [form, /*setForm*/] = useState<ICreateTransaction>({
     name: '',
@@ -64,7 +67,10 @@ const AddPayers = () => {
               {`${t('total')}: ${getCurrencyWithSymbolString(0, form.currencyCode)}`}
               </CurrencyText>
             </AddPayersInfo>
-            {/* TODO: Implement add payers */}
+
+            <Column fullWidth gap={'0.5rem'}>
+              {group.data?.participants?.map(u => <UserRow key={u.id} user={u} onClick={() => { }} />)}
+            </Column>
           </Column>
           <BackgroundFiller />
         </AddPayersWrapper>
