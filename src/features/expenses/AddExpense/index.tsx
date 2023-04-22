@@ -3,8 +3,9 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ExpenseRouteMode} from 'constants/routes';
-import MainInfo from './MainInfo';
 import { saveTransaction } from '../slice';
+import MainInfo from './MainInfo';
+import AddPayers from './AddPayers';
 
 const AddExpense = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ const AddExpense = () => {
   return (
     <Routes>
       <Route path={`${ExpenseRouteMode.ADD_MAININFO}`} element={<MainInfo/>} />
+      <Route path={`${ExpenseRouteMode.ADD_PAYERS}`} element={<AddPayers/>} />
     </Routes>
   );
 };

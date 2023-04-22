@@ -74,7 +74,7 @@ const MainInfo = () => {
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
-    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_PAYERS));
   }
 
   return (
