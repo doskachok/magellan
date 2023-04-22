@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useGetKnownsUsersQuery, useLazyGetUsersQuery } from 'store/user.api';
 import { IUser } from 'types/userTypes';
 import { MembersModalBody, ModalBodyElementWrapper, ModalSeparator, ModalText } from './index.styled';
-import UserRow from 'components/UserRow';
+import UserListItem from 'components/UserListItem';
 
 export interface IProps {
   onMemberSelected: (member: IUser) => void;
@@ -24,7 +24,7 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
   }, [onMemberSelected]);
 
   const suggestionTemplate = useCallback((suggestion: IAutocompleteSuggestion) => {
-    return <UserRow user={suggestion as IUser} />
+    return <UserListItem user={suggestion as IUser} />
   }, []);
 
   const usersSearchSource = (searchQuery: string) => new Promise<IUser[]>((resolve, reject) => {
@@ -53,7 +53,7 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
           <ModalText>{t('orLookAlreadyKnown')}</ModalText>
 
           <Column fullWidth gap={'0.5rem'}>
-            {knownsUsers?.map(u => <UserRow key={u.id} user={u} onClick={() => onMemberSelected(u)} />)}
+            {knownsUsers?.map(u => <UserListItem key={u.id} user={u} onClick={() => onMemberSelected(u)} />)}
           </Column>
 
           <Loader isLoading={isKnownsUsersLoading} />

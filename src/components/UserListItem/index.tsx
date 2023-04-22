@@ -10,7 +10,7 @@ export interface IProps {
   onClick?: (e?: MouseEvent<HTMLDivElement>) => void;
 }
 
-const UserRow = ({ user, underlined, onClick }: IProps) => {
+const UserListItem = ({ user, underlined, onClick }: IProps) => {
   return (
     <Wrapper onClick={onClick}>
       <Avatar
@@ -26,4 +26,4 @@ const UserRow = ({ user, underlined, onClick }: IProps) => {
   );
 };
 
-export default memo(UserRow);
+export default memo(UserListItem);

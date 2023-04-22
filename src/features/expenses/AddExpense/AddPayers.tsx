@@ -16,7 +16,7 @@ import { ICreateTransaction } from "../types";
 import { newTransactionSelector, saveTransaction } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
-import UserRow from "components/UserRow";
+import UserListItem from "components/UserListItem";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 
 const AddPayers = () => {
@@ -69,7 +69,7 @@ const AddPayers = () => {
             </AddPayersInfo>
 
             <Column fullWidth gap={'0.5rem'}>
-              {group.data?.participants?.map(u => <UserRow key={u.id} user={u} underlined onClick={() => { }} />)}
+              {group.data?.participants?.map(u => <UserListItem key={u.id} user={u} underlined onClick={() => { }} />)}
             </Column>
           </Column>
           <BackgroundFiller />
