@@ -4,17 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { TextUnderline } from "components";
-import { PageWrapper, Row } from "components/Containers";
+import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, ContentWrapper, HalfCircleBackground, AddPayersWrapper, NextStepButton } from "./AddPayers.styled";
+import { BackgroundFiller, ContentWrapper, HalfCircleBackground, AddPayersWrapper, NextStepButton, AddPayersText, CurrencyText, AddPayersInfo } from "./AddPayers.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
 import { newTransactionSelector, saveTransaction } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
+import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
 
 const AddPayers = () => {
   const { t } = useTranslation('expenses');
@@ -54,7 +55,17 @@ const AddPayers = () => {
 
       <ContentWrapper fullWidth>
         <AddPayersWrapper fullWidth>
-          {/* TODO: Implement add payers */}
+          <Column gap={'1rem'} fullWidth>
+            <AddPayersInfo>
+              <AddPayersText>
+                {t('howMuchPayed')}
+              </AddPayersText>
+              <CurrencyText>
+              {`${t('total')}: ${getCurrencyWithSymbolString(0, form.currencyCode)}`}
+              </CurrencyText>
+            </AddPayersInfo>
+            {/* TODO: Implement add payers */}
+          </Column>
           <BackgroundFiller />
         </AddPayersWrapper>
         <HalfCircleBackground />

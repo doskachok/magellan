@@ -7,5 +7,7 @@
   "currency": "Currency",
   "selectGroup": "Please select group",
   "group": "Group",
-  "payers": "Payers"
+  "payers": "Payers",
+  "howMuchPayed": "Tell us, who paid and how much?",
+  "total": "Total"
 }
