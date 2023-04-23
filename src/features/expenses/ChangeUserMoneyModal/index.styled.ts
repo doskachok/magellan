@@ -14,3 +14,20 @@ export const MembersModalBody = styled(ModalBody)`
 export const AmountInputWrapper = styled(Row)`
   margin-top: -22px;
 `;
+
+export const ButtonDone = styled.button`
+  height: 33px;
+  background: ${props => props.theme.colors.primary};
+  border-radius: 50px;
+  border: 2px solid ${props => props.theme.colors.secondary};
+  
+  padding: 6px 33px;
+  font-weight: 700;
+  font-size: 18px;
+  color: ${props => props.theme.colors.text.secondary};
+  
+  &:active {
+    transition: 0.1s;
+    transform: scale(1.02, 1.05);
+  };
+`;

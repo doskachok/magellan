@@ -11,5 +11,6 @@
   "howMuchPayed": "Tell us, who paid and how much?",
   "total": "Total",
   "amount": "Amount",
-  "enterAmount": "Enter amount"
+  "enterAmount": "Enter amount",
+  "done": "Done"
 }

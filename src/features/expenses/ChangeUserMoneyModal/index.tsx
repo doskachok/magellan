@@ -6,17 +6,18 @@ import { Avatar, AvatarSize, Input, TextRegular } from 'components';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
 import { IUser } from 'types/userTypes';
 
-import { AmountInputWrapper, MembersModalBody } from './index.styled';
+import { AmountInputWrapper, ButtonDone, MembersModalBody } from './index.styled';
 
 export interface IProps {
   user: IUser;
+  onDone: (user: IUser, amount: number) => void;
 }
 
 interface IForm {
   amount: string;
 }
 
-const ChangeUserMoneyModal = ({ user }: IProps) => {
+const ChangeUserMoneyModal = ({ user, onDone }: IProps) => {
   const { t } = useTranslation('expenses');
   
   const [form, setForm] = useState<IForm>({
@@ -29,6 +30,10 @@ const ChangeUserMoneyModal = ({ user }: IProps) => {
       [name]: value,
     }));
   }, [setForm]);
+
+  const onDoneClicked = () => {
+    onDone(user, Number(form.amount));
+  };
 
   return (
     <Column>
@@ -54,6 +59,10 @@ const ChangeUserMoneyModal = ({ user }: IProps) => {
             onTextChange={onInputTextChanged}
           />
         </AmountInputWrapper>
+
+        <ButtonDone onClick={onDoneClicked}>
+          {t('done')}
+        </ButtonDone>
       </MembersModalBody>
     </Column>
   );
