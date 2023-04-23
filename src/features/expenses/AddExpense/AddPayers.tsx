@@ -32,7 +32,7 @@ const AddPayers = () => {
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
   const [addMemberModalId, setAddMemberModalId] = useState<number | null>(null);
 
-  const [form, /*setForm*/] = useState<ICreateTransaction>({
+  const [form, setForm] = useState<ICreateTransaction>({
     name: '',
     paymentDateUtc: new Date().toISOString().split('T')[0],
     currencyCode: currencies[0].value,
@@ -48,10 +48,23 @@ const AddPayers = () => {
     navigate(-1);
   }, [navigate]);
 
+  const onUserAmountChanged = useCallback((user: IUser, amount: number) => {
+    setForm((form) => ({
+      ...form,
+      payerDetails: [
+        ...form.payerDetails.filter(p => p.payerId !== user.id),
+        {
+          payerId: user.id,
+          amount: amount,
+        }
+      ]
+    }));
+  }, [setForm]);
+
   const onUserClicked = useCallback((user: IUser) => {
-    const modalId = modalContext.showModal(<ChangeUserMoneyModal user={user} onDone={() => {}} />);
+    const modalId = modalContext.showModal(<ChangeUserMoneyModal user={user} onDone={onUserAmountChanged} />);
     setAddMemberModalId(modalId);
-  }, [modalContext, setAddMemberModalId]);
+  }, [modalContext, setAddMemberModalId, onUserAmountChanged]);
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
@@ -68,6 +81,13 @@ const AddPayers = () => {
     };
   }, [addMemberModalId, modalContext]);
 
+  useEffect(() => {
+    if (!addMemberModalId) // To not save on the first render.
+      return;
+
+    dispatch(saveTransaction(form));
+  }, [form, addMemberModalId, modalContext, dispatch])
+  
   return (
     <PageWrapper>
       <Header
