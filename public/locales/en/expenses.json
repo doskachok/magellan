@@ -9,5 +9,7 @@
   "group": "Group",
   "payers": "Payers",
   "howMuchPayed": "Tell us, who paid and how much?",
-  "total": "Total"
+  "total": "Total",
+  "amount": "Amount",
+  "enterAmount": "Enter amount"
 }
