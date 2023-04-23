@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,14 +18,19 @@ import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "consta
 import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
 import UserListItem from "components/UserListItem";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
+import { useModal } from "providers/ModalProvider";
+import ChangeUserMoneyModal from "../ChangeUserMoneyModal";
+import { IUser } from "types/userTypes";
 
 const AddPayers = () => {
   const { t } = useTranslation('expenses');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const modalContext = useModal();
 
   const transaction = useSelector(newTransactionSelector);
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
+  const [addMemberModalId, setAddMemberModalId] = useState<number | null>(null);
 
   const [form, /*setForm*/] = useState<ICreateTransaction>({
     name: '',
@@ -43,11 +48,25 @@ const AddPayers = () => {
     navigate(-1);
   }, [navigate]);
 
+  const onUserClicked = useCallback((user: IUser) => {
+    const modalId = modalContext.showModal(<ChangeUserMoneyModal user={user} onDone={() => {}} />);
+    setAddMemberModalId(modalId);
+  }, [modalContext, setAddMemberModalId]);
+
   const onNextStep = () => {
     dispatch(saveTransaction(form));
     // TODO: navigate to the next step
     navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
   }
+
+  useEffect(() => {
+    return () => {
+      if (addMemberModalId) {
+        modalContext.closeModal(addMemberModalId);
+        setAddMemberModalId(null);
+      }
+    };
+  }, [addMemberModalId, modalContext]);
 
   return (
     <PageWrapper>
@@ -69,7 +88,7 @@ const AddPayers = () => {
             </AddPayersInfo>
 
             <Column fullWidth gap={'0.5rem'}>
-              {group.data?.participants?.map(u => <UserListItem key={u.id} user={u} underlined onClick={() => { }} />)}
+              {group.data?.participants?.map(u => <UserListItem key={u.id} user={u} underlined onClick={() => onUserClicked(u)} />)}
             </Column>
           </Column>
           <BackgroundFiller />
