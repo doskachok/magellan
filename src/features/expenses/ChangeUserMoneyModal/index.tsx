@@ -7,8 +7,9 @@ import { getDownloadFileUrl } from 'helpers/urlHelper';
 import { IUser } from 'types/userTypes';
 
 import { AmountInputWrapper, ButtonDone, MembersModalBody } from './index.styled';
+import { IModalForm } from 'providers/ModalProvider/Modal';
 
-export interface IProps {
+export interface IProps extends IModalForm {
   user: IUser;
   onDone: (user: IUser, amount: number) => void;
 }
@@ -17,7 +18,7 @@ interface IForm {
   amount: string;
 }
 
-const ChangeUserMoneyModal = ({ user, onDone }: IProps) => {
+const ChangeUserMoneyModal = ({ user, onDone, close }: IProps) => {
   const { t } = useTranslation('expenses');
   
   const [form, setForm] = useState<IForm>({
@@ -33,6 +34,7 @@ const ChangeUserMoneyModal = ({ user, onDone }: IProps) => {
 
   const onDoneClicked = () => {
     onDone(user, Number(form.amount));
+    close && close();
   };
 
   return (
