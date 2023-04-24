@@ -22,14 +22,10 @@ import { useModal } from "providers/ModalProvider";
 import ChangeUserMoneyModal from "../ChangeUserMoneyModal";
 import { IUser } from "types/userTypes";
 
-const getUserAmount = (user: IUser, form: ICreateTransaction) => {
-  return form.payerDetails.find(p => p.payerId === user.id)?.amount || 0;
-};
-
-const getUserAmountComponent = (user: IUser, form: ICreateTransaction) => {
-  const amount = getUserAmount(user, form);
+const getUserAmountComponent = (user: IUser, currencyCode: string, userAmountMap: Record<string, number>) => {
+  const amount = userAmountMap[user.id];
   return amount > 0 ?
-    (<CurrencyText>{getCurrencyWithSymbolString(amount, form.currencyCode)}</CurrencyText>)
+    (<CurrencyText>{getCurrencyWithSymbolString(amount, currencyCode)}</CurrencyText>)
     : null;
 };
 
@@ -53,6 +49,11 @@ const AddPayers = () => {
     ...(transaction ? transaction : {}), // Load transaction from the slice
   });
 
+  const userAmountMap = useMemo(() => form.payerDetails.reduce((acc, curr) => ({
+    ...acc,
+    [curr.payerId]: curr.amount,
+  }), {} as { [key: string]: number }), [form.payerDetails]);
+
   const total = useMemo(() => form.payerDetails.reduce((acc, curr) => acc + curr.amount, 0), [form.payerDetails]);
 
   const isNextStepButtonDisabled = true;
@@ -72,14 +73,15 @@ const AddPayers = () => {
         }
       ]
     }));
+
   }, [setForm]);
 
   const onUserClicked = useCallback((user: IUser) => {
     const modalId = modalContext.showModal(
-      <ChangeUserMoneyModal user={user} onDone={onUserAmountChanged} amount={getUserAmount(user, form)} />
+      <ChangeUserMoneyModal user={user} onDone={onUserAmountChanged} amount={userAmountMap[user.id]} />
     );
     setAddMemberModalId(modalId);
-  }, [modalContext, setAddMemberModalId, onUserAmountChanged, form]);
+  }, [modalContext, setAddMemberModalId, onUserAmountChanged, userAmountMap]);
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
@@ -128,7 +130,7 @@ const AddPayers = () => {
                 user={u}
                 underlined
                 onClick={() => onUserClicked(u)}
-                rightItem={getUserAmountComponent(u, form)}
+                rightItem={getUserAmountComponent(u, form.currencyCode, userAmountMap)}
               />)}
             </Column>
           </Column>
