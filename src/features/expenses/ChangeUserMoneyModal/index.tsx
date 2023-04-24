@@ -12,17 +12,18 @@ import { IModalForm } from 'providers/ModalProvider/Modal';
 export interface IProps extends IModalForm {
   user: IUser;
   onDone: (user: IUser, amount: number) => void;
+  amount: number;
 }
 
 interface IForm {
   amount: string;
 }
 
-const ChangeUserMoneyModal = ({ user, onDone, close }: IProps) => {
+const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
   const { t } = useTranslation('expenses');
   
   const [form, setForm] = useState<IForm>({
-    amount: '',
+    amount: amount > 0 ? amount.toString() : '',
   });
 
   const onInputTextChanged = useCallback((name: string, value: string) => {

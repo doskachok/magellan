@@ -22,8 +22,12 @@ import { useModal } from "providers/ModalProvider";
 import ChangeUserMoneyModal from "../ChangeUserMoneyModal";
 import { IUser } from "types/userTypes";
 
+const getUserAmount = (user: IUser, form: ICreateTransaction) => {
+  return form.payerDetails.find(p => p.payerId === user.id)?.amount || 0;
+};
+
 const getUserAmountComponent = (user: IUser, form: ICreateTransaction) => {
-  const amount = form.payerDetails.find(p => p.payerId === user.id)?.amount || 0;
+  const amount = getUserAmount(user, form);
   return amount > 0 ?
     (<CurrencyText>{getCurrencyWithSymbolString(amount, form.currencyCode)}</CurrencyText>)
     : null;
@@ -69,9 +73,11 @@ const AddPayers = () => {
   }, [setForm]);
 
   const onUserClicked = useCallback((user: IUser) => {
-    const modalId = modalContext.showModal(<ChangeUserMoneyModal user={user} onDone={onUserAmountChanged} />);
+    const modalId = modalContext.showModal(
+      <ChangeUserMoneyModal user={user} onDone={onUserAmountChanged} amount={getUserAmount(user, form)} />
+    );
     setAddMemberModalId(modalId);
-  }, [modalContext, setAddMemberModalId, onUserAmountChanged]);
+  }, [modalContext, setAddMemberModalId, onUserAmountChanged, form]);
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
