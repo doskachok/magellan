@@ -56,7 +56,7 @@ const AddPayers = () => {
 
   const total = useMemo(() => form.payerDetails.reduce((acc, curr) => acc + curr.amount, 0), [form.payerDetails]);
 
-  const isNextStepButtonDisabled = true;
+  const isNextStepButtonDisabled = total <= 0;
 
   const handleBackAction = useCallback(() => {
     navigate(-1);
