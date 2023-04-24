@@ -22,6 +22,13 @@ import { useModal } from "providers/ModalProvider";
 import ChangeUserMoneyModal from "../ChangeUserMoneyModal";
 import { IUser } from "types/userTypes";
 
+const getUserAmountComponent = (user: IUser, form: ICreateTransaction) => {
+  const amount = form.payerDetails.find(p => p.payerId === user.id)?.amount || 0;
+  return amount > 0 ?
+    (<CurrencyText>{getCurrencyWithSymbolString(amount, form.currencyCode)}</CurrencyText>)
+    : null;
+};
+
 const AddPayers = () => {
   const { t } = useTranslation('expenses');
   const dispatch = useDispatch();
@@ -108,7 +115,13 @@ const AddPayers = () => {
             </AddPayersInfo>
 
             <Column fullWidth gap={'0.5rem'}>
-              {group.data?.participants?.map(u => <UserListItem key={u.id} user={u} underlined onClick={() => onUserClicked(u)} />)}
+              {group.data?.participants?.map(u => <UserListItem
+                key={u.id}
+                user={u}
+                underlined
+                onClick={() => onUserClicked(u)}
+                rightItem={getUserAmountComponent(u, form)}
+              />)}
             </Column>
           </Column>
           <BackgroundFiller />

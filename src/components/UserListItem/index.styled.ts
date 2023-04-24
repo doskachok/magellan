@@ -8,7 +8,8 @@ export interface IUserNameOrEmailProps {
 
 export const Wrapper = styled(Row)`
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const UserNameOrEmail = styled(TextRegular)<IUserNameOrEmailProps>`
