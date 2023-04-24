@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,6 +53,8 @@ const AddPayers = () => {
     ...(transaction ? transaction : {}), // Load transaction from the slice
   });
 
+  const total = useMemo(() => form.payerDetails.reduce((acc, curr) => acc + curr.amount, 0), [form.payerDetails]);
+
   const isNextStepButtonDisabled = true;
 
   const handleBackAction = useCallback(() => {
@@ -99,7 +101,7 @@ const AddPayers = () => {
       return;
 
     dispatch(saveTransaction(form));
-  }, [form, addMemberModalId, modalContext, dispatch])
+  }, [form, addMemberModalId, modalContext, dispatch]);
   
   return (
     <PageWrapper>
@@ -116,7 +118,7 @@ const AddPayers = () => {
                 {t('howMuchPayed')}
               </AddPayersText>
               <CurrencyText>
-              {`${t('total')}: ${getCurrencyWithSymbolString(0, form.currencyCode)}`}
+              {`${t('total')}: ${getCurrencyWithSymbolString(total, form.currencyCode)}`}
               </CurrencyText>
             </AddPayersInfo>
 
