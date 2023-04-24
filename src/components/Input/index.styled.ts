@@ -80,6 +80,18 @@ export const InputStyled = styled.input<IInputProps>`
   ::-webkit-calendar-picker-indicator {
     filter: invert(1);
   };
+
+  /* Chrome, Safari, Edge, Opera */
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &[type=number] {
+    -moz-appearance: textfield;
+  }
   
   ${props => props.hasError && css`
     margin-top: 4px;
