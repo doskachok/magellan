@@ -45,8 +45,3 @@ export const ButtonStyled = styled(ButtonBase)<ButtonProps>`
     opacity: 1;
   }
 `;
-
-export const ButtonTransparent = styled(ButtonStyled)`
-  background: transparent;
-  box-shadow: none;
-`;
