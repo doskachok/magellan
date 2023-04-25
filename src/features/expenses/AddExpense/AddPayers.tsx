@@ -23,10 +23,8 @@ import ChangeUserMoneyModal from "../ChangeUserMoneyModal";
 import { IUser } from "types/userTypes";
 
 const getUserAmountComponent = (user: IUser, currencyCode: string, userAmountMap: Record<string, number>) => {
-  const amount = userAmountMap[user.id];
-  return amount > 0 ?
-    (<CurrencyText>{getCurrencyWithSymbolString(amount, currencyCode)}</CurrencyText>)
-    : null;
+  const amount = userAmountMap[user.id] > 0 ? userAmountMap[user.id] : 0;
+  return <CurrencyText>{getCurrencyWithSymbolString(amount, currencyCode)}</CurrencyText>;
 };
 
 const AddPayers = () => {
