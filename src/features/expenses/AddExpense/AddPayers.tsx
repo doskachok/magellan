@@ -14,7 +14,7 @@ import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
 import { newTransactionSelector, saveTransaction } from "../slice";
-import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
+import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute, NoneRouteString } from "constants/routes";
 import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
 import UserListItem from "components/UserListItem";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
@@ -34,6 +34,9 @@ const AddPayers = () => {
   const modalContext = useModal();
 
   const transaction = useSelector(newTransactionSelector);
+  if (!transaction)
+    navigate(composeExpenseRoute(NoneRouteString, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
   const [addMemberModalId, setAddMemberModalId] = useState<number | null>(null);
 
