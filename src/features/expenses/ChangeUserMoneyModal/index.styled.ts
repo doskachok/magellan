@@ -16,12 +16,11 @@ export const AmountInputWrapper = styled(Row)`
 `;
 
 export const ButtonDone = styled.button`
-  height: 33px;
+  height: 36px;
   background: ${props => props.theme.colors.primary};
   border-radius: 50px;
   border: 2px solid ${props => props.theme.colors.secondary};
-  
-  padding: 6px 33px;
+  padding: 0px 32px;
   font-weight: 700;
   font-size: 18px;
   color: ${props => props.theme.colors.text.secondary};
