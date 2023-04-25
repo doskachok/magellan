@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { TextUnderline } from "components";
-import { Column, PageWrapper, Row } from "components/Containers";
+import { ButtonBase, TextUnderline } from "components";
+import { Column, PageWrapper } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, ContentWrapper, HalfCircleBackground, AddPayersWrapper, NextStepButton, AddPayersText, CurrencyText, AddPayersInfo } from "./AddPayers.styled";
+import { BackgroundFiller, ContentWrapper, HalfCircleBackground, AddPayersWrapper, AddPayersText, CurrencyText, AddPayersInfo, NextStepButtonWrapper } from "./AddPayers.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
@@ -139,14 +139,14 @@ const AddPayers = () => {
         </AddPayersWrapper>
         <HalfCircleBackground />
 
-        <Row fullWidth jc={'center'}>
-          <NextStepButton disabled={isNextStepButtonDisabled} onClick={onNextStep}>
+        <NextStepButtonWrapper>
+          <ButtonBase disabled={isNextStepButtonDisabled} onClick={onNextStep}>
             <TextUnderline>
               {t('nextStep')}
             </TextUnderline>
             {!isNextStepButtonDisabled ? <ArrowRightSVG /> : <ArrowRightDisabledSVG />}
-          </NextStepButton>
-        </Row>
+          </ButtonBase>
+        </NextStepButtonWrapper>
       </ContentWrapper>
 
       <BottomNavigation />
