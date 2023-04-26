@@ -53,7 +53,8 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
       <MembersModalBody rounded={true}>
         <Avatar
           src={getDownloadFileUrl(user.avatarId)}
-          rounded={true}
+          rounded
+          framed
           size={AvatarSize.Medium}
         />
 
