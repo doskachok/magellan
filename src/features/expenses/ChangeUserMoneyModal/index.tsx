@@ -9,10 +9,6 @@ import { IUser } from 'types/userTypes';
 import { AmountInputWrapper, ButtonDone, MembersModalBody } from './index.styled';
 import { IModalForm } from 'providers/ModalProvider/Modal';
 
-const validInput = new RegExp(
-  '^\\d+(\\.\\d{1,2})?\\.?$'
-);
-
 export interface IProps extends IModalForm {
   user: IUser;
   onDone: (user: IUser, amount: number) => void;
@@ -30,8 +26,21 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
     amount: amount > 0 ? amount.toString() : '',
   });
 
+  const sanitize = (value: string): string => {
+    let sanitizedValue = value.replace(',', '.');
+        
+    if (sanitizedValue.includes('.')) {
+      if (sanitizedValue.split('.')[1].length <= 2)
+        return sanitizedValue;
+
+      return sanitizedValue.substring(0, sanitizedValue.length - 1);
+    }
+    
+    return sanitizedValue;
+  }
+
   const onInputTextChanged = useCallback((name: string, value: string) => {
-    if (!validInput.test(value) && value !== '') return;
+    value = sanitize(value);
 
     setForm((form) => ({
       ...form,
@@ -40,13 +49,9 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
   }, [setForm]);
 
   const onDoneClicked = () => {
-    onDone(user, Number(form.amount));
+    onDone(user, +form.amount);
     close && close();
   };
-
-  const onKeyDownRestrict = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (['+', '-', 'e'].indexOf(e.key) !== -1) e.preventDefault();
-  }, []);
 
   return (
     <Column>
@@ -66,16 +71,13 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
           <Input
             autoFocus 
             name="amount"
-            type="number"
-            min="0"
-            inputMode="numeric"
-            pattern="[0-9]*"
+            type="text"
+            inputMode="decimal"
             reversedTheme
             placeholder={t('enterAmount')}
             displayName={t('amount')}
             value={form.amount}
             onTextChange={onInputTextChanged}
-            onKeyDown={onKeyDownRestrict}
           />
         </AmountInputWrapper>
 
