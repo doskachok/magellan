@@ -64,10 +64,14 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
 
         <AmountInputWrapper>
           <Input
+            autoFocus 
+            name="amount"
+            type="number"
+            min="0"
+            inputMode="numeric"
+            pattern="[0-9]*"
             reversedTheme
             placeholder={t('enterAmount')}
-            name={'amount'}
-            type={'number'}
             displayName={t('amount')}
             value={form.amount}
             onTextChange={onInputTextChanged}
