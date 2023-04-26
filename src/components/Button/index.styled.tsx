@@ -19,7 +19,7 @@ export const ButtonBase = styled.button`
   align-items: center;
   gap: 0.5rem;
 
-  &:disabled {
+  &:disabled p {
     color: ${props => props.theme.colors.input.disabled.default};
   }
 `;
