@@ -26,16 +26,6 @@ export const BackgroundFiller = styled(Row)`
   flex: 1;
 `;
 
-export const AccountSettingsBackground = styled(Row)`
-  border-radius: 100%;
-  background: ${props => props.theme.colors.primary};
-  width: 120vw;
-  height: 80vw;
-  z-index: 0;
-  margin-top: -60vw;
-  margin-left: -10vw;
-`;
-
 export const LogoutButtonWrapper = styled(Row)`
   justify-content: center;
   align-items: center;
