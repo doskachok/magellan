@@ -15,16 +15,10 @@ export interface IProps extends IModalForm {
   amount: number;
 }
 
-interface IForm {
-  amount: string;
-}
-
 const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
   const { t } = useTranslation('expenses');
   
-  const [form, setForm] = useState<IForm>({
-    amount: amount > 0 ? amount.toString() : '',
-  });
+  const [formAmount, setFormAmount] = useState(amount > 0 ? amount.toString() : '')
 
   const sanitize = (value: string): string => {
     let sanitizedValue = value.replace(',', '.');
@@ -42,14 +36,11 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
   const onInputTextChanged = useCallback((name: string, value: string) => {
     value = sanitize(value);
 
-    setForm((form) => ({
-      ...form,
-      [name]: value,
-    }));
-  }, [setForm]);
+    setFormAmount(value);
+  }, [setFormAmount]);
 
   const onDoneClicked = () => {
-    onDone(user, +form.amount);
+    onDone(user, +formAmount);
     close && close();
   };
 
@@ -76,7 +67,7 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
             reversedTheme
             placeholder={t('enterAmount')}
             displayName={t('amount')}
-            value={form.amount}
+            value={formAmount}
             onTextChange={onInputTextChanged}
           />
         </AmountInputWrapper>
