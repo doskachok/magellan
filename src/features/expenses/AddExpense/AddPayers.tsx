@@ -100,11 +100,8 @@ const AddPayers = () => {
   }, [addMemberModalId, modalContext]);
 
   useEffect(() => {
-    if (!addMemberModalId) // To not save on the first render.
-      return;
-
     dispatch(saveTransaction(form));
-  }, [form, addMemberModalId, modalContext, dispatch]);
+  }, [form, dispatch]);
   
   return (
     <PageWrapper>
