@@ -18,7 +18,6 @@ export const AddPayersWrapper = styled(Column)`
 `;
 
 export const AddPayersInfo = styled(Row)`
-  color: ${props => props.theme.colors.text.secondary};
   justify-content: space-between;
   width: 100%;
   margin-top: 30px;
