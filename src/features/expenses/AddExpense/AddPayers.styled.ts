@@ -26,12 +26,14 @@ export const AddPayersInfo = styled(Row)`
 
 export const AddPayersText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
-  width: 50%;
+  flex: 1;
 `;
 
 export const CurrencyText = styled(TextRegular)`
   font-weight: bold;
+  text-align: right;
   color: ${props => props.theme.colors.text.secondary};
+  flex: 1;
 `;
 
 export const BackgroundFiller = styled(Row)`
