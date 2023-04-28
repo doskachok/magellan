@@ -9,6 +9,10 @@ import { IUser } from 'types/userTypes';
 import { AmountInputWrapper, ButtonDone, MembersModalBody } from './index.styled';
 import { IModalForm } from 'providers/ModalProvider/Modal';
 
+const validInput = new RegExp(
+  '^\\d+(\\.\\d{1,2})?\\.?$'
+);
+
 export interface IProps extends IModalForm {
   user: IUser;
   onDone: (user: IUser, amount: number) => void;
@@ -20,21 +24,9 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
   
   const [formAmount, setFormAmount] = useState(amount > 0 ? amount.toString() : '')
 
-  const sanitize = (value: string): string => {
-    let sanitizedValue = value.replace(',', '.');
-        
-    if (sanitizedValue.includes('.')) {
-      if (sanitizedValue.split('.')[1].length <= 2)
-        return sanitizedValue;
-
-      return sanitizedValue.substring(0, sanitizedValue.length - 1);
-    }
-    
-    return sanitizedValue;
-  }
-
   const onInputTextChanged = useCallback((name: string, value: string) => {
-    value = sanitize(value);
+    value = value.replace(',', '.');
+    if (!validInput.test(value) && value !== '') return;
 
     setFormAmount(value);
   }, [setFormAmount]);
