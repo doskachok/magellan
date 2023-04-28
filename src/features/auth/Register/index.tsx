@@ -84,7 +84,8 @@ const Register = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate(ROUTES.AUTH.ROOT, { replace: true });
+      const state = { isRegistered: true };
+      navigate(ROUTES.AUTH.ROOT, { replace: true, state });
     }
   }, [navigate, isSuccess]);
 
