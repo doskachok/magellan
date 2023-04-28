@@ -1,6 +1,6 @@
-import {Middleware} from 'redux';
-import {addError} from './errorSlice';
-import {RootState} from './index';
+import { Middleware } from 'redux';
+import { addError } from './errorSlice';
+import { RootState } from './index';
 
 export const errorMiddleware: Middleware<{}, RootState> = store => next => action => {
   if (action?.error && !action.meta.condition) {

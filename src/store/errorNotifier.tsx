@@ -9,8 +9,10 @@ const ErrorNotifier = () => {
 
   useEffect(() => {
     if (notifications.length > prevCount) {
-      const {message} = notifications[notifications.length - 1];
-      toast.error(message);
+      const notificationsNumberToShow = notifications.length - prevCount;
+      const newNotifications = notifications.slice(-notificationsNumberToShow);
+      
+      newNotifications.forEach(({message}) => toast.error(message));
     }
   }, [dispatch, notifications, prevCount]);
 

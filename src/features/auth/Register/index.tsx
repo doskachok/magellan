@@ -1,27 +1,22 @@
-import {useState, useMemo, useCallback, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import {ROUTES} from 'constants/routes';
+import { ROUTES } from 'constants/routes';
 
 import Header from 'components/Header';
 import { Input, Button } from 'components';
 
-import {Column, PageWrapper, Row} from 'components/Containers';
-import {ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText} from './index.styled';
+import { Column, PageWrapper, Row } from 'components/Containers';
+import { ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText } from './index.styled';
 
-import {useRegisterMutation} from '../api';
+import { useRegisterMutation } from '../api';
 
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-import {usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator} from '../validation';
-import { Notification, NotificationType } from 'components/Notification';
+import { usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator } from '../validation';
+import { IRegisterForm } from '../types';
 
-interface IForm {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-}
+import { getValidationErrorsFromApiResponse, TApiErrorResponse } from 'helpers/validationHelper';
 
 interface IValidation {
   username: boolean;
@@ -33,14 +28,15 @@ interface IValidation {
 interface IPasswordRequirements {
   length: boolean;
   capitalLetter: boolean;
+  lowercaseLetter: boolean;
   number: boolean;
 }
 
 const Register = () => {
-  const {t} = useTranslation('auth');
+  const { t } = useTranslation('auth');
   const navigate = useNavigate();
 
-  const [form, setForm] = useState<IForm>({
+  const [form, setForm] = useState<IRegisterForm>({
     username: '',
     email: '',
     password: '',
@@ -57,14 +53,15 @@ const Register = () => {
   const [passwordRequirements, setPasswordRequirements] = useState<IPasswordRequirements>({
     length: false,
     capitalLetter: false,
+    lowercaseLetter: false,
     number: false,
   });
 
   const confirmPasswordValidator = useMemo(() => createConfirmPasswordValidator(form.password), [form.password]);
 
-  const [register] = useRegisterMutation();
+  const [register, { isLoading, isSuccess, error }] = useRegisterMutation();
+  const apiValidationErrors = useMemo(() => getValidationErrorsFromApiResponse(error as TApiErrorResponse), [error]);
 
-  const [isEmailError, setIsEmailError] = useState(false);
   const isDisabled = useMemo(() => Object.values(validation).some(el => !el), [validation]);
 
   const onInputChange = useCallback((name: string, value: string) => {
@@ -82,28 +79,28 @@ const Register = () => {
   }, []);
 
   const onFromSubmit = () => {
-    register(form).then((response: any) => {
-      const state = { isRegistered: !response.error };
-      const path = !response.error && ROUTES.AUTH.ROOT;
-      path ? navigate(path, { state }) : setIsEmailError(true);
-    });
+    register(form);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate(ROUTES.AUTH.ROOT, { replace: true });
+    }
+  }, [navigate, isSuccess]);
 
   useEffect(() => {
     const requirements = {
       length: form.password.length >= 8,
       capitalLetter: /[A-Z]+/.test(form.password),
+      lowercaseLetter: /[a-z]+/.test(form.password),
       number: /\d+/.test(form.password),
     };
     setPasswordRequirements(requirements);
   }, [form.password, setPasswordRequirements]);
 
-  const emailUsedTxt = t('email_already_used', 'Try again, this email has been already used');
-
   return (
     <PageWrapper>
-      <Notification text={isEmailError ? emailUsedTxt : null} type={NotificationType.ERROR} />
-      <Header text={t('signup')} />
+      <Header text={t('signup')} isLoading={isLoading} />
       <ContentWrapper jc={'space-between'} fullWidth>
 
         <Column gap={'8px'} fullWidth>
@@ -114,6 +111,7 @@ const Register = () => {
 
           <Input
             required
+            disabled={isLoading}
             name={'username'}
             displayName={t('username')}
             value={form.username}
@@ -121,10 +119,12 @@ const Register = () => {
             onTextChange={onInputChange}
             validator={usernameValidator}
             onValidationChange={onValidationChange}
+            error={apiValidationErrors?.username}
           />
 
           <Input
             required
+            disabled={isLoading}
             name={'email'}
             displayName={t('email')}
             value={form.email}
@@ -132,10 +132,12 @@ const Register = () => {
             onTextChange={onInputChange}
             validator={emailValidator}
             onValidationChange={onValidationChange}
+            error={apiValidationErrors?.email}
           />
 
           <Input
             required
+            disabled={isLoading}
             type={'password'}
             name={'password'}
             displayName={t('password')}
@@ -144,10 +146,12 @@ const Register = () => {
             onTextChange={onInputChange}
             validator={passwordValidator}
             onValidationChange={onValidationChange}
+            error={apiValidationErrors?.password}
           />
 
           <Input
             required
+            disabled={isLoading}
             type={'password'}
             name={'passwordConfirmation'}
             displayName={t('passwordConfirmation')}
@@ -168,6 +172,9 @@ const Register = () => {
             <PasswordRequirementsText fulfilled={passwordRequirements.capitalLetter}>
               {t('containCapitalLetter')}
             </PasswordRequirementsText>
+            <PasswordRequirementsText fulfilled={passwordRequirements.lowercaseLetter}>
+              {t('containLowercaseLetter')}
+            </PasswordRequirementsText>
             <PasswordRequirementsText fulfilled={passwordRequirements.number}>
               {t('containNumber')}
             </PasswordRequirementsText>
@@ -175,7 +182,7 @@ const Register = () => {
         </Column>
 
         <Row jc={'flex-end'} fullWidth>
-          <Button onClick={onFromSubmit} disabled={isDisabled}>
+          <Button onClick={onFromSubmit} disabled={isDisabled || isLoading}>
             {t('createAccount')}
           </Button>
         </Row>

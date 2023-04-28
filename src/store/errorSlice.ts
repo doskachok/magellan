@@ -15,16 +15,20 @@ const initialState: ISliceState = {
   prevCount: 0,
 };
 
+type AddErrorPayloadType = Pick<INotification, 'message'>[] | Pick<INotification, 'message'>;
+
 const errorsSlice = createSlice({
   name: 'errors',
   initialState,
   reducers: {
-    addError: (state, { payload }: PayloadAction<Pick<INotification, 'message'>>) => {
+    addError: (state, { payload }: PayloadAction<AddErrorPayloadType>) => {
       state.prevCount = state.notifications.length;
-      state.notifications = [...state.notifications, {
-        ...payload,
-        key: `error-${Math.random()}`
-      }];
+      
+      const newNotificationsArray = Array.isArray(payload) ?
+        payload.map((item) => ({...item, key: `error-${Math.random()}`}))
+        : [{...payload, key: `error-${Math.random()}`}];
+      
+      state.notifications = [...state.notifications, ...newNotificationsArray];
     },
     removeError: (state, { payload }: PayloadAction<string>) => {
       state.notifications = state.notifications.filter(i => i.key !== payload);

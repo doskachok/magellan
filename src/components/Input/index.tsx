@@ -54,14 +54,18 @@ const Input =
     const { t } = useTranslation('validation');
 
     const [isShowError, setIsShowError] = useState(false);
-    const [errors, setErrors] = useState<string[]>([]);
-    const _error = useMemo(() => error || errors.length ? errors[0] : '', [error, errors]);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
+    const [customError, setCustomError] = useState<string>('');
+    const _error = useMemo(() =>
+      (customError || (validationErrors?.length ? validationErrors[0] : '')),
+      [customError, validationErrors]);
 
     const displayError = !!_error && isShowError;
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
       onTextChange(name, event.target.value);
       setIsShowError(false);
+      setCustomError('');
     }, [onTextChange, name]);
 
     const handleBlur = useCallback((event: FocusEvent<HTMLInputElement>) => {
@@ -71,16 +75,20 @@ const Input =
 
     useEffect(() => {
       onValidationChange &&
-        onValidationChange(name, !errors.length);
-    }, [errors, onValidationChange, name]);
+        onValidationChange(name, !validationErrors?.length);
+    }, [validationErrors, onValidationChange, name]);
 
     useEffect(() => {
       if (validator) {
         validate(validator, value)
-          .then(setErrors)
-          .catch(setErrors);
+          .then(setValidationErrors)
+          .catch(setValidationErrors);
       }
-    }, [validator, value]);
+    }, [validator, value, setValidationErrors]);
+    
+    useEffect(() => {
+      setCustomError(error || '');
+    }, [error]);
 
     return (
       <Wrapper fullWidth>

@@ -11,7 +11,6 @@ import { requiredValidator } from '../validation';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from 'constants/routes';
 import { ILoginForm } from '../types';
-import { Notification } from 'components/Notification';
 
 interface IValidation {
   login: boolean;
@@ -65,7 +64,6 @@ const Login = () => {
   return (
     <PageWrapper>
       <Header text={'Login'} isLoading={isLoading} />
-      <Notification />
       <ContentWrapper jc={'space-between'} fullWidth>
         <Column gap={'8px'} fullWidth>
           <RequiredText>

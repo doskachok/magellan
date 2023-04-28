@@ -1,10 +1,9 @@
-import { IUser } from 'types/userTypes';
 import mainApi from '../../store/api';
-import { IAuthPayload, ILoginForm } from './types';
+import { IRegisterForm, IAuthPayload, ILoginForm, IUser } from './types';
 
 export const authApi = mainApi.injectEndpoints({
   endpoints: (build => ({
-    register: build.mutation({
+    register: build.mutation<IUser, IRegisterForm>({
       query: (body) => ({
         url: `users`,
         method: 'POST',
