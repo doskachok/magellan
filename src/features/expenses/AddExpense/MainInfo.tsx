@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Input, Select, TextUnderline } from "components";
+import { ButtonBase, Input, Select, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, ContentWrapper, CurrencyTitle, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButton } from "./MainInfo.styled";
+import { BackgroundFiller, ContentWrapper, CurrencyTitle, HalfCircleBackground, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
@@ -74,7 +74,7 @@ const MainInfo = () => {
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
-    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_PAYERS));
   }
 
   return (
@@ -150,14 +150,14 @@ const MainInfo = () => {
         </MainInfoWrapper>
         <HalfCircleBackground />
 
-        <Row fullWidth jc={'center'}>
-          <NextStepButton disabled={isNextStepButtonDisabled} onClick={onNextStep}>
+        <NextStepButtonWrapper>
+          <ButtonBase disabled={isNextStepButtonDisabled} onClick={onNextStep}>
             <TextUnderline>
               {t('nextStep')}
             </TextUnderline>
             {!isNextStepButtonDisabled ? <ArrowRightSVG /> : <ArrowRightDisabledSVG />}
-          </NextStepButton>
-        </Row>
+          </ButtonBase>
+        </NextStepButtonWrapper>
       </ContentWrapper>
 
       <BottomNavigation />

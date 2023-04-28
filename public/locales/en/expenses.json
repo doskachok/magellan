@@ -6,5 +6,11 @@
   "paymentDateUtc": "Payment date",
   "currency": "Currency",
   "selectGroup": "Please select group",
-  "group": "Group"
+  "group": "Group",
+  "payers": "Payers",
+  "howMuchPayed": "Tell us, who paid and how much?",
+  "total": "Total",
+  "amount": "Amount",
+  "enterAmount": "Enter amount",
+  "done": "Done"
 }

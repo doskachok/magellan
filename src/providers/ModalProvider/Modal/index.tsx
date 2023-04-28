@@ -1,4 +1,4 @@
-import {
+import React, {
   memo,
   MouseEvent,
   ReactElement,
@@ -9,10 +9,14 @@ import { useModal } from '..';
 
 import { ModalBackground, ModalContainer, ModalContent } from './index.styled';
 
+export interface IModalForm {
+  close?: () => void;
+}
+
 interface IProps {
   id: number,
   show: boolean,
-  children: ReactElement<any>,
+  children: ReactElement<IModalForm>,
 };
 
 const backgroundId = (modalId: number) => `b-${modalId}`;
@@ -40,11 +44,20 @@ const Modal = ({ id, show, children }: IProps) => {
     }
   }, [closeModal, id]);
 
+  const childrenWithProps = React.Children.map(children, child => {
+    // Checking isValidElement is the safe way and avoids a
+    // typescript error too.
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { close: () => closeModal(id) });
+    }
+    return child;
+  });
+
   return (
     <ModalBackground id={backgroundId(id)} show={show} onClick={backgroundClick}>
       <ModalContainer id={containerId(id)} onClick={backgroundClick}>
         <ModalContent show={show}>
-          {children}
+          {childrenWithProps}
         </ModalContent>
       </ModalContainer>
     </ModalBackground>

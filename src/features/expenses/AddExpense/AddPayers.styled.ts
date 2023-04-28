@@ -10,24 +10,30 @@ export const ContentWrapper = styled(Column)`
   flex: 1;
 `;
 
-export const MainInfoWrapper = styled(Column)`
+export const AddPayersWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};
   z-index: 1;
   padding: 14px 1.5rem 0;
   flex: 1;
 `;
 
-export const MainInfoText = styled(TextRegular)`
-  color: ${props => props.theme.colors.text.secondary};
+export const AddPayersInfo = styled(Row)`
+  justify-content: space-between;
   width: 100%;
   margin-top: 30px;
   margin-bottom: 15px;
 `;
 
-export const CurrencyTitle = styled(TextRegular)`
+export const AddPayersText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
-  width: 100%;
-  margin-top: 23px;
+  flex: 1;
+`;
+
+export const CurrencyText = styled(TextRegular)`
+  font-weight: bold;
+  text-align: right;
+  color: ${props => props.theme.colors.text.secondary};
+  flex: 1;
 `;
 
 export const BackgroundFiller = styled(Row)`
@@ -53,3 +59,4 @@ export const NextStepButtonWrapper = styled(Row)`
   margin-top: 1.5rem;
   margin-bottom: 3.5rem;
 `;
+

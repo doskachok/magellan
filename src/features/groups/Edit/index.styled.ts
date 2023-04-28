@@ -1,7 +1,6 @@
 import styled  from 'styled-components';
 import { Column, Row } from 'components/Containers';
 import { TextRegular } from 'components';
-import { ButtonTransparent } from 'components';
 
 export const ContentWrapper = styled(Column)`
   overflow-y: auto;
@@ -36,12 +35,11 @@ export const GroupEditBackground = styled(Row)`
   margin-left: -10vw;
 `;
 
-export const AddMembersButton = styled(ButtonTransparent)`
-  display: inline-flex;
-  flex-wrap: nowrap;
+export const AddMembersButtonWrapper = styled(Row)`
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1.5rem;
   margin: 1rem 0 3rem;
 `;
 
