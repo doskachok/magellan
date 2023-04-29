@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Column, PageContentWrapper, Row } from 'components/Containers';
+import { Column, Row } from 'components/Containers';
 
-export const GroupsListWrapper = styled(PageContentWrapper)`
-  padding-top: 40px;
+export const GroupsListWrapper = styled(Column)`
+  padding: 40px 20px 0px; // top, horizontal, bottom
   flex: 1;
   gap: 30px;
   z-index: 0;
