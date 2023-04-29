@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useState } from "react";
+import { ReactElement, memo, useCallback, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -27,7 +27,7 @@ interface ISplitMethodButtonProps {
   onClick?: () => void;
 }
 
-const SplitMethodButton = ({text, svgImg, onClick}: ISplitMethodButtonProps) => {
+const SplitMethodButton = memo(({ text, svgImg, onClick }: ISplitMethodButtonProps) => {
   return (
     <SplitMethodButtonWrapper>
       <ButtonBase onClick={onClick}>
@@ -42,7 +42,7 @@ const SplitMethodButton = ({text, svgImg, onClick}: ISplitMethodButtonProps) => 
       </ButtonBase>
     </SplitMethodButtonWrapper>
   );
-};
+});
 
 
 const AddParticipants = () => {
@@ -60,6 +60,8 @@ const AddParticipants = () => {
   const handleBackAction = useCallback(() => {
     navigate(-1);
   }, [navigate]);
+
+  const onSplitMethods = useMemo(() => new Array(4).fill(null).map((_, i) => () => setSplitMethodIndex(i)), [setSplitMethodIndex]);
 
   return (
     <PageWrapper>
@@ -82,10 +84,10 @@ const AddParticipants = () => {
               <BorderShift flex={3 - splitMethodIndex} />
             </SplitMethodBorderWrapper>
 
-            <SplitMethodButton text={t("equally")} svgImg={<EquallyMethodSVG />} onClick={() => setSplitMethodIndex(0)} />
-            <SplitMethodButton text={t("unequally")} svgImg={<UnequallyMethodSVG />} onClick={() => setSplitMethodIndex(1)} />
-            <SplitMethodButton text={t("percentage")} svgImg={<PercentageMethodSVG />} onClick={() => setSplitMethodIndex(2)} />
-            <SplitMethodButton text={t("adjustment")} svgImg={<AdjustmentMethodSVG />} onClick={() => setSplitMethodIndex(3)} />
+            <SplitMethodButton text={t("equally")} svgImg={<EquallyMethodSVG />} onClick={onSplitMethods[0]} />
+            <SplitMethodButton text={t("unequally")} svgImg={<UnequallyMethodSVG />} onClick={onSplitMethods[1]} />
+            <SplitMethodButton text={t("percentage")} svgImg={<PercentageMethodSVG />} onClick={onSplitMethods[2]} />
+            <SplitMethodButton text={t("adjustment")} svgImg={<AdjustmentMethodSVG />} onClick={onSplitMethods[3]} />
           </SplitMethodWrapper>
 
           <BackgroundFiller />
