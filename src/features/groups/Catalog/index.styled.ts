@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 import { Column, PageContentWrapper, Row } from 'components/Containers';
 
-export const ContentWrapper = styled(Column)`
-  position: relative;
-  overflow:hidden;
-  flex: 1;
-`;
-
 export const GroupsListWrapper = styled(PageContentWrapper)`
   padding-top: 40px;
   flex: 1;

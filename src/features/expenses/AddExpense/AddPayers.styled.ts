@@ -2,13 +2,6 @@ import { TextRegular } from "components";
 import { Column, Row } from "components/Containers";
 import styled from "styled-components";
 
-export const ContentWrapper = styled(Column)`
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 100%;
-  flex: 1;
-`;
-
 export const AddPayersWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};
   z-index: 1;

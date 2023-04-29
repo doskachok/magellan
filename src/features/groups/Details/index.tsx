@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { PageWrapper } from 'components/Containers';
+import { ContentWrapper, PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
 import { composeGroupRoute, GroupRouteMode, ROUTES } from 'constants/routes';
 import { useLazyGetTransactionGroupByIdQuery } from '../api';
@@ -11,7 +11,7 @@ import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
 import BottomNavigation from 'components/BottomNavigation';
 import TransactionRow from './TransactionRow';
-import { ContentWrapper, DateText, NoTransactionsText, TransactionListContainer } from './index.styled';
+import { DateText, NoTransactionsText, TransactionListContainer } from './index.styled';
 import { createDateString, datesAreOnSameDay } from 'helpers/dateUtil';
 
 import { selectedGroupSelector } from '../slice';

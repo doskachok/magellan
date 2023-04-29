@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ButtonBase, HalfCircle, TextUnderline } from "components";
-import { Column, PageWrapper } from "components/Containers";
+import { Column, ContentWrapper, PageWrapper } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, ContentWrapper, AddPayersWrapper, AddPayersText, CurrencyText, AddPayersInfo, NextStepButtonWrapper } from "./AddPayers.styled";
+import { BackgroundFiller, AddPayersWrapper, AddPayersText, CurrencyText, AddPayersInfo, NextStepButtonWrapper } from "./AddPayers.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
