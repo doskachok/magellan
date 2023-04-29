@@ -21,7 +21,12 @@ export const composeGroupRoute = (groupId: string, mode = GroupRouteMode.NONE) =
   return `${ROUTES.GROUPS.ROOT}/${groupId}/${mode}`;
 };
 
-export enum ExpenseRouteMode { ADD_MAININFO = 'add-main-info', ADD_PAYERS = 'add-payers', NONE = '' };
+export enum ExpenseRouteMode {
+  ADD_MAININFO = 'add-main-info',
+  ADD_PAYERS = 'add-payers',
+  ADD_PARTICIPANTS = 'add-participants',
+  NONE = ''
+};
 
 export const composeExpenseRoute = (groupId: string, expenseIdOrCreate: string, mode: ExpenseRouteMode) => {
   return `${composeGroupRoute(groupId, GroupRouteMode.EXPENSES)}/${expenseIdOrCreate}/${mode}`;

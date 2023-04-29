@@ -6,6 +6,7 @@ import { ExpenseRouteMode} from 'constants/routes';
 import { saveTransaction } from '../slice';
 import MainInfo from './MainInfo';
 import AddPayers from './AddPayers';
+import AddParticipants from './AddParticipants';
 
 const AddExpense = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const AddExpense = () => {
     <Routes>
       <Route path={`${ExpenseRouteMode.ADD_MAININFO}`} element={<MainInfo/>} />
       <Route path={`${ExpenseRouteMode.ADD_PAYERS}`} element={<AddPayers/>} />
+      <Route path={`${ExpenseRouteMode.ADD_PARTICIPANTS}`} element={<AddParticipants/>} />
     </Routes>
   );
 };

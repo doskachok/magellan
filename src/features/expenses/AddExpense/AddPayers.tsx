@@ -86,8 +86,7 @@ const AddPayers = () => {
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
-    // TODO: navigate to the next step
-    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_PARTICIPANTS));
   }
 
   useEffect(() => {
