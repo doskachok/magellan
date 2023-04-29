@@ -2,7 +2,7 @@ import Avatar from './Avatar';
 import { AvatarSize } from './Avatar/index.styled';
 import Button from './Button';
 import Input from './Input';
-import { Text, TextHeader, TextHint, TextSmall, TextRegular, TextUnderline } from './Text';
+import { Text, TextHeader, TextHint, TextSmall, TextRegular, TextUnderline, SmallText } from './Text';
 import { TextLink } from './Link';
 import Select from './Select';
 import { ButtonBase } from './Button/index.styled';
@@ -19,6 +19,7 @@ export {
     TextRegular,
     TextUnderline,
     Select,
+    SmallText,
     TextLink,
     TextHint,
     TextSmall,

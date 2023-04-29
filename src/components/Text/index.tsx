@@ -15,6 +15,10 @@ export const Text = styled.p<TextProps>`
   `};
 `;
 
+export const SmallText = styled(Text)`
+  font-size: 9px;
+`;
+
 export const TextHeader = styled(Text)`
   font-weight: 700;
   font-size: 23px;

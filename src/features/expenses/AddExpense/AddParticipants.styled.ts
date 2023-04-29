@@ -8,6 +8,13 @@ export const AddParticipantsWrapper = styled(Column)`
   flex: 1;
 `;
 
+export const SplitMethodButtonWrapper = styled(Row)`
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  width: 64px;
+`;
+
 export const BackgroundFiller = styled(Row)`
   background: ${props => props.theme.colors.primary};
   width: 100%;

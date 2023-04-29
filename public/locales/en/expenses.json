@@ -15,5 +15,9 @@
   "done": "Done",
   "participants": "Participants",
   "save": "Save",
-  "membersInTransaction": "members in transaction."
+  "membersInTransaction": "members in transaction.",
+  "equally": "Equally",
+  "unequally": "Unequally",
+  "percentage": "Percentage",
+  "adjustment": "Adjustment"
 }
