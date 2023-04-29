@@ -5,7 +5,6 @@ import styled from "styled-components";
 export const ContentWrapper = styled(Column)`
   overflow-y: auto;
   overflow-x: hidden;
-  justify-content: space-between;
   height: 100%;
   flex: 1;
 `;

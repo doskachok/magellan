@@ -84,7 +84,7 @@ const MainInfo = () => {
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
       />
 
-      <ContentWrapper fullWidth>
+      <ContentWrapper fullWidth jc="space-between">
         <MainInfoWrapper fullWidth>
           <Column gap={'1rem'} fullWidth>
             <MainInfoText>

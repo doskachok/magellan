@@ -96,7 +96,7 @@ const AccountSetttings = () => {
           leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
         />
 
-        <ContentWrapper fullWidth>
+        <ContentWrapper fullWidth jc="space-between">
           <MainInfoWrapper fullWidth>
             <AccountInfoWrapper gap={'5px'} jc={'center'} fullWidth>
               <Row jc={'center'} fullWidth>

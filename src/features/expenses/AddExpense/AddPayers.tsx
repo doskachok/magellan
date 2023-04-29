@@ -109,7 +109,7 @@ const AddPayers = () => {
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
       />
 
-      <ContentWrapper fullWidth>
+      <ContentWrapper fullWidth jc="space-between">
         <AddPayersWrapper fullWidth>
           <Column gap={'1rem'} fullWidth>
             <AddPayersInfo>
