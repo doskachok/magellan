@@ -1,4 +1,4 @@
-import { ReactElement, useCallback } from "react";
+import { ReactElement, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,7 @@ import { newTransactionSelector } from "../slice";
 import { ButtonBase, HalfCircle, SmallText, TextUnderline } from "components";
 import defaultTheme from "constants/theme/default.theme";
 
-import { AddParticipantsWrapper, BackgroundFiller, SaveButtonWrapper, SplitMethodButtonWrapper } from "./AddParticipants.styled";
+import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodButtonWrapper, SplitMethodWrapper } from "./AddParticipants.styled";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 
 
@@ -55,6 +55,8 @@ const AddParticipants = () => {
 
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
 
+  const [splitMethodIndex, setSplitMethodIndex] = useState<number>(0);
+
   const handleBackAction = useCallback(() => {
     navigate(-1);
   }, [navigate]);
@@ -73,12 +75,18 @@ const AddParticipants = () => {
             </TextUnderline>
           </ButtonBase>
 
-          <Row fullWidth jc="space-around">
-            <SplitMethodButton text={t("equally")} svgImg={<EquallyMethodSVG />} />
-            <SplitMethodButton text={t("unequally")} svgImg={<UnequallyMethodSVG />} />
-            <SplitMethodButton text={t("percentage")} svgImg={<PercentageMethodSVG />} />
-            <SplitMethodButton text={t("adjustment")} svgImg={<AdjustmentMethodSVG />} />
-          </Row>
+          <SplitMethodWrapper fullWidth jc="space-between">
+            <SplitMethodBorderWrapper>
+              <BorderShift flex={splitMethodIndex} />
+              <MovingBorder />
+              <BorderShift flex={3 - splitMethodIndex} />
+            </SplitMethodBorderWrapper>
+
+            <SplitMethodButton text={t("equally")} svgImg={<EquallyMethodSVG />} onClick={() => setSplitMethodIndex(0)} />
+            <SplitMethodButton text={t("unequally")} svgImg={<UnequallyMethodSVG />} onClick={() => setSplitMethodIndex(1)} />
+            <SplitMethodButton text={t("percentage")} svgImg={<PercentageMethodSVG />} onClick={() => setSplitMethodIndex(2)} />
+            <SplitMethodButton text={t("adjustment")} svgImg={<AdjustmentMethodSVG />} onClick={() => setSplitMethodIndex(3)} />
+          </SplitMethodWrapper>
 
           <BackgroundFiller />
         </AddParticipantsWrapper>

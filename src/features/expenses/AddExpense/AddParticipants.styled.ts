@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Column, Row } from "components/Containers";
 
 export const AddParticipantsWrapper = styled(Column)`
@@ -13,6 +13,34 @@ export const SplitMethodButtonWrapper = styled(Row)`
   align-items: center;
   height: 64px;
   width: 64px;
+  z-index: 100;
+`;
+
+export const MovingBorder = styled.div`
+  width: 64px;
+  height: 64px;
+  border: 2px solid white;
+  border-radius: 5px;
+`;
+
+export const BorderShift = styled.div<{flex: number}>`
+  ${prop => prop.flex && css`flex: ${prop.flex}`};
+  height: 100%;
+
+  transition: all 0.3s ease;
+`;
+
+export const SplitMethodWrapper = styled(Row)`
+  position: relative;
+`;
+
+export const SplitMethodBorderWrapper = styled(Row)`
+  position: absolute;
+  justify-content: flex-start;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 `;
 
 export const BackgroundFiller = styled(Row)`
