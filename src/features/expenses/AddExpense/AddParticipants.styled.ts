@@ -8,14 +8,6 @@ export const AddParticipantsWrapper = styled(Column)`
   flex: 1;
 `;
 
-export const SplitMethodButtonWrapper = styled(Row)`
-  justify-content: center;
-  align-items: center;
-  height: 64px;
-  width: 64px;
-  z-index: 100;
-`;
-
 export const MovingBorder = styled.div`
   width: 64px;
   height: 64px;

@@ -1,4 +1,4 @@
-import { ReactElement, memo, useCallback, useState, useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -10,39 +10,16 @@ import { ReactComponent as UnequallyMethodSVG } from 'assets/images/coins-icon.s
 import { ReactComponent as PercentageMethodSVG } from 'assets/images/percent-icon.svg';
 import { ReactComponent as AdjustmentMethodSVG } from 'assets/images/adjust-control-icon.svg';
 import BottomNavigation from "components/BottomNavigation";
-import { Column, ContentWrapper, PageWrapper, Row } from "components/Containers";
+import { ContentWrapper, PageWrapper } from "components/Containers";
 import Header from "components/Header";
 import { CreateRouteString, ExpenseRouteMode, NoneRouteString, composeExpenseRoute } from "constants/routes";
 import { newTransactionSelector } from "../slice";
-import { ButtonBase, HalfCircle, SmallText, TextUnderline } from "components";
+import { ButtonBase, HalfCircle, TextUnderline } from "components";
 import defaultTheme from "constants/theme/default.theme";
-
-import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodButtonWrapper, SplitMethodWrapper } from "./AddParticipants.styled";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
+import SplitMethodButton from "./SplitMethods/SplitMethodButton";
 
-
-interface ISplitMethodButtonProps {
-  text: string;
-  svgImg: ReactElement;
-  onClick?: () => void;
-}
-
-const SplitMethodButton = memo(({ text, svgImg, onClick }: ISplitMethodButtonProps) => {
-  return (
-    <SplitMethodButtonWrapper>
-      <ButtonBase onClick={onClick}>
-        <Column>
-          <Row fullWidth jc="center">
-            {svgImg}
-          </Row>
-          <SmallText reversedColor>
-            {text}
-          </SmallText>
-        </Column>
-      </ButtonBase>
-    </SplitMethodButtonWrapper>
-  );
-});
+import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper } from "./AddParticipants.styled";
 
 
 const AddParticipants = () => {
