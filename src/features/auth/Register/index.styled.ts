@@ -2,7 +2,7 @@ import styled, {css} from 'styled-components';
 import {PageContentWrapper, Column} from 'components/Containers';
 import {TextRegular} from 'components/Text';
 
-export const ContentWrapper = styled(PageContentWrapper)`
+export const ContentWrapperRegister = styled(PageContentWrapper)`
   padding-top: 60px;
   padding-bottom: 24px;
   flex: 1;

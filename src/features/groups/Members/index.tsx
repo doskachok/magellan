@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Column, Row } from 'components/Containers';
-import { ContentWrapper, Header } from './index.styled';
+import { ContentWrapperMembers, Header } from './index.styled';
 import { TextRegular, TextSmall, Button } from 'components';
 import { useModal } from 'providers/ModalProvider';
 import AddMemberModal from './AddMemberModal';
@@ -65,7 +65,7 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
   }, [addMemberModalId, modalContext]);
 
   return (
-    <ContentWrapper jc={'space-between'} fullWidth>
+    <ContentWrapperMembers jc={'space-between'} fullWidth>
       <Column fullWidth>
         <Header fullWidth>
             <TextSmall>
@@ -106,7 +106,7 @@ const GroupMembers = ({ groupId }: IGroupMembersProps) => {
           {t('addMembers')}
         </Button>
       </Row>
-    </ContentWrapper>
+    </ContentWrapperMembers>
   );
 };
 

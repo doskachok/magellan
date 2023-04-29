@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { PageContentWrapper } from 'components/Containers';
 import { TextLink, TextRegular } from 'components';
 
-export const ContentWrapper = styled(PageContentWrapper)`
+export const ContentWrapperLogin = styled(PageContentWrapper)`
   padding-top: 120px;
   padding-bottom: 24px;
   flex: 1;

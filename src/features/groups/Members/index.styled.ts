@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Column, Row } from 'components/Containers';
 
-export const ContentWrapper = styled(Column)`
+export const ContentWrapperMembers = styled(Column)`
   padding: 1rem;
   flex: 1;
 `;
