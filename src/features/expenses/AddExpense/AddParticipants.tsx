@@ -4,11 +4,17 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
+import { ReactComponent as CheckSVG } from 'assets/images/check-icon.svg';
 import BottomNavigation from "components/BottomNavigation";
-import { PageWrapper } from "components/Containers";
+import { ContentWrapper, PageWrapper } from "components/Containers";
 import Header from "components/Header";
 import { CreateRouteString, ExpenseRouteMode, NoneRouteString, composeExpenseRoute } from "constants/routes";
 import { newTransactionSelector } from "../slice";
+import { ButtonBase, HalfCircle, TextUnderline } from "components";
+import defaultTheme from "constants/theme/default.theme";
+
+import { AddParticipantsWrapper, BackgroundFiller, SaveButtonWrapper } from "./AddParticipants.styled";
+
 
 const AddParticipants = () => {
   const { t } = useTranslation('expenses');
@@ -28,6 +34,22 @@ const AddParticipants = () => {
         text={t('participants')}
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
       />
+      <ContentWrapper fullWidth>
+        <AddParticipantsWrapper fullWidth>
+
+          <BackgroundFiller />
+        </AddParticipantsWrapper>
+        <HalfCircle />
+
+        <SaveButtonWrapper>
+          <ButtonBase>
+            <TextUnderline>
+              {t('save')}
+            </TextUnderline>
+            <CheckSVG fill={defaultTheme.colors.text.link} />
+          </ButtonBase>
+        </SaveButtonWrapper>
+      </ContentWrapper>
 
       <BottomNavigation />
     </PageWrapper>
