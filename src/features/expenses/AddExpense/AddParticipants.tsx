@@ -18,9 +18,27 @@ import { ButtonBase, HalfCircle, TextUnderline } from "components";
 import defaultTheme from "constants/theme/default.theme";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 import SplitMethodButton from "./SplitMethods/SplitMethodButton";
+import EquallySplitMethodView from "./SplitMethods/Equally";
+import UnequallySplitMethodView from "./SplitMethods/Unequally";
+import AdjustmentSplitMethodView from "./SplitMethods/Adjustment";
+import PercentageSplitMethodView from "./SplitMethods/Percentage";
+import { ICreateTransaction } from "../types";
+import { ITransactionGroup } from "features/groups/types";
 
 import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper } from "./AddParticipants.styled";
 
+const GetSplitModeView = (splitMethodIndex: number, transaction: ICreateTransaction, group: ITransactionGroup) => {
+  if (splitMethodIndex === 0)
+    return <EquallySplitMethodView transaction={transaction} group={group} />
+  else if (splitMethodIndex === 1)
+    return <UnequallySplitMethodView transaction={transaction} group={group} />
+  else if (splitMethodIndex === 2)
+    return <PercentageSplitMethodView transaction={transaction} group={group} />
+  else if (splitMethodIndex === 3)
+    return <AdjustmentSplitMethodView transaction={transaction} group={group} />
+  else
+    throw new Error('Invalid split method index');
+}
 
 const AddParticipants = () => {
   const { t } = useTranslation('expenses');
@@ -66,6 +84,8 @@ const AddParticipants = () => {
             <SplitMethodButton text={t("percentage")} svgImg={<PercentageMethodSVG />} onClick={onSplitMethods[2]} />
             <SplitMethodButton text={t("adjustment")} svgImg={<AdjustmentMethodSVG />} onClick={onSplitMethods[3]} />
           </SplitMethodWrapper>
+
+          {GetSplitModeView(splitMethodIndex, transaction!, group.data!)}
 
           <BackgroundFiller />
         </AddParticipantsWrapper>
