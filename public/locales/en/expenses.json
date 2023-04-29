@@ -14,5 +14,6 @@
   "enterAmount": "Enter amount",
   "done": "Done",
   "participants": "Participants",
-  "save": "Save"
+  "save": "Save",
+  "membersInTransaction": "members in transaction."
 }

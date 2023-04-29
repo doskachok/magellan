@@ -14,6 +14,7 @@ import { ButtonBase, HalfCircle, TextUnderline } from "components";
 import defaultTheme from "constants/theme/default.theme";
 
 import { AddParticipantsWrapper, BackgroundFiller, SaveButtonWrapper } from "./AddParticipants.styled";
+import { useGetTransactionGroupByIdQuery } from "features/groups/api";
 
 
 const AddParticipants = () => {
@@ -23,6 +24,8 @@ const AddParticipants = () => {
   const transaction = useSelector(newTransactionSelector);
   if (!transaction)
     navigate(composeExpenseRoute(NoneRouteString, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+
+  const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
 
   const handleBackAction = useCallback(() => {
     navigate(-1);
@@ -36,6 +39,11 @@ const AddParticipants = () => {
       />
       <ContentWrapper fullWidth>
         <AddParticipantsWrapper fullWidth>
+          <ButtonBase>
+            <TextUnderline reversedColor>
+              {`${group.data?.participants.length}/${group.data?.participants.length} ${t('membersInTransaction')}`}
+            </TextUnderline>
+          </ButtonBase>
 
           <BackgroundFiller />
         </AddParticipantsWrapper>
