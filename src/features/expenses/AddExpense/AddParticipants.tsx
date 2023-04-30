@@ -12,7 +12,6 @@ import { ReactComponent as AdjustmentMethodSVG } from 'assets/images/adjust-cont
 import BottomNavigation from "components/BottomNavigation";
 import { ContentWrapper, PageWrapper } from "components/Containers";
 import Header from "components/Header";
-import { CreateRouteString, ExpenseRouteMode, NoneRouteString, composeExpenseRoute } from "constants/routes";
 import { newTransactionSelector } from "../slice";
 import { ButtonBase, HalfCircle, TextUnderline } from "components";
 import defaultTheme from "constants/theme/default.theme";
@@ -45,9 +44,6 @@ const AddParticipants = () => {
   const navigate = useNavigate();
 
   const transaction = useSelector(newTransactionSelector);
-  if (!transaction)
-    navigate(composeExpenseRoute(NoneRouteString, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
-
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
 
   const [splitMethodIndex, setSplitMethodIndex] = useState<number>(0);
