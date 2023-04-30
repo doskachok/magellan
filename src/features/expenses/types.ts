@@ -12,8 +12,15 @@ export interface IPayerDetails {
   amount: number;
 }
 
+export enum SplitType {
+  AssignedAmount = 0,
+  Percentage = 1,
+  Equal = 2,
+  Shares = 3,
+}
+
 export interface IPartialAssignments {
   userId: string;
   partialAmount: number;
-  splitType: number; // TODO: introduce enum
+  splitType: SplitType;
 }
