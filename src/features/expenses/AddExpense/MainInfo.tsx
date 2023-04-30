@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,9 +16,10 @@ import { ICreateTransaction } from "../types";
 import { newTransactionSelector } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { saveTransaction } from "../slice";
-import { useGetTransactionGroupByIdQuery } from "features/groups/api";
+import { useLazyGetTransactionGroupByIdQuery } from "features/groups/api";
 import { groupsListSelector } from "features/groups/slice";
 import { requiredValidator } from "features/auth/validation";
+import Loader from "components/Loader";
 
 interface IValidation {
   groupId: boolean;
@@ -33,14 +34,14 @@ const MainInfo = () => {
   const { groupId: groupIdOptional } = useParams();
   const groupId = groupIdOptional ?? '';
 
-  const group = useGetTransactionGroupByIdQuery(groupId);
+  const [getGroup, { data: group, isLoading }] = useLazyGetTransactionGroupByIdQuery();
   const transaction = useSelector(newTransactionSelector);
   const groupList = useSelector(groupsListSelector);
 
   const [form, setForm] = useState<ICreateTransaction>({
     name: '',
     paymentDateUtc: new Date().toISOString().split('T')[0],
-    currencyCode: group.data?.currencyCode ?? currencies[0].value,
+    currencyCode: '',
     groupId: groupId,
     payerDetails: [],
     partialsAssignments: [],
@@ -73,9 +74,42 @@ const MainInfo = () => {
   }, []);
 
   const onNextStep = () => {
-    dispatch(saveTransaction(form));
+    dispatch(saveTransaction({
+      ...form,
+      // Fill partialAssignments using participants from the group.
+      // By default all group members are participants of the transaction.
+      partialsAssignments: group?.participants?.map((participant) => ({
+        userId: participant.id,
+        partialAmount: 0,
+        splitType: 2, // split method: equally. TODO: change to enum
+      })) ?? [],
+    }));
     navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_PAYERS));
   }
+
+  useEffect(() => { // Get initial group currency code
+    if (form.currencyCode.length > 0 || !group) return;
+  
+    setForm(form => ({
+      ...form,
+      currencyCode: group?.currencyCode ?? currencies[0].value,
+    }));
+  }, [form, group]);
+
+  useEffect(() => {
+    if (groupId) {
+      getGroup(groupId);
+    } else {
+      setForm(form => ({
+        ...form,
+        currencyCode: currencies[0].value,
+      }));
+    }
+  }, [groupId, getGroup]);
+
+  useEffect(() => {
+    getGroup(form.groupId);
+  }, [form.groupId, getGroup]);
 
   return (
     <PageWrapper>
@@ -161,6 +195,8 @@ const MainInfo = () => {
       </ContentWrapper>
 
       <BottomNavigation />
+      
+      <Loader isLoading={isLoading} />
     </PageWrapper>
   );
 };
