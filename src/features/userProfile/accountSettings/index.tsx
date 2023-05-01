@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import FileUploader, { IFileUploaderRef } from "components/FileUploader";
-import { Avatar, AvatarSize, Button, ButtonBase, Input, TextUnderline } from "components";
+import { Avatar, AvatarSize, Button, ButtonBase, HalfCircle, Input, TextUnderline } from "components";
 import { Column, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
@@ -13,7 +13,7 @@ import { logOut, userReceived, userSelector } from "features/auth/slice";
 import { IUser, userToUpdateUser } from "types/userTypes";
 import { getDownloadFileUrl } from "helpers/urlHelper";
 
-import { AccountInfoWrapper, AccountSettingsBackground, BackgroundFiller, ContentWrapper, LogoutButtonWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
+import { AccountInfoWrapper, BackgroundFiller, ContentWrapper, LogoutButtonWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
 import { useUpdateUserMutation } from "store/user.api";
 import Loader from "components/Loader";
 import toast from "react-hot-toast";
@@ -148,8 +148,7 @@ const AccountSetttings = () => {
             </AccountInfoWrapper>
 
             <BackgroundFiller />
-            <AccountSettingsBackground fullWidth>
-            </AccountSettingsBackground>
+            <HalfCircle />
           </MainInfoWrapper>
 
           <LogoutButtonWrapper>

@@ -8,14 +8,13 @@ import Loader from 'components/Loader';
 
 import {
   GroupCurrencyText,
-  GroupEditBackground,
   GroupInfoWrapper,
   MainInfoWrapper,
   SaveButtonWrapper
 } from './index.styled';
 
 import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
-import { Avatar, AvatarSize, Button, Input, Select } from 'components';
+import { Avatar, AvatarSize, Button, HalfCircle, Input, Select } from 'components';
 import { requiredValidator } from 'features/auth/validation';
 import currencies from 'constants/currencies';
 import { useCreateTransactionGroupMutation, useUpdateTransactionGroupMutation } from '../api';
@@ -171,8 +170,7 @@ const Form = ({ group }: IProps) => {
             </Row>
           </GroupInfoWrapper>
 
-          <GroupEditBackground fullWidth>
-          </GroupEditBackground>
+          <HalfCircle />
         </MainInfoWrapper>
 
         <SaveButtonWrapper jc={'center'} fullWidth>

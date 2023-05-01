@@ -6,6 +6,7 @@ import { Text, TextHeader, TextHint, TextSmall, TextRegular, TextUnderline } fro
 import { TextLink } from './Link';
 import Select from './Select';
 import { ButtonBase } from './Button/index.styled';
+import { HalfCircle } from './HalfCircle/index.styled';
 
 export {
     Avatar,
@@ -20,5 +21,6 @@ export {
     Select,
     TextLink,
     TextHint,
-    TextSmall
+    TextSmall,
+    HalfCircle
 }

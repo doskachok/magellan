@@ -11,11 +11,12 @@ import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
 import BottomNavigation from 'components/BottomNavigation';
 import TransactionRow from './TransactionRow';
-import { ContentWrapper, DateText, HalfEllipse, NoTransactionsText, TransactionListContainer } from './index.styled';
+import { ContentWrapper, DateText, NoTransactionsText, TransactionListContainer } from './index.styled';
 import { createDateString, datesAreOnSameDay } from 'helpers/dateUtil';
 
 import { selectedGroupSelector } from '../slice';
 import Loader from 'components/Loader';
+import { HalfCircle } from 'components';
 
 
 const GroupDetails = () => {
@@ -49,7 +50,7 @@ const GroupDetails = () => {
       />
 
       <ContentWrapper fullWidth>
-        <HalfEllipse fullWidth />
+        <HalfCircle />
         <TransactionListContainer>
           {group?.transactions?.map((tr, index, array) => {
             if (index === 0 || !datesAreOnSameDay(tr.paymentDateUtc, array[index - 1].paymentDateUtc)) {

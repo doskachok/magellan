@@ -25,16 +25,6 @@ export const GroupCurrencyText = styled(TextRegular)`
   margin-top: 23px;
 `;
 
-export const GroupEditBackground = styled(Row)`
-  border-radius: 100%;
-  background: ${props => props.theme.colors.primary};
-  width: 120vw;
-  height: 80vw;
-  z-index: 0;
-  margin-top: -55vw;
-  margin-left: -10vw;
-`;
-
 export const AddMembersButtonWrapper = styled(Row)`
   justify-content: center;
   align-items: center;
