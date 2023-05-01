@@ -8,18 +8,25 @@ import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazyUserQuery } from '../api';
 import { Input, Button } from 'components';
 import { requiredValidator } from '../validation';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from 'constants/routes';
 import { ILoginForm } from '../types';
+import { toast } from 'react-hot-toast';
 
 interface IValidation {
   login: boolean;
   password: boolean;
 }
 
+interface ILocationState {
+  isRegistered?: boolean;
+}
+
 const Login = () => {
   const { t } = useTranslation('auth');
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location.state as ILocationState;
 
   const [form, setForm] = useState<ILoginForm>({
     login: '',
@@ -60,6 +67,12 @@ const Login = () => {
         .then(() => navigate(ROUTES.GROUPS.ROOT, { replace: true }));
     }
   }, [loginData, navigate, getUser]);
+
+  useEffect(() => {
+    if (locationState?.isRegistered) {
+      toast.success(t('registrationSuccess'));
+    }
+  }, [locationState, t]);
 
   return (
     <PageWrapper>
