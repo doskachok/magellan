@@ -12,7 +12,7 @@ import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-rig
 import { BackgroundFiller, CurrencyTitle, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
-import { ICreateTransaction, SplitType } from "../types";
+import { ICreateTransaction, SplitMethod } from "../types";
 import { newTransactionSelector } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { saveTransaction } from "../slice";
@@ -81,7 +81,7 @@ const MainInfo = () => {
       partialsAssignments: group?.participants?.map((participant) => ({
         userId: participant.id,
         partialAmount: 0,
-        splitType: SplitType.Equal,
+        splitMethod: SplitMethod.Equal,
       })) ?? [],
     }));
     navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_PAYERS));

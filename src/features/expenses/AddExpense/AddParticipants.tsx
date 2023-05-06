@@ -21,7 +21,7 @@ import EquallySplitMethodView from "./SplitMethods/Equally";
 import UnequallySplitMethodView from "./SplitMethods/Unequally";
 import AdjustmentSplitMethodView from "./SplitMethods/Adjustment";
 import PercentageSplitMethodView from "./SplitMethods/Percentage";
-import { ICreateTransaction, SplitType } from "../types";
+import { ICreateTransaction, SplitMethod } from "../types";
 import { ITransactionGroup } from "features/groups/types";
 import { useCreateTransactionMutation } from "../api";
 
@@ -45,13 +45,13 @@ const GetSplitModeView = (splitMethodIndex: number, transaction: ICreateTransact
 
 const splitMethodIndexToEnum = (splitMethodIndex: number) => {
   if (splitMethodIndex === 0)
-    return SplitType.Equal;
+    return SplitMethod.Equal;
   else if (splitMethodIndex === 1)
-    return SplitType.AssignedAmount;
+    return SplitMethod.AssignedAmount;
   else if (splitMethodIndex === 2)
-    return SplitType.Percentage;
+    return SplitMethod.Percentage;
   else if (splitMethodIndex === 3) // Ajustment uses Equal as base type and AssignedAmount for adjustments
-    return SplitType.Equal;
+    return SplitMethod.Equal;
   else
     throw new Error('Invalid split method index');
 };
@@ -74,23 +74,23 @@ const AddParticipants = () => {
   }, [navigate]);
 
   const resetPartialsAssignments = useCallback((splitIndex: number) => {
-    const newSplitType = splitMethodIndexToEnum(splitIndex);
+    const newSplitMethod = splitMethodIndexToEnum(splitIndex);
     
     // Get unique usersIds from partialsAssignments
     const userIds = transaction!.partialsAssignments
       .map(partialsAssignment => partialsAssignment.userId)
       .filter((userId, index, self) => index === self.indexOf(userId));
 
-    const newTranssaction = {
+    const newTransaction = {
       ...transaction!,
       partialsAssignments: [...userIds].map((userId) => ({
         userId,
         partialAmount: 0,
-        splitType: newSplitType
+        splitMethod: newSplitMethod
       }))
     };
 
-    dispatch(saveTransaction(newTranssaction));
+    dispatch(saveTransaction(newTransaction));
   }, [transaction, dispatch]);
 
   const onSplitMethods = useMemo(() => new Array(4).fill(null).map((_, i) => () => {
