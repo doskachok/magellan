@@ -117,7 +117,8 @@ const Select =
             onBlur={handleBlur}
             onClick={handleClick}
             {...rest}>
-            {options.map(o => <option key={o.value} value={o.value}>{o.title}</option>)}
+              <option value={''} disabled hidden>{''}</option>
+              {options.map(o => <option key={o.title} value={o.value}>{o.title}</option>)}
           </SelectStyled>
 
           <AngleDownSVG />
