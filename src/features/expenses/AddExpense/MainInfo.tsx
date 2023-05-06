@@ -40,12 +40,14 @@ const MainInfo = () => {
 
   const [form, setForm] = useState<ICreateTransaction>({
     name: '',
-    paymentDateUtc: new Date().toISOString().split('T')[0],
     currencyCode: '',
     groupId: groupId,
     payerDetails: [],
     partialsAssignments: [],
-    ...(transaction ? transaction : {}), // Load transaction from the slice
+    ...transaction, // Load transaction from the slice
+    paymentDateUtc: transaction?.paymentDateUtc ?
+      new Date(transaction.paymentDateUtc).toISOString().split('T')[0] :
+      new Date().toISOString().split('T')[0],
   });
 
   const [validation, setValidation] = useState<IValidation>({
@@ -76,6 +78,7 @@ const MainInfo = () => {
   const onNextStep = () => {
     dispatch(saveTransaction({
       ...form,
+      paymentDateUtc: new Date(form.paymentDateUtc).toISOString(),
       // Fill partialAssignments using participants from the group.
       // By default all group members are participants of the transaction.
       partialsAssignments: group?.participants?.map((participant) => ({
