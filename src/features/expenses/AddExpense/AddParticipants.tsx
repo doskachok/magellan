@@ -1,6 +1,6 @@
 import { useCallback, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
@@ -12,7 +12,7 @@ import { ReactComponent as AdjustmentMethodSVG } from 'assets/images/adjust-cont
 import BottomNavigation from "components/BottomNavigation";
 import { ContentWrapper, PageWrapper } from "components/Containers";
 import Header from "components/Header";
-import { newTransactionSelector } from "../slice";
+import { newTransactionSelector, saveTransaction } from "../slice";
 import { ButtonBase, HalfCircle, TextUnderline } from "components";
 import defaultTheme from "constants/theme/default.theme";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
@@ -21,7 +21,7 @@ import EquallySplitMethodView from "./SplitMethods/Equally";
 import UnequallySplitMethodView from "./SplitMethods/Unequally";
 import AdjustmentSplitMethodView from "./SplitMethods/Adjustment";
 import PercentageSplitMethodView from "./SplitMethods/Percentage";
-import { ICreateTransaction } from "../types";
+import { ICreateTransaction, SplitType } from "../types";
 import { ITransactionGroup } from "features/groups/types";
 
 import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper } from "./AddParticipants.styled";
@@ -39,9 +39,24 @@ const GetSplitModeView = (splitMethodIndex: number, transaction: ICreateTransact
     throw new Error('Invalid split method index');
 }
 
+const splitMethodIndexToEnum = (splitMethodIndex: number) => {
+  if (splitMethodIndex === 0)
+    return SplitType.Equal;
+  else if (splitMethodIndex === 1)
+    return SplitType.AssignedAmount;
+  else if (splitMethodIndex === 2)
+    return SplitType.Percentage;
+  else if (splitMethodIndex === 3) // Ajustment uses Equal as base type and AssignedAmount for adjustments
+    return SplitType.Equal;
+  else
+    throw new Error('Invalid split method index');
+};
+   
+
 const AddParticipants = () => {
   const { t } = useTranslation('expenses');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const transaction = useSelector(newTransactionSelector);
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
@@ -52,7 +67,30 @@ const AddParticipants = () => {
     navigate(-1);
   }, [navigate]);
 
-  const onSplitMethods = useMemo(() => new Array(4).fill(null).map((_, i) => () => setSplitMethodIndex(i)), [setSplitMethodIndex]);
+  const resetPartialsAssignments = useCallback((splitIndex: number) => {
+    const newSplitType = splitMethodIndexToEnum(splitIndex);
+    
+    // Get unique usersIds from partialsAssignments
+    const userIds = transaction!.partialsAssignments
+      .map(partialsAssignment => partialsAssignment.userId)
+      .filter((userId, index, self) => index === self.indexOf(userId));
+
+    const newTranssaction = {
+      ...transaction!,
+      partialsAssignments: [...userIds].map((userId) => ({
+        userId,
+        partialAmount: 0,
+        splitType: newSplitType
+      }))
+    };
+
+    dispatch(saveTransaction(newTranssaction));
+  }, [transaction, dispatch]);
+
+  const onSplitMethods = useMemo(() => new Array(4).fill(null).map((_, i) => () => {
+    resetPartialsAssignments(i);
+    setSplitMethodIndex(i);
+  }), [setSplitMethodIndex, resetPartialsAssignments]);
 
   return (
     <PageWrapper>
