@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -23,8 +23,12 @@ import AdjustmentSplitMethodView from "./SplitMethods/Adjustment";
 import PercentageSplitMethodView from "./SplitMethods/Percentage";
 import { ICreateTransaction, SplitType } from "../types";
 import { ITransactionGroup } from "features/groups/types";
+import { useCreateTransactionMutation } from "../api";
 
 import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper } from "./AddParticipants.styled";
+import Loader from "components/Loader";
+import toast from "react-hot-toast";
+import { composeGroupRoute } from "constants/routes";
 
 const GetSplitModeView = (splitMethodIndex: number, transaction: ICreateTransaction, group: ITransactionGroup) => {
   if (splitMethodIndex === 0)
@@ -57,6 +61,8 @@ const AddParticipants = () => {
   const { t } = useTranslation('expenses');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [createTransaction, { data: createdTransaction, isLoading: isTransactionCreating }] = useCreateTransactionMutation();
 
   const transaction = useSelector(newTransactionSelector);
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
@@ -92,6 +98,18 @@ const AddParticipants = () => {
     setSplitMethodIndex(i);
   }), [setSplitMethodIndex, resetPartialsAssignments]);
 
+  const onSave = useCallback(() => {
+    console.log(transaction);
+    createTransaction(transaction!);
+  }, [createTransaction, transaction]);
+
+  useEffect(() => {
+    if (createdTransaction) {
+      toast.success(t('transactionCreated'));
+      navigate(composeGroupRoute(transaction!.groupId), { replace: true });
+    }
+  }, [createdTransaction, navigate, t, transaction]);
+
   return (
     <PageWrapper>
       <Header
@@ -126,7 +144,7 @@ const AddParticipants = () => {
         <HalfCircle />
 
         <SaveButtonWrapper>
-          <ButtonBase>
+          <ButtonBase onClick={onSave}>
             <TextUnderline>
               {t('save')}
             </TextUnderline>
@@ -135,6 +153,7 @@ const AddParticipants = () => {
         </SaveButtonWrapper>
       </ContentWrapper>
 
+      <Loader isLoading={isTransactionCreating} />
       <BottomNavigation />
     </PageWrapper>
   );

@@ -1,10 +1,15 @@
-export interface ICreateTransaction {
+export interface ITransaction {
+  id: string;
+  ownerId: string;
   name: string;
   paymentDateUtc: string;
   currencyCode: string;
-  groupId: string;
   payerDetails: IPayerDetails[];
   partialsAssignments: IPartialAssignments[];
+}
+
+export interface ICreateTransaction extends Omit<ITransaction, 'id' | 'ownerId'> {
+  groupId: string;
 }
 
 export interface IPayerDetails {
