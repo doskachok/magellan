@@ -23,31 +23,30 @@ const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
   const dispatch = useDispatch();
   const saveTimer = useRef<ReturnType<typeof setTimeout>>();
 
-  const [form, setForm] = useState<IPartialAssignments>(partialsAssignments);
-  const [tmpAmount, setTmpAmount] = useState<string | null>(null);
+  const [amount, setAmount] = useState<string>('0');
 
   const onInputTextChanged = useCallback((_name: string, value: string) => {
     value = value.replace(',', '.');
     if (!validInput.test(value) && value !== '') return;
 
-    if (value.endsWith('.')) {
-      setTmpAmount(value);
-      return;
-    }
-    setTmpAmount(null);
+    if (!value.endsWith('.')) // remove leading zeros
+      value = (+value).toString();
 
-    setForm((form) => ({
-      ...form,
-      partialAmount: +value,
-    }));
-  }, [setForm]);
+    setAmount(value);
+  }, [setAmount]);
 
   useEffect(() => {
+    if (amount.endsWith('.') || +amount === partialsAssignments.partialAmount)
+      return;
+
     if (saveTimer.current)
       clearTimeout(saveTimer.current);
-    
-    saveTimer.current = setTimeout(() => dispatch(updateOrAddPartialAssigment(form)), SAVE_DELAY_MS);
-  }, [dispatch, form]);
+
+    saveTimer.current = setTimeout(() => dispatch(updateOrAddPartialAssigment({
+      ...partialsAssignments,
+      partialAmount: +amount,
+    })), SAVE_DELAY_MS);
+  }, [dispatch, amount, partialsAssignments]);
 
   return (
     <Input
@@ -56,7 +55,7 @@ const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
       name="amount"
       type="text"
       inputMode="decimal"
-      value={tmpAmount ?? form.partialAmount.toString()}
+      value={amount}
       onTextChange={onInputTextChanged}
       autoComplete="off"
       ComponentInput={SmallInput}
