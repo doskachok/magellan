@@ -30,30 +30,41 @@ import Loader from "components/Loader";
 import toast from "react-hot-toast";
 import { composeGroupRoute } from "constants/routes";
 
-const GetSplitModeView = (splitMethodIndex: number, transaction: ICreateTransaction, group: ITransactionGroup) => {
-  if (splitMethodIndex === 0)
-    return <EquallySplitMethodView transaction={transaction} group={group} />
-  else if (splitMethodIndex === 1)
-    return <UnequallySplitMethodView transaction={transaction} group={group} />
-  else if (splitMethodIndex === 2)
-    return <PercentageSplitMethodView transaction={transaction} group={group} />
-  else if (splitMethodIndex === 3)
-    return <AdjustmentSplitMethodView transaction={transaction} group={group} />
-  else
-    throw new Error('Invalid split method index');
+enum SplitMethodView {
+  Equally = 0,
+  Unequally = 1,
+  Percentage = 2,
+  Adjustment = 3
 }
 
-const splitMethodIndexToEnum = (splitMethodIndex: number) => {
-  if (splitMethodIndex === 0)
-    return SplitMethod.Equal;
-  else if (splitMethodIndex === 1)
-    return SplitMethod.AssignedAmount;
-  else if (splitMethodIndex === 2)
-    return SplitMethod.Percentage;
-  else if (splitMethodIndex === 3) // Ajustment uses Equal as base type and AssignedAmount for adjustments
-    return SplitMethod.Equal;
-  else
-    throw new Error('Invalid split method index');
+const GetSplitModeView = (splitMethodView: SplitMethodView, transaction: ICreateTransaction, group: ITransactionGroup) => {
+  switch (splitMethodView) {
+    case SplitMethodView.Equally:
+      return <EquallySplitMethodView transaction={transaction} group={group} />;
+    case SplitMethodView.Unequally:
+      return <UnequallySplitMethodView transaction={transaction} group={group} />;
+    case SplitMethodView.Percentage:
+      return <PercentageSplitMethodView transaction={transaction} group={group} />;
+    case SplitMethodView.Adjustment:
+      return <AdjustmentSplitMethodView transaction={transaction} group={group} />;
+    default:
+      throw new Error('Invalid split method view');
+  }
+}
+
+const splitMethodViewToApiEnum = (splitMethodView: SplitMethodView) => {
+  switch (splitMethodView) {
+    case SplitMethodView.Equally:
+      return SplitMethod.Equal;
+    case SplitMethodView.Unequally:
+      return SplitMethod.AssignedAmount;
+    case SplitMethodView.Percentage:
+      return SplitMethod.Percentage;
+    case SplitMethodView.Adjustment: // Ajustment uses Equal as base type and AssignedAmount for adjustments
+      return SplitMethod.Equal;
+    default:
+      throw new Error('Invalid split method index');
+  }
 };
    
 
@@ -67,14 +78,14 @@ const AddParticipants = () => {
   const transaction = useSelector(newTransactionSelector);
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
 
-  const [splitMethodIndex, setSplitMethodIndex] = useState<number>(0);
+  const [splitMethodView, setSplitMethodView] = useState<SplitMethodView>(SplitMethodView.Equally);
 
   const handleBackAction = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  const resetPartialsAssignments = useCallback((splitIndex: number) => {
-    const newSplitMethod = splitMethodIndexToEnum(splitIndex);
+  const resetPartialsAssignments = useCallback((splitMethodView: SplitMethodView) => {
+    const newSplitMethod = splitMethodViewToApiEnum(splitMethodView);
     
     // Get unique usersIds from partialsAssignments
     const userIds = transaction!.partialsAssignments
@@ -95,8 +106,8 @@ const AddParticipants = () => {
 
   const onSplitMethods = useMemo(() => new Array(4).fill(null).map((_, i) => () => {
     resetPartialsAssignments(i);
-    setSplitMethodIndex(i);
-  }), [setSplitMethodIndex, resetPartialsAssignments]);
+    setSplitMethodView(i);
+  }), [setSplitMethodView, resetPartialsAssignments]);
 
   const onSave = useCallback(() => {
     createTransaction(transaction!);
@@ -125,18 +136,18 @@ const AddParticipants = () => {
 
           <SplitMethodWrapper fullWidth jc="space-between">
             <SplitMethodBorderWrapper>
-              <BorderShift flex={splitMethodIndex} />
+              <BorderShift flex={splitMethodView} />
               <MovingBorder />
-              <BorderShift flex={3 - splitMethodIndex} />
+              <BorderShift flex={Object.keys(SplitMethodView).length / 2 - 1 - splitMethodView} />
             </SplitMethodBorderWrapper>
 
-            <SplitMethodButton text={t("equally")} svgImg={<EquallyMethodSVG />} onClick={onSplitMethods[0]} />
-            <SplitMethodButton text={t("unequally")} svgImg={<UnequallyMethodSVG />} onClick={onSplitMethods[1]} />
-            <SplitMethodButton text={t("percentage")} svgImg={<PercentageMethodSVG />} onClick={onSplitMethods[2]} />
-            <SplitMethodButton text={t("adjustment")} svgImg={<AdjustmentMethodSVG />} onClick={onSplitMethods[3]} />
+            <SplitMethodButton text={t("equally")} svgImg={<EquallyMethodSVG />} onClick={onSplitMethods[SplitMethodView.Equally]} />
+            <SplitMethodButton text={t("unequally")} svgImg={<UnequallyMethodSVG />} onClick={onSplitMethods[SplitMethodView.Unequally]} />
+            <SplitMethodButton text={t("percentage")} svgImg={<PercentageMethodSVG />} onClick={onSplitMethods[SplitMethodView.Percentage]} />
+            <SplitMethodButton text={t("adjustment")} svgImg={<AdjustmentMethodSVG />} onClick={onSplitMethods[SplitMethodView.Adjustment]} />
           </SplitMethodWrapper>
 
-          {GetSplitModeView(splitMethodIndex, transaction!, group.data!)}
+          {GetSplitModeView(splitMethodView, transaction!, group.data!)}
 
           <BackgroundFiller />
         </AddParticipantsWrapper>
