@@ -113,3 +113,12 @@ export const InputStyled = styled.input<IInputProps>`
     };
   `};
 `;
+
+export const SmallInput = styled(InputStyled)`
+  background: transparent;
+  width: 94px;
+  height: 33px;
+  border-radius: 0;
+  text-align: center;
+  margin-top: 0;
+`;

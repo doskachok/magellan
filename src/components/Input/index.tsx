@@ -24,6 +24,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   validator?: AnySchema;
   required?: boolean;
   reversedTheme?: boolean;
+  ComponentInput?: typeof InputStyled;
 }
 
 const validate = (schema: AnySchema, value: string): Promise<string[]> => {
@@ -48,6 +49,7 @@ const Input =
     onValidationChange,
     required = false,
     reversedTheme = false,
+    ComponentInput,
     ...rest
   }: Props) => {
 
@@ -103,7 +105,18 @@ const Input =
           </DisplayName>
         }
 
-        <InputStyled
+        {!ComponentInput && <InputStyled
+            name={name}
+            value={value}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            hasError={displayError}
+            reversedTheme={reversedTheme}
+            {...rest}
+          />
+        }
+
+        {!!ComponentInput && <ComponentInput
           name={name}
           value={value}
           onChange={handleChange}
@@ -112,6 +125,7 @@ const Input =
           reversedTheme={reversedTheme}
           {...rest}
         />
+        }
       </Wrapper>
     );
   };
