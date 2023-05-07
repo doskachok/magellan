@@ -1,24 +1,25 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ButtonBase, HalfCircle, Input, Select, TextUnderline } from "components";
-import { Column, PageWrapper, Row } from "components/Containers";
+import { Column, ContentWrapper, PageWrapper, Row } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, ContentWrapper, CurrencyTitle, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
+import { BackgroundFiller, CurrencyTitle, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
-import { ICreateTransaction } from "../types";
+import { ICreateTransaction, SplitMethod } from "../types";
 import { newTransactionSelector } from "../slice";
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { saveTransaction } from "../slice";
-import { useGetTransactionGroupByIdQuery } from "features/groups/api";
+import { useLazyGetTransactionGroupByIdQuery } from "features/groups/api";
 import { groupsListSelector } from "features/groups/slice";
 import { requiredValidator } from "features/auth/validation";
+import Loader from "components/Loader";
 
 interface IValidation {
   groupId: boolean;
@@ -33,18 +34,20 @@ const MainInfo = () => {
   const { groupId: groupIdOptional } = useParams();
   const groupId = groupIdOptional ?? '';
 
-  const group = useGetTransactionGroupByIdQuery(groupId);
+  const [getGroup, { data: group, isLoading }] = useLazyGetTransactionGroupByIdQuery();
   const transaction = useSelector(newTransactionSelector);
   const groupList = useSelector(groupsListSelector);
 
   const [form, setForm] = useState<ICreateTransaction>({
     name: '',
-    paymentDateUtc: new Date().toISOString().split('T')[0],
-    currencyCode: group.data?.currencyCode ?? currencies[0].value,
+    currencyCode: '',
     groupId: groupId,
     payerDetails: [],
     partialsAssignments: [],
-    ...(transaction ? transaction : {}), // Load transaction from the slice
+    ...transaction, // Load transaction from the slice
+    paymentDateUtc: transaction?.paymentDateUtc ?
+      new Date(transaction.paymentDateUtc).toISOString().split('T')[0] :
+      new Date().toISOString().split('T')[0],
   });
 
   const [validation, setValidation] = useState<IValidation>({
@@ -73,9 +76,43 @@ const MainInfo = () => {
   }, []);
 
   const onNextStep = () => {
-    dispatch(saveTransaction(form));
+    dispatch(saveTransaction({
+      ...form,
+      paymentDateUtc: new Date(form.paymentDateUtc).toISOString(),
+      // Fill partialAssignments using participants from the group.
+      // By default all group members are participants of the transaction.
+      partialsAssignments: group?.participants?.map((participant) => ({
+        userId: participant.id,
+        partialAmount: 0,
+        splitMethod: SplitMethod.Equal,
+      })) ?? [],
+    }));
     navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_PAYERS));
   }
+
+  useEffect(() => { // Get initial group currency code
+    if (form.currencyCode.length > 0 || !group) return;
+  
+    setForm(form => ({
+      ...form,
+      currencyCode: group?.currencyCode ?? currencies[0].value,
+    }));
+  }, [form, group]);
+
+  useEffect(() => {
+    if (groupId) {
+      getGroup(groupId);
+    } else {
+      setForm(form => ({
+        ...form,
+        currencyCode: currencies[0].value,
+      }));
+    }
+  }, [groupId, getGroup]);
+
+  useEffect(() => {
+    getGroup(form.groupId);
+  }, [form.groupId, getGroup]);
 
   return (
     <PageWrapper>
@@ -84,7 +121,7 @@ const MainInfo = () => {
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
       />
 
-      <ContentWrapper fullWidth>
+      <ContentWrapper fullWidth jc="space-between">
         <MainInfoWrapper fullWidth>
           <Column gap={'1rem'} fullWidth>
             <MainInfoText>
@@ -161,6 +198,8 @@ const MainInfo = () => {
       </ContentWrapper>
 
       <BottomNavigation />
+      
+      <Loader isLoading={isLoading} />
     </PageWrapper>
   );
 };

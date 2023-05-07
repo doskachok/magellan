@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { useLazyGetTransactionGroupsQuery } from '../api';
 import Header from 'components/Header';
-import { PageWrapper, Row } from 'components/Containers';
+import { ContentWrapper, PageWrapper, Row } from 'components/Containers';
 import { ITransactionGroupListItem } from '../types';
 import { ReactComponent as PlusIconSVG } from 'assets/images/plus-icon.svg';
 import { TextRegular } from 'components';
 import { useSelector } from 'react-redux';
 import { groupsListSelector } from '../slice';
 import Loader from 'components/Loader';
-import { ContentWrapper, FilterTabItemsWrapper, FilterTabsWrapper, GroupsListWrapper } from './index.styled';
+import { FilterTabItemsWrapper, FilterTabsWrapper, GroupsListWrapper } from './index.styled';
 import FilterTab from './FilterTab';
 import GroupRow from './GroupRow';
 import BottomNavigation from 'components/BottomNavigation';

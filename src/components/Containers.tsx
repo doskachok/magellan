@@ -46,6 +46,9 @@ export const PageWrapper = styled(Column)`
   width: 100%;
 `;
 
-export const PageContentWrapper = styled(Column)`
-  padding: 0 20px;
+export const ContentWrapper = styled(Column)`
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  flex: 1;
 `;

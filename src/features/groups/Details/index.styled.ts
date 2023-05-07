@@ -2,12 +2,6 @@ import styled from 'styled-components';
 import { Column } from 'components/Containers';
 import { TextRegular } from 'components';
 
-export const ContentWrapper = styled(Column)`
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 100%;
-`;
-
 export const TransactionListContainer = styled(Column)`
   padding: 0 28px;
   width: 100%;

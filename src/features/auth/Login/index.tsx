@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 
 import Header from 'components/Header';
 import { Column, PageWrapper, Row } from 'components/Containers';
-import { ContentWrapper, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
+import { ContentWrapperLogin, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
 
 import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazyUserQuery } from '../api';
@@ -77,7 +77,7 @@ const Login = () => {
   return (
     <PageWrapper>
       <Header text={'Login'} isLoading={isLoading} />
-      <ContentWrapper jc={'space-between'} fullWidth>
+      <ContentWrapperLogin jc={'space-between'} fullWidth>
         <Column gap={'8px'} fullWidth>
           <RequiredText>
             <span>*</span>
@@ -123,7 +123,7 @@ const Login = () => {
             {t('signIn')}
           </Button>
         </Row>
-      </ContentWrapper>
+      </ContentWrapperLogin>
     </PageWrapper>
   );
 };

@@ -1,11 +1,18 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ExpenseRouteMode} from 'constants/routes';
-import { saveTransaction } from '../slice';
+import { CreateRouteString, ExpenseRouteMode, NoneRouteString, composeExpenseRoute} from 'constants/routes';
+import { newTransactionSelector, saveTransaction } from '../slice';
 import MainInfo from './MainInfo';
 import AddPayers from './AddPayers';
+import AddParticipants from './AddParticipants';
+
+const ConnectedRoutes = () => {
+  const transaction = useSelector(newTransactionSelector);
+  if (transaction) return <Outlet />;
+  return <Navigate to={composeExpenseRoute(NoneRouteString, CreateRouteString, ExpenseRouteMode.ADD_MAININFO)} />;
+};
 
 const AddExpense = () => {
   const dispatch = useDispatch();
@@ -18,8 +25,11 @@ const AddExpense = () => {
 
   return (
     <Routes>
-      <Route path={`${ExpenseRouteMode.ADD_MAININFO}`} element={<MainInfo/>} />
-      <Route path={`${ExpenseRouteMode.ADD_PAYERS}`} element={<AddPayers/>} />
+      <Route path={`${ExpenseRouteMode.ADD_MAININFO}`} element={<MainInfo />} />
+      <Route path={'*'} element={<ConnectedRoutes />}>
+        <Route path={`${ExpenseRouteMode.ADD_PAYERS}`} element={<AddPayers />} />
+        <Route path={`${ExpenseRouteMode.ADD_PARTICIPANTS}`} element={<AddParticipants />} />
+      </Route>
     </Routes>
   );
 };

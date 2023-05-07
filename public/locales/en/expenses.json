@@ -12,5 +12,13 @@
   "total": "Total",
   "amount": "Amount",
   "enterAmount": "Enter amount",
-  "done": "Done"
+  "done": "Done",
+  "participants": "Participants",
+  "save": "Save",
+  "membersInTransaction": "members in transaction.",
+  "equally": "Equally",
+  "unequally": "Unequally",
+  "percentage": "Percentage",
+  "adjustment": "Adjustment",
+  "transactionCreated": "Transaction created!"
 }

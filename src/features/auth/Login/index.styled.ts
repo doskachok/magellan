@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import { PageContentWrapper } from 'components/Containers';
+import { Column } from 'components/Containers';
 import { TextLink, TextRegular } from 'components';
 
-export const ContentWrapper = styled(PageContentWrapper)`
-  padding-top: 120px;
-  padding-bottom: 24px;
+export const ContentWrapperLogin = styled(Column)`
+  padding: 120px 20px 24px; // top, horizontal, bottom
   flex: 1;
 `;
 

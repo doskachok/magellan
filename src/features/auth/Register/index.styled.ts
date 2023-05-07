@@ -1,10 +1,9 @@
-import styled, {css} from 'styled-components';
-import {PageContentWrapper, Column} from 'components/Containers';
-import {TextRegular} from 'components/Text';
+import styled, { css } from 'styled-components';
+import { Column } from 'components/Containers';
+import { TextRegular } from 'components/Text';
 
-export const ContentWrapper = styled(PageContentWrapper)`
-  padding-top: 60px;
-  padding-bottom: 24px;
+export const ContentWrapperRegister = styled(Column)`
+  padding: 60px 20px 24px; // top, horizontal, bottom
   flex: 1;
 `;
 

@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { ButtonBase, HalfCircle, TextUnderline } from "components";
-import { Column, PageWrapper } from "components/Containers";
+import { Column, ContentWrapper, PageWrapper } from "components/Containers";
 import Header from "components/Header";
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, ContentWrapper, AddPayersWrapper, AddPayersText, CurrencyText, AddPayersInfo, NextStepButtonWrapper } from "./AddPayers.styled";
+import { BackgroundFiller, AddPayersWrapper, AddPayersText, CurrencyText, AddPayersInfo, NextStepButtonWrapper } from "./AddPayers.styled";
 import BottomNavigation from "components/BottomNavigation";
 import currencies from "constants/currencies";
 import { ICreateTransaction } from "../types";
 import { newTransactionSelector, saveTransaction } from "../slice";
-import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute, NoneRouteString } from "constants/routes";
+import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
 import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
 import UserListItem from "components/UserListItem";
 import { useGetTransactionGroupByIdQuery } from "features/groups/api";
@@ -34,9 +34,6 @@ const AddPayers = () => {
   const modalContext = useModal();
 
   const transaction = useSelector(newTransactionSelector);
-  if (!transaction)
-    navigate(composeExpenseRoute(NoneRouteString, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
-
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
   const [addMemberModalId, setAddMemberModalId] = useState<number | null>(null);
 
@@ -86,8 +83,7 @@ const AddPayers = () => {
 
   const onNextStep = () => {
     dispatch(saveTransaction(form));
-    // TODO: navigate to the next step
-    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_MAININFO));
+    navigate(composeExpenseRoute(form.groupId, CreateRouteString, ExpenseRouteMode.ADD_PARTICIPANTS));
   }
 
   useEffect(() => {
@@ -110,7 +106,7 @@ const AddPayers = () => {
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
       />
 
-      <ContentWrapper fullWidth>
+      <ContentWrapper fullWidth jc="space-between">
         <AddPayersWrapper fullWidth>
           <Column gap={'1rem'} fullWidth>
             <AddPayersInfo>

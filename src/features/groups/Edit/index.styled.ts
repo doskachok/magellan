@@ -2,13 +2,6 @@ import styled  from 'styled-components';
 import { Column, Row } from 'components/Containers';
 import { TextRegular } from 'components';
 
-export const ContentWrapper = styled(Column)`
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 100%;
-  flex: 1;
-`;
-
 export const MainInfoWrapper = styled(Column)`
   z-index: 1;
 `;

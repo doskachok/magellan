@@ -2,14 +2,6 @@ import { TextRegular } from "components";
 import { Column, Row } from "components/Containers";
 import styled from "styled-components";
 
-export const ContentWrapper = styled(Column)`
-  overflow-y: auto;
-  overflow-x: hidden;
-  justify-content: space-between;
-  height: 100%;
-  flex: 1;
-`;
-
 export const MainInfoWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};
   z-index: 1;

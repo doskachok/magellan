@@ -7,7 +7,7 @@ import Header from 'components/Header';
 import { Input, Button } from 'components';
 
 import { Column, PageWrapper, Row } from 'components/Containers';
-import { ContentWrapper, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText } from './index.styled';
+import { ContentWrapperRegister, PasswordRequirementsText, PasswordRequirementsWrapper, RequiredText } from './index.styled';
 
 import { useRegisterMutation } from '../api';
 
@@ -102,7 +102,7 @@ const Register = () => {
   return (
     <PageWrapper>
       <Header text={t('signup')} isLoading={isLoading} />
-      <ContentWrapper jc={'space-between'} fullWidth>
+      <ContentWrapperRegister jc={'space-between'} fullWidth>
 
         <Column gap={'8px'} fullWidth>
           <RequiredText>
@@ -187,7 +187,7 @@ const Register = () => {
             {t('createAccount')}
           </Button>
         </Row>
-      </ContentWrapper>
+      </ContentWrapperRegister>
     </PageWrapper>
   );
 };

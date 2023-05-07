@@ -15,6 +15,10 @@ export const Text = styled.p<TextProps>`
   `};
 `;
 
+export const SmallText = styled(Text)`
+  font-size: 9px;
+`;
+
 export const TextHeader = styled(Text)`
   font-weight: 700;
   font-size: 23px;
@@ -45,4 +49,8 @@ export const TextUnderline = styled(TextRegular)`
   line-height: 20px;
   text-decoration-line: underline;
   color: ${props => props.theme.colors.text.link};
+
+  ${props => props.reversedColor && css`
+    color: ${props => props.theme.colors.text.secondary};
+  `};
 `;
