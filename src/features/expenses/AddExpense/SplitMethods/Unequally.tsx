@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { Column } from "components/Containers";
@@ -17,8 +17,11 @@ const validInput = new RegExp(
   '^\\d+(\\.\\d{1,2})?\\.?$'
 );
 
+const SAVE_DELAY_MS = 300;
+
 const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
   const dispatch = useDispatch();
+  const saveTimer = useRef<any>();
 
   const [form, setForm] = useState<IPartialAssignments>(partialsAssignments);
   const [tmpAmount, setTmpAmount] = useState<string | null>(null);
@@ -26,7 +29,7 @@ const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
   const onInputTextChanged = useCallback((_name: string, value: string) => {
     value = value.replace(',', '.');
     if (!validInput.test(value) && value !== '') return;
-    
+
     if (value.endsWith('.')) {
       setTmpAmount(value);
       return;
@@ -40,7 +43,10 @@ const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
   }, [setForm]);
 
   useEffect(() => {
-    dispatch(updateOrAddPartialAssigment(form));
+    if (saveTimer.current)
+      clearTimeout(saveTimer.current);
+    
+    saveTimer.current = setTimeout(() => dispatch(updateOrAddPartialAssigment(form)), SAVE_DELAY_MS);
   }, [dispatch, form]);
 
   return (
