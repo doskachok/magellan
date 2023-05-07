@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { Column } from "components/Containers";
-import { ICreateTransaction, IPartialAssignments } from "features/expenses/types";
-import { ITransactionGroup } from "features/groups/types";
-import UserListItem from "components/UserListItem";
-import { Input, SmallInput } from "components";
-import { updateOrAddPartialAssigment } from "features/expenses/slice";
+import { Column } from 'components/Containers';
+import { ICreateTransaction, IPartialAssignments } from 'features/expenses/types';
+import { ITransactionGroup } from 'features/groups/types';
+import UserListItem from 'components/UserListItem';
+import { Input, SmallInput } from 'components';
+import { updateOrAddPartialAssigment } from 'features/expenses/slice';
 
 interface IProps {
   transaction: ICreateTransaction;

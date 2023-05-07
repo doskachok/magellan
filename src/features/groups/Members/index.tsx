@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 
 import { Column, Row } from 'components/Containers';
 import { ContentWrapperMembers, Header } from './index.styled';
@@ -10,7 +11,6 @@ import { IUser } from 'types/userTypes';
 import { useAddParticipantMutation, useLazyGetTransactionGroupByIdQuery, useRemoveParticipantMutation } from '../api';
 import Loader from 'components/Loader';
 import MemberRow from './MemberRow';
-import toast from "react-hot-toast";
 
 export interface IGroupMembersProps {
   groupId: string;

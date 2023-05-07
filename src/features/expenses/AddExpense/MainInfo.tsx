@@ -1,25 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ButtonBase, HalfCircle, Input, Select, TextUnderline } from "components";
-import { Column, ContentWrapper, PageWrapper, Row } from "components/Containers";
-import Header from "components/Header";
+import { ButtonBase, HalfCircle, Input, Select, TextUnderline } from 'components';
+import { Column, ContentWrapper, PageWrapper, Row } from 'components/Containers';
+import Header from 'components/Header';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, CurrencyTitle, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from "./MainInfo.styled";
-import BottomNavigation from "components/BottomNavigation";
-import currencies from "constants/currencies";
-import { ICreateTransaction, SplitMethod } from "../types";
-import { newTransactionSelector } from "../slice";
-import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
-import { saveTransaction } from "../slice";
-import { useLazyGetTransactionGroupByIdQuery } from "features/groups/api";
-import { groupsListSelector } from "features/groups/slice";
-import { requiredValidator } from "features/auth/validation";
-import Loader from "components/Loader";
+import { BackgroundFiller, CurrencyTitle, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from './MainInfo.styled';
+import BottomNavigation from 'components/BottomNavigation';
+import currencies from 'constants/currencies';
+import { ICreateTransaction, SplitMethod } from '../types';
+import { newTransactionSelector } from '../slice';
+import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from 'constants/routes';
+import { saveTransaction } from '../slice';
+import { useLazyGetTransactionGroupByIdQuery } from 'features/groups/api';
+import { groupsListSelector } from 'features/groups/slice';
+import { requiredValidator } from 'features/auth/validation';
+import Loader from 'components/Loader';
 
 interface IValidation {
   groupId: boolean;

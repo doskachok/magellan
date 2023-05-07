@@ -1,7 +1,7 @@
-import { ReactElement, memo } from "react";
-import { SplitMethodButtonWrapper } from "./SplitMethod.styled";
-import { ButtonBase, SmallText } from "components";
-import { Column, Row } from "components/Containers";
+import { ReactElement, memo } from 'react';
+import { SplitMethodButtonWrapper } from './SplitMethod.styled';
+import { ButtonBase, SmallText } from 'components';
+import { Column, Row } from 'components/Containers';
 
 interface ISplitMethodButtonProps {
   text: string;

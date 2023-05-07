@@ -1,6 +1,6 @@
-import styled, { css } from "styled-components";
-import { Column, Row } from "components/Containers";
-import { TextError } from "components/Input/index.styled";
+import styled, { css } from 'styled-components';
+import { Column, Row } from 'components/Containers';
+import { TextError } from 'components/Input/index.styled';
 
 export const AddParticipantsWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};

@@ -1,8 +1,8 @@
-import { useCallback, useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
+import { useCallback, useState, useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as CheckSVG } from 'assets/images/check-icon.svg';
@@ -10,26 +10,26 @@ import { ReactComponent as EquallyMethodSVG } from 'assets/images/scales-icon.sv
 import { ReactComponent as UnequallyMethodSVG } from 'assets/images/coins-icon.svg';
 import { ReactComponent as PercentageMethodSVG } from 'assets/images/percent-icon.svg';
 import { ReactComponent as AdjustmentMethodSVG } from 'assets/images/adjust-control-icon.svg';
-import BottomNavigation from "components/BottomNavigation";
-import { ContentWrapper, PageWrapper } from "components/Containers";
-import Header from "components/Header";
-import { newTransactionSelector, saveTransaction } from "../slice";
-import { ButtonBase, HalfCircle, TextUnderline } from "components";
-import defaultTheme from "constants/theme/default.theme";
-import { useGetTransactionGroupByIdQuery } from "features/groups/api";
-import SplitMethodButton from "./SplitMethods/SplitMethodButton";
-import EquallySplitMethodView from "./SplitMethods/Equally";
-import UnequallySplitMethodView from "./SplitMethods/Unequally";
-import AdjustmentSplitMethodView from "./SplitMethods/Adjustment";
-import PercentageSplitMethodView from "./SplitMethods/Percentage";
-import { ICreateTransaction, SplitMethod } from "../types";
-import { ITransactionGroup } from "features/groups/types";
-import { useCreateTransactionMutation } from "../api";
-import Loader from "components/Loader";
-import { composeGroupRoute } from "constants/routes";
-import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
+import BottomNavigation from 'components/BottomNavigation';
+import { ContentWrapper, PageWrapper } from 'components/Containers';
+import Header from 'components/Header';
+import { newTransactionSelector, saveTransaction } from '../slice';
+import { ButtonBase, HalfCircle, TextUnderline } from 'components';
+import defaultTheme from 'constants/theme/default.theme';
+import { useGetTransactionGroupByIdQuery } from 'features/groups/api';
+import SplitMethodButton from './SplitMethods/SplitMethodButton';
+import EquallySplitMethodView from './SplitMethods/Equally';
+import UnequallySplitMethodView from './SplitMethods/Unequally';
+import AdjustmentSplitMethodView from './SplitMethods/Adjustment';
+import PercentageSplitMethodView from './SplitMethods/Percentage';
+import { ICreateTransaction, SplitMethod } from '../types';
+import { ITransactionGroup } from 'features/groups/types';
+import { useCreateTransactionMutation } from '../api';
+import Loader from 'components/Loader';
+import { composeGroupRoute } from 'constants/routes';
+import { getCurrencyWithSymbolString } from 'helpers/currencyHelper';
 
-import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper, MismatchText } from "./AddParticipants.styled";
+import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper, MismatchText } from './AddParticipants.styled';
 
 
 enum SplitMethodView {

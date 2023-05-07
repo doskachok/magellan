@@ -1,22 +1,23 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
-import FileUploader, { IFileUploaderRef } from "components/FileUploader";
-import { Avatar, AvatarSize, Button, ButtonBase, HalfCircle, Input, TextUnderline } from "components";
-import { Column, ContentWrapper, PageWrapper, Row } from "components/Containers";
-import Header from "components/Header";
+import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
+import { Avatar, AvatarSize, Button, ButtonBase, HalfCircle, Input, TextUnderline } from 'components';
+import { Column, ContentWrapper, PageWrapper, Row } from 'components/Containers';
+import Header from 'components/Header';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowLeftSVG } from 'assets/images/arrow-left.svg';
-import { logOut, userReceived, userSelector } from "features/auth/slice";
-import { IUser, userToUpdateUser } from "types/userTypes";
-import { getDownloadFileUrl } from "helpers/urlHelper";
+import { logOut, userReceived, userSelector } from 'features/auth/slice';
+import { IUser, userToUpdateUser } from 'types/userTypes';
+import { getDownloadFileUrl } from 'helpers/urlHelper';
 
-import { AccountInfoWrapper, BackgroundFiller, LogoutButtonWrapper, MainInfoWrapper, SaveButtonWrapper } from "./index.styled";
-import { useUpdateUserMutation } from "store/user.api";
-import Loader from "components/Loader";
-import toast from "react-hot-toast";
+import { AccountInfoWrapper, BackgroundFiller, LogoutButtonWrapper, MainInfoWrapper, SaveButtonWrapper } from './index.styled';
+import { useUpdateUserMutation } from 'store/user.api';
+import Loader from 'components/Loader';
+
 
 const AccountSetttings = () => {
   const { t } = useTranslation('common');
