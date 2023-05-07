@@ -21,10 +21,17 @@ const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState<IPartialAssignments>(partialsAssignments);
+  const [tmpAmount, setTmpAmount] = useState<string | null>(null);
 
   const onInputTextChanged = useCallback((_name: string, value: string) => {
     value = value.replace(',', '.');
     if (!validInput.test(value) && value !== '') return;
+    
+    if (value.endsWith('.')) {
+      setTmpAmount(value);
+      return;
+    }
+    setTmpAmount(null);
 
     setForm((form) => ({
       ...form,
@@ -43,7 +50,7 @@ const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
       name="amount"
       type="text"
       inputMode="decimal"
-      value={form.partialAmount.toString() || '0'}
+      value={tmpAmount ?? form.partialAmount.toString()}
       onTextChange={onInputTextChanged}
       autoComplete="off"
       ComponentInput={SmallInput}
