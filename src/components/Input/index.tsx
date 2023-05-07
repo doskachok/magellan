@@ -63,6 +63,7 @@ const Input =
       [customError, validationErrors]);
 
     const displayError = !!_error && isShowError;
+    const ChildInput = ComponentInput ?? InputStyled;
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
       onTextChange(name, event.target.value);
@@ -105,18 +106,7 @@ const Input =
           </DisplayName>
         }
 
-        {!ComponentInput && <InputStyled
-            name={name}
-            value={value}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            hasError={displayError}
-            reversedTheme={reversedTheme}
-            {...rest}
-          />
-        }
-
-        {!!ComponentInput && <ComponentInput
+        <ChildInput
           name={name}
           value={value}
           onChange={handleChange}
@@ -125,7 +115,6 @@ const Input =
           reversedTheme={reversedTheme}
           {...rest}
         />
-        }
       </Wrapper>
     );
   };
