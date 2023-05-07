@@ -142,6 +142,7 @@ const AccountSetttings = () => {
                     displayName={t('name')}
                     value={form.name}
                     onTextChange={onInputTextChanged}
+                    autoComplete="off"
                   />
                 </Row>
               </Column>

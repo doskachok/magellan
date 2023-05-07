@@ -154,6 +154,7 @@ const MainInfo = () => {
                 onTextChange={onControllTextChanged}
                 validator={requiredValidator}
                 onValidationChange={onControllValidationChanged}
+                autoComplete="off"
               />
             </Row>
             <Row jc={'center'} fullWidth>

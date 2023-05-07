@@ -84,6 +84,7 @@ const Autocomplete = ({
         reversedTheme={reversedTheme}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
+        autoComplete="off"
       />
 
       <SearchIcon src={SearchIconSVG} />
