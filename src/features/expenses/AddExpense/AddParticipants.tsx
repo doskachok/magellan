@@ -99,7 +99,6 @@ const AddParticipants = () => {
   }), [setSplitMethodIndex, resetPartialsAssignments]);
 
   const onSave = useCallback(() => {
-    console.log(transaction);
     createTransaction(transaction!);
   }, [createTransaction, transaction]);
 
