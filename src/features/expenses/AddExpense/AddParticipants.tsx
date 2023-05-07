@@ -2,6 +2,7 @@ import { useCallback, useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as CheckSVG } from 'assets/images/check-icon.svg';
@@ -24,11 +25,12 @@ import PercentageSplitMethodView from "./SplitMethods/Percentage";
 import { ICreateTransaction, SplitMethod } from "../types";
 import { ITransactionGroup } from "features/groups/types";
 import { useCreateTransactionMutation } from "../api";
-
-import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper } from "./AddParticipants.styled";
 import Loader from "components/Loader";
-import toast from "react-hot-toast";
 import { composeGroupRoute } from "constants/routes";
+import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
+
+import { AddParticipantsWrapper, BackgroundFiller, MovingBorder, SaveButtonWrapper, BorderShift, SplitMethodBorderWrapper, SplitMethodWrapper, MismatchText } from "./AddParticipants.styled";
+
 
 enum SplitMethodView {
   Equally = 0,
@@ -79,6 +81,41 @@ const AddParticipants = () => {
   const group = useGetTransactionGroupByIdQuery(transaction?.groupId || '');
 
   const [splitMethodView, setSplitMethodView] = useState<SplitMethodView>(SplitMethodView.Equally);
+
+  const errorString = useMemo(() => {
+    const paidSum = transaction!.payerDetails.reduce((acc, curr) => acc + curr.amount, 0);
+    const borrowedSum = transaction!.partialsAssignments
+      .filter(pa => pa.splitMethod === SplitMethod.AssignedAmount)
+      .reduce((acc, curr) => acc + curr.partialAmount, 0);
+
+    const borrowedToPaidString = `${getCurrencyWithSymbolString(borrowedSum, transaction!.currencyCode)}
+      / ${getCurrencyWithSymbolString(paidSum, transaction!.currencyCode)} ${t('settled')}`;
+
+    // If SplitMethod is Equal/Shares we cannot do any validation.
+    if (transaction!.partialsAssignments.some(pa => pa.splitMethod === SplitMethod.Equal || pa.splitMethod === SplitMethod.Shares)) {
+      if (paidSum < borrowedSum)
+        return borrowedToPaidString;
+      return null;
+    }
+
+    // Check that we have 100%
+    if (transaction!.partialsAssignments.some(pa => pa.splitMethod === SplitMethod.Percentage)) {
+      const percentsAssignmentAmount = transaction!.partialsAssignments
+        .filter(pa => pa.splitMethod === SplitMethod.Percentage)
+        .reduce((acc, curr) => acc + curr.partialAmount, 0);
+
+      if (percentsAssignmentAmount !== 100)
+        return `${percentsAssignmentAmount} / 100% ${t('settled')}`;
+      if (paidSum < borrowedSum)
+        return borrowedToPaidString;
+      return null;
+    }
+
+    // Check that paidSum and borrowedSum are the same.
+    if (paidSum !== borrowedSum)
+      return borrowedToPaidString;
+    return null;
+  }, [transaction, t]);
 
   const handleBackAction = useCallback(() => {
     navigate(-1);
@@ -154,12 +191,19 @@ const AddParticipants = () => {
         <HalfCircle />
 
         <SaveButtonWrapper>
-          <ButtonBase onClick={onSave}>
-            <TextUnderline>
-              {t('save')}
-            </TextUnderline>
-            <CheckSVG fill={defaultTheme.colors.text.link} />
-          </ButtonBase>
+          {!errorString &&
+            <ButtonBase onClick={onSave}>
+              <TextUnderline>
+                {t('save')}
+              </TextUnderline>
+              <CheckSVG fill={defaultTheme.colors.text.link} />
+            </ButtonBase>
+          }
+          {!!errorString &&
+            <MismatchText>
+              {errorString}
+            </MismatchText>
+          }
         </SaveButtonWrapper>
       </ContentWrapper>
 
