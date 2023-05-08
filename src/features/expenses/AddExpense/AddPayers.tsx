@@ -1,26 +1,26 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ButtonBase, HalfCircle, TextUnderline } from "components";
-import { Column, ContentWrapper, PageWrapper } from "components/Containers";
-import Header from "components/Header";
+import { ButtonBase, HalfCircle, TextUnderline } from 'components';
+import { Column, ContentWrapper, PageWrapper } from 'components/Containers';
+import Header from 'components/Header';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
-import { BackgroundFiller, AddPayersWrapper, AddPayersText, CurrencyText, AddPayersInfo, NextStepButtonWrapper } from "./AddPayers.styled";
-import BottomNavigation from "components/BottomNavigation";
-import currencies from "constants/currencies";
-import { ICreateTransaction } from "../types";
-import { newTransactionSelector, saveTransaction } from "../slice";
-import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from "constants/routes";
-import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
-import UserListItem from "components/UserListItem";
-import { useGetTransactionGroupByIdQuery } from "features/groups/api";
-import { useModal } from "providers/ModalProvider";
-import ChangeUserMoneyModal from "../ChangeUserMoneyModal";
-import { IUser } from "types/userTypes";
+import { BackgroundFiller, AddPayersWrapper, AddPayersText, CurrencyText, AddPayersInfo, NextStepButtonWrapper } from './AddPayers.styled';
+import BottomNavigation from 'components/BottomNavigation';
+import currencies from 'constants/currencies';
+import { ICreateTransaction } from '../types';
+import { newTransactionSelector, saveTransaction } from '../slice';
+import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from 'constants/routes';
+import { getCurrencyWithSymbolString } from 'helpers/currencyHelper';
+import UserListItem from 'components/UserListItem';
+import { useGetTransactionGroupByIdQuery } from 'features/groups/api';
+import { useModal } from 'providers/ModalProvider';
+import ChangeUserMoneyModal from '../ChangeUserMoneyModal';
+import { IUser } from 'types/userTypes';
 
 const getUserAmountComponent = (user: IUser, currencyCode: string, userAmountMap: Record<string, number>) => {
   const amount = userAmountMap[user.id] > 0 ? userAmountMap[user.id] : 0;

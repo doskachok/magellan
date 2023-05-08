@@ -1,5 +1,5 @@
-import { ICreateTransaction } from "features/expenses/types";
-import { ITransactionGroup } from "features/groups/types";
+import { ICreateTransaction } from 'features/expenses/types';
+import { ITransactionGroup } from 'features/groups/types';
 
 interface IProps {
   transaction: ICreateTransaction;

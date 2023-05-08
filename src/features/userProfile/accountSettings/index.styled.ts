@@ -1,5 +1,5 @@
-import { Column, Row } from "components/Containers";
-import styled from "styled-components";
+import { Column, Row } from 'components/Containers';
+import styled from 'styled-components';
 
 export const MainInfoWrapper = styled(Column)`
   z-index: 1;

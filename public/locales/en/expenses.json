@@ -20,5 +20,6 @@
   "unequally": "Unequally",
   "percentage": "Percentage",
   "adjustment": "Adjustment",
-  "transactionCreated": "Transaction created!"
+  "transactionCreated": "Transaction created!",
+  "settled": "settled."
 }

@@ -33,7 +33,7 @@ const Autocomplete = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
   const [isSuggestionsOpened, setIsSuggestionsOpened] = useState<boolean>(false);
-  const searchTimer = useRef<any>();
+  const searchTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const handleInputFocus = useCallback(() => {
     setIsSuggestionsOpened(true);
@@ -84,6 +84,7 @@ const Autocomplete = ({
         reversedTheme={reversedTheme}
         onFocus={handleInputFocus}
         onBlur={handleInputBlur}
+        autoComplete="off"
       />
 
       <SearchIcon src={SearchIconSVG} />

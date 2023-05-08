@@ -7,6 +7,7 @@ import { TextLink } from './Link';
 import Select from './Select';
 import { ButtonBase } from './Button/index.styled';
 import { HalfCircle } from './HalfCircle/index.styled';
+import { SmallInput } from './Input/index.styled';
 
 export {
     Avatar,
@@ -19,6 +20,7 @@ export {
     TextRegular,
     TextUnderline,
     Select,
+    SmallInput,
     SmallText,
     TextLink,
     TextHint,

@@ -61,6 +61,7 @@ const ChangeUserMoneyModal = ({ user, onDone, close, amount }: IProps) => {
             displayName={t('amount')}
             value={formAmount}
             onTextChange={onInputTextChanged}
+            autoComplete="off"
           />
         </AmountInputWrapper>
 

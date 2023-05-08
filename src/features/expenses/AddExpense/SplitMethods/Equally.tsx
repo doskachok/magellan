@@ -1,10 +1,10 @@
-import { Column } from "components/Containers";
-import UserListItem from "components/UserListItem";
-import { ICreateTransaction } from "features/expenses/types";
-import { ITransactionGroup } from "features/groups/types";
-import { getCurrencyWithSymbolString } from "helpers/currencyHelper";
+import { Column } from 'components/Containers';
+import UserListItem from 'components/UserListItem';
+import { ICreateTransaction } from 'features/expenses/types';
+import { ITransactionGroup } from 'features/groups/types';
+import { getCurrencyWithSymbolString } from 'helpers/currencyHelper';
 
-import { CurrencyText } from "./Equally.styled";
+import { CurrencyText } from './Equally.styled';
 
 interface IProps {
   transaction: ICreateTransaction;

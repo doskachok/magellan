@@ -1,6 +1,6 @@
-import { TextRegular } from "components";
-import { Column, Row } from "components/Containers";
-import styled from "styled-components";
+import { TextRegular } from 'components';
+import { Column, Row } from 'components/Containers';
+import styled from 'styled-components';
 
 export const MainInfoWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};

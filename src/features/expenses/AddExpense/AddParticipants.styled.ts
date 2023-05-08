@@ -1,5 +1,6 @@
-import styled, { css } from "styled-components";
-import { Column, Row } from "components/Containers";
+import styled, { css } from 'styled-components';
+import { Column, Row } from 'components/Containers';
+import { TextError } from 'components/Input/index.styled';
 
 export const AddParticipantsWrapper = styled(Column)`
   background: ${props => props.theme.colors.primary};
@@ -47,4 +48,9 @@ export const SaveButtonWrapper = styled(Row)`
   width: 100%;
   margin-top: 1.5rem;
   margin-bottom: 3.5rem;
+`;
+
+export const MismatchText = styled(TextError)`
+  font-size: 16px;
+  font-weight: bold;
 `;
