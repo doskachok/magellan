@@ -51,6 +51,7 @@ export const RequiredIndicator = styled(TextRegular) <IRequiredIndicatorProps>`
 export const TextError = styled(TextRegular)`
   color: ${props => props.theme.colors.text.error};
   font-size: 12px;
+  margin-top: 4px;
 `;
 
 export const InputStyled = styled.input<IInputProps>`

@@ -11,6 +11,8 @@ import { ContentWrapperRegister, PasswordRequirementsText, PasswordRequirementsW
 
 import { useRegisterMutation } from '../api';
 
+import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
+
 import { useTranslation } from 'react-i18next';
 
 import { usernameValidator, emailValidator, passwordValidator, createConfirmPasswordValidator } from '../validation';
@@ -35,6 +37,10 @@ interface IPasswordRequirements {
 const Register = () => {
   const { t } = useTranslation('auth');
   const navigate = useNavigate();
+
+  const handleBackAction = useCallback(() => {
+    navigate(ROUTES.AUTH.ROOT, { replace: true });
+  }, [navigate]);
 
   const [form, setForm] = useState<IRegisterForm>({
     username: '',
@@ -101,7 +107,12 @@ const Register = () => {
 
   return (
     <PageWrapper>
-      <Header text={t('signup')} isLoading={isLoading} />
+      <Header 
+        text={t('signup')}
+        isLoading={isLoading}
+        leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
+      />
+        
       <ContentWrapperRegister jc={'space-between'} fullWidth>
 
         <Column gap={'8px'} fullWidth>
@@ -114,6 +125,7 @@ const Register = () => {
             required
             disabled={isLoading}
             name={'username'}
+            autoCapitalize="none"
             displayName={t('username')}
             value={form.username}
             placeholder={t('username')}
@@ -126,6 +138,7 @@ const Register = () => {
           <Input
             required
             disabled={isLoading}
+            type={'email'}
             name={'email'}
             displayName={t('email')}
             value={form.email}
