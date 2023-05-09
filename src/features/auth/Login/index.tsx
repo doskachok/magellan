@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 
 import Header from 'components/Header';
 import { Column, PageWrapper, Row } from 'components/Containers';
-import { ContentWrapperLogin, ForgotPasswordLink, NoAccountLink, RequiredText } from './index.styled';
+import { ContentWrapperLogin, ForgotPasswordLink, LoginForm, NoAccountLink, RequiredText } from './index.styled';
 
 import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazyUserQuery } from '../api';
@@ -77,53 +77,55 @@ const Login = () => {
   return (
     <PageWrapper>
       <Header text={'Login'} isLoading={isLoading} />
-      <ContentWrapperLogin jc={'space-between'} fullWidth>
-        <Column gap={'8px'} fullWidth>
-          <RequiredText>
-            <span>*</span>
-            {t('requiredText')}
-          </RequiredText>
+      <LoginForm onSubmit={onFormSubmit} method='post'>
+        <ContentWrapperLogin jc={'space-between'} fullWidth>
+          <Column gap={'8px'} fullWidth>
+            <RequiredText>
+              <span>*</span>
+              {t('requiredText')}
+            </RequiredText>
 
-          <Input
-            required
-            disabled={isLoading}
-            name='login'
-            displayName={form.login.includes('@') ? t('email') : t('username') }
-            value={form.login}
-            validator={requiredValidator}
-            placeholder={t('usernameOrEmailAddress')}
-            onTextChange={onInputChange}
-            onValidationChange={onValidationChange}
-          />
+              <Input
+                required
+                disabled={isLoading}
+                name='login'
+                displayName={form.login.includes('@') ? t('email') : t('username') }
+                value={form.login}
+                validator={requiredValidator}
+                placeholder={t('usernameOrEmailAddress')}
+                onTextChange={onInputChange}
+                onValidationChange={onValidationChange}
+              />
 
-          <Input
-            required
-            disabled={isLoading}
-            name={'password'}
-            displayName={t('password')}
-            type={'password'}
-            value={form.password}
-            validator={requiredValidator}
-            placeholder={t('password')}
-            onTextChange={onInputChange}
-            onValidationChange={onValidationChange}
-          />
+              <Input
+                required
+                disabled={isLoading}
+                name={'password'}
+                displayName={t('password')}
+                type={'password'}
+                value={form.password}
+                validator={requiredValidator}
+                placeholder={t('password')}
+                onTextChange={onInputChange}
+                onValidationChange={onValidationChange}
+              />
 
-          <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
-            {t('forgotPassword')}
-          </ForgotPasswordLink>
+              <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
+                {t('forgotPassword')}
+              </ForgotPasswordLink>
 
-          <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
-            {t('noAccount')}
-          </NoAccountLink>
-        </Column>
+              <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
+                {t('noAccount')}
+              </NoAccountLink>
+          </Column>
 
-        <Row jc={'flex-end'} fullWidth>
-          <Button onClick={onFormSubmit} disabled={isDisabled || isLoading}>
-            {t('signIn')}
-          </Button>
-        </Row>
-      </ContentWrapperLogin>
+          <Row jc={'flex-end'} fullWidth>
+            <Button onClick={onFormSubmit} disabled={isDisabled || isLoading} type="submit">
+              {t('signIn')}
+            </Button>
+          </Row>
+        </ContentWrapperLogin>
+      </LoginForm>
     </PageWrapper>
   );
 };

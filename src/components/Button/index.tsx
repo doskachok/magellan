@@ -5,11 +5,12 @@ interface Props {
   onClick: () => void;
   children: ReactElement[] | string;
   disabled: boolean;
+  type?: "button" | "submit" | "reset" | undefined
 }
 
-const Button = ({children, onClick, disabled}: Props) => {
+const Button = ({children, onClick, disabled, type}: Props) => {
   return (
-    <ButtonStyled onClick={onClick} disabled={disabled}>
+    <ButtonStyled type={type} onClick={onClick} disabled={disabled}>
       {children}
     </ButtonStyled>
   );
