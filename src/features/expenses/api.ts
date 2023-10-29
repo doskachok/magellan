@@ -12,9 +12,15 @@ export const transactionsApi = mainApi.injectEndpoints({
         body,
       }),
     }),
+    getTransactionById: build.query<ITransaction, string>({
+      query: (id: string) => ({
+        url: `${API_URL}/${id}`,
+      })
+    }),
   }))
 });
 
 export const {
   useCreateTransactionMutation,
+  useLazyGetTransactionByIdQuery,
 } = transactionsApi;
