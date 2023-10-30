@@ -57,7 +57,7 @@ const ExpenseDetails = () => {
 
         <PaymentListTitleText> {"Participants:"} </PaymentListTitleText>
         <PaymentListContainer>
-          {expense?.partialsAssignments.map((pa) => {
+          {expense?.partialsAssignmentsTranslated.map((pa) => {
             const user = group?.participants.find((p) => p.id === pa.userId);
             return (
               <PaymentRow key={pa.userId}

@@ -8,6 +8,10 @@ export interface ITransaction {
   partialsAssignments: IPartialAssignments[];
 }
 
+export interface ITransactionView extends ITransaction {
+  partialsAssignmentsTranslated: IPartialAssignments[];
+}
+
 export interface ICreateTransaction extends Omit<ITransaction, 'id' | 'ownerId'> {
   groupId: string;
 }
@@ -28,4 +32,7 @@ export interface IPartialAssignments {
   userId: string;
   partialAmount: number;
   splitMethod: SplitMethod;
+}
+
+export interface IPartialAssignmentsTranslated extends Omit<ITransaction, 'splitMethod'> {
 }

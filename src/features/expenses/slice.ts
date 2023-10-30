@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ICreateTransaction, IPartialAssignments, ITransaction} from './types';
+import { ICreateTransaction, IPartialAssignments, ITransactionView} from './types';
 import { RootState } from 'store';
 import { transactionsApi } from './api';
 
 interface ISliceState {
-  list: ITransaction[],
+  list: ITransactionView[],
   newTransaction: ICreateTransaction | null;
 }
 
@@ -36,7 +36,7 @@ const expensesSlice = createSlice({
     builder
       .addMatcher(
         transactionsApi.endpoints.getTransactionById.matchFulfilled,
-        (state, { payload }: PayloadAction<ITransaction>) => {
+        (state, { payload }: PayloadAction<ITransactionView>) => {
           const index = state.list.findIndex((tr) => tr.id === payload?.id);
           if (index === -1) {
             state.list.push(payload);

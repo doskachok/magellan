@@ -1,18 +1,18 @@
 import mainApi from 'store/api';
-import { ITransaction, ICreateTransaction } from './types';
+import { ICreateTransaction, ITransactionView } from './types';
 
 const API_URL = `transactions`;
 
 export const transactionsApi = mainApi.injectEndpoints({
   endpoints: (build => ({
-    createTransaction: build.mutation<ITransaction, ICreateTransaction>({
+    createTransaction: build.mutation<ITransactionView, ICreateTransaction>({
       query: (body: ICreateTransaction) => ({
         url: API_URL,
         method: 'POST',
         body,
       }),
     }),
-    getTransactionById: build.query<ITransaction, string>({
+    getTransactionById: build.query<ITransactionView, string>({
       query: (id: string) => ({
         url: `${API_URL}/${id}`,
       })
