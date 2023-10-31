@@ -8,14 +8,14 @@ export interface IPaymentRowProps {
   currencyCode: string,
 }
 
-const PaymentRow = (props : IPaymentRowProps) => {
+const PaymentRow = (props: IPaymentRowProps) => {
   return (
-      <PaymentRowContainer>
-          <UserNameText> {props.user} </UserNameText>
-          <PaymentAmountText>
-            {getCurrencyWithSymbolString(props.amount, props.currencyCode)}
-          </PaymentAmountText>
-      </PaymentRowContainer>
+    <PaymentRowContainer>
+      <UserNameText> {props.user} </UserNameText>
+      <PaymentAmountText>
+        {getCurrencyWithSymbolString(props.amount, props.currencyCode)}
+      </PaymentAmountText>
+    </PaymentRowContainer>
   );
 };
 
