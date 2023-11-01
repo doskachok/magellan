@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { TextRegular } from '../Text';
 
 import { Column } from '../Containers';
+import { IReversible } from 'types/common';
 
 interface IInputProps extends IReversible {
   hasError?: boolean;
@@ -13,10 +14,6 @@ interface IRequiredIndicatorProps extends IReversible {
 }
 
 interface IDisplayName extends IReversible { }
-
-interface IReversible {
-  reversedTheme?: boolean;
-}
 
 export const Wrapper = styled(Column)`
   position: relative;

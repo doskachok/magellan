@@ -122,7 +122,7 @@ const AddPayers = () => {
               {group.data?.participants?.map(u => <UserListItem
                 key={u.id}
                 user={u}
-                underlined
+                reversedTheme
                 onClick={() => onUserClicked(u)}
                 rightItem={getUserAmountComponent(u, form.currencyCode, userAmountMap)}
               />)}

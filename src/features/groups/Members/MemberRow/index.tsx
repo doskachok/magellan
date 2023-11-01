@@ -1,14 +1,12 @@
 import { memo } from 'react';
 import { IUser } from 'types/userTypes';
-import { TextHint, TextRegular } from 'components';
-import { Actions, Identification, Wrapper } from './index.styled';
-import { Avatar, AvatarSize } from 'components';
-import { getDownloadFileUrl } from 'helpers/urlHelper';
+import { TextRegular } from 'components';
+import { Actions, Wrapper } from './index.styled';
 import { ReactComponent as RemoveSVG } from 'assets/images/remove-icon.svg';
 import { ReactComponent as DeclineSVG } from 'assets/images/decline-icon.svg';
 import { ReactComponent as ApproveSVG } from 'assets/images/check-icon.svg';
 import { useTranslation } from 'react-i18next';
-import { Column } from 'components/Containers';
+import UserListItem from 'components/UserListItem';
 
 export interface IProps {
   member: IUser;
@@ -22,41 +20,31 @@ const MemberRow = ({ member, isSelected, onClick, onRemove }: IProps) => {
 
   return (
     <Wrapper isSelected={isSelected} fullWidth>
-      <Identification>
-        <Avatar
-          src={getDownloadFileUrl(member.avatarId)}
-          rounded={true}
-          size={AvatarSize.Small}
-        />
-
-        <Column gap='3px'>
-          <TextRegular>
-            {member.name || member.username}
-          </TextRegular>
-          <TextHint>
-            {member.email}
-          </TextHint>
-        </Column>
-      </Identification>
-
-      { !isSelected && 
-      <Actions>
-        <TextRegular>
-          $0.0
-        </TextRegular>
-
-        <RemoveSVG onClick={() => onClick(member)} />
-      </Actions> }
-
-      { isSelected &&
-      <Actions>
-        <TextRegular>
-          {t('removeMember')}
-        </TextRegular>
-
-        <ApproveSVG onClick={() => onRemove(member)} />
-        <DeclineSVG onClick={() => onClick(member)} />
-      </Actions> }
+      <UserListItem 
+        user={member}
+        onClick={() => onClick(member)}
+        rightItem={
+        <>
+          { !isSelected && 
+            <Actions>
+              <TextRegular>
+                $0.0
+              </TextRegular>
+      
+              <RemoveSVG onClick={() => onClick(member)} />
+            </Actions> }
+      
+          { isSelected &&
+            <Actions>
+              <TextRegular>
+                {t('removeMember')}
+              </TextRegular>
+      
+              <ApproveSVG onClick={() => onRemove(member)} />
+              <DeclineSVG onClick={() => onClick(member)} />
+            </Actions> } 
+          </>}
+      />
     </Wrapper>
   );
 };
