@@ -19,7 +19,7 @@ import { useUpdateUserMutation } from 'store/user.api';
 import Loader from 'components/Loader';
 
 
-const AccountSetttings = () => {
+const AccountSettings = () => {
   const { t } = useTranslation('common');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -174,4 +174,4 @@ const AccountSetttings = () => {
   );
 };
 
-export default AccountSetttings;
+export default AccountSettings;

@@ -2,10 +2,7 @@ import styled, { css } from 'styled-components';
 import { TextRegular } from '../Text';
 
 import { Column } from '../Containers';
-
-interface IReversible {
-  reversedTheme?: boolean;
-}
+import { IReversible } from 'types/common';
 
 interface ISelectProps extends IReversible {
   isOpened?: boolean;

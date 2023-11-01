@@ -44,7 +44,8 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
             reversedTheme={true}
             suggestionsSource={usersSearchSource}
             onSuggestionSelected={handleSuggestionSelected}
-            suggestionTemplate={suggestionTemplate} />
+            suggestionTemplate={suggestionTemplate} 
+          />
         </ModalBodyElementWrapper>
 
         <ModalSeparator />
@@ -53,7 +54,7 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
           <ModalText>{t('orLookAlreadyKnown')}</ModalText>
 
           <Column fullWidth gap={'0.5rem'}>
-            {knownsUsers?.map(u => <UserListItem key={u.id} user={u} onClick={() => onMemberSelected(u)} />)}
+            {knownsUsers?.map(u => <UserListItem key={u.id} reversedTheme user={u} onClick={() => onMemberSelected(u)} />)}
           </Column>
 
           <Loader isLoading={isKnownsUsersLoading} />

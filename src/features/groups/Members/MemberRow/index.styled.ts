@@ -16,12 +16,6 @@ export const Wrapper = styled(Row) <IWrapperProps>`
   `};
 `;
 
-export const Identification = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-`;
-
 export const Actions = styled.div`
   text-align: right;
   align-items: center;
