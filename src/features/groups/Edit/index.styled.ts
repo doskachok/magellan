@@ -1,6 +1,11 @@
 import styled  from 'styled-components';
-import { Column, Row } from 'components/Containers';
+import { Column, ContentWrapper, Row } from 'components/Containers';
 import { TextRegular } from 'components';
+
+export const GroupEditContentWrapper = styled(ContentWrapper)`
+  padding-bottom: 3rem;
+  width: 100%;
+`;
 
 export const MainInfoWrapper = styled(Column)`
   z-index: 1;
@@ -22,8 +27,7 @@ export const AddMembersButtonWrapper = styled(Row)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 1.5rem;
-  margin: 1rem 0 3rem;
+  margin-top: 1rem;
 `;
 
 export const SaveButtonWrapper = styled(Row)`
