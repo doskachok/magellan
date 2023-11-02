@@ -1,5 +1,5 @@
 import styled  from 'styled-components';
-import { Column, ContentWrapper, Row } from 'components/Containers';
+import { Column, ContentWrapper } from 'components/Containers';
 import { TextRegular } from 'components';
 
 export const GroupEditContentWrapper = styled(ContentWrapper)`
@@ -21,11 +21,4 @@ export const GroupCurrencyText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
   width: 100%;
   margin-top: 23px;
-`;
-
-export const AddMembersButtonWrapper = styled(Row)`
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 1rem;
 `;

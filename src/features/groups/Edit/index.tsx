@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { PageWrapper } from 'components/Containers';
+import { PageWrapper, Row } from 'components/Containers';
 import Header from 'components/Header';
 
 import { useLazyGetTransactionGroupByIdQuery } from '../api';
@@ -15,7 +15,7 @@ import { ROUTES } from 'constants/routes';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
 import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
 
-import { AddMembersButtonWrapper, GroupEditContentWrapper } from './index.styled';
+import { GroupEditContentWrapper } from './index.styled';
 import Loader from 'components/Loader';
 import { ButtonBase, TextUnderline } from 'components';
 
@@ -60,7 +60,7 @@ const Edit = () => {
 
         {mode === GroupEditMode.Members && <Members groupId={group?.id || ''} />}
 
-        <AddMembersButtonWrapper>
+        <Row jc='center' ai='center' mt='1rem' fullWidth>
           <ButtonBase onClick={onChangeModeHandler}>
             <TextUnderline>
               {t(mode === GroupEditMode.GeneralInfo ? 'addGroupMembers' : 'editGeneralInfo')}
@@ -68,7 +68,7 @@ const Edit = () => {
 
             <ArrowRightSVG />
           </ButtonBase>
-        </AddMembersButtonWrapper>
+        </Row>
       </GroupEditContentWrapper>
 
       <Loader isLoading={isLoading} />
