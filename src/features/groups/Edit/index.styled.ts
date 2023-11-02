@@ -29,8 +29,3 @@ export const AddMembersButtonWrapper = styled(Row)`
   width: 100%;
   margin-top: 1rem;
 `;
-
-export const SaveButtonWrapper = styled(Row)`
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-`;
