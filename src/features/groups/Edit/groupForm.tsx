@@ -102,13 +102,13 @@ const Form = ({ group }: IProps) => {
 
   useEffect(() => {
     const newGroup = createdGroup ? createdGroup : updatedGroup ? updatedGroup : null;
-    
+
     if (newGroup) {
       dispatch(saveGroup(newGroup));
       navigate(ROUTES.GROUPS.ROOT, { replace: true });
     }
   }, [createdGroup, updatedGroup, dispatch, navigate]);
-  
+
   useEffect(() => {
     if (group) {
       setForm((form) => ({
@@ -118,70 +118,68 @@ const Form = ({ group }: IProps) => {
       setLogoSrc(getDownloadFileUrl(group.avatarId));
     }
   }, [group, setForm]);
-  
+
   return (
-    <>
-      <Column fullWidth>
-        <MainInfoWrapper fullWidth>
-          <GroupInfoWrapper gap={'1rem'} jc={'center'} fullWidth>
-            <Row jc={'center'} fullWidth>
-              <FileUploader
-                ref={logoUploaderRef}
-                onFileSelected={onLogoSelected}
-                onFileUploaded={onLogoUploaded}
-                onUploadingChange={onLogoUploadingChanged}>
-                <Avatar
-                  src={logoSrc}
-                  framed={true}
-                  rounded={true}
-                  size={AvatarSize.Large}
-                />
-              </FileUploader>
-            </Row>
+    <MainInfoWrapper fullWidth fullHeight>
+      <Column>
+        <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating}/>
 
-            <Row jc={'center'} fullWidth>
-              <Input
-                placeholder={t('groupName')}
-                reversedTheme
-                name={'name'}
-                displayName={t('groupName')}
-                required
-                value={form.name}
-                validator={requiredValidator}
-                onTextChange={onControlChange}
-                onValidationChange={onValidationChange}
-                autoComplete="off"
+        <GroupInfoWrapper gap={'1rem'} jc={'center'} fullWidth>
+          <Row jc={'center'} fullWidth>
+            <FileUploader
+              ref={logoUploaderRef}
+              onFileSelected={onLogoSelected}
+              onFileUploaded={onLogoUploaded}
+              onUploadingChange={onLogoUploadingChanged}>
+              <Avatar
+                src={logoSrc}
+                framed={true}
+                rounded={true}
+                size={AvatarSize.Large}
               />
-            </Row>
+            </FileUploader>
+          </Row>
 
-            <Row jc={'space-between'} ai={'center'} fullWidth>
-              <GroupCurrencyText>
-                {t('mainCurrency')}
-              </GroupCurrencyText>
+          <Row jc={'center'} fullWidth>
+            <Input
+              placeholder={t('groupName')}
+              reversedTheme
+              name={'name'}
+              displayName={t('groupName')}
+              required
+              value={form.name}
+              validator={requiredValidator}
+              onTextChange={onControlChange}
+              onValidationChange={onValidationChange}
+              autoComplete="off"
+            />
+          </Row>
 
-              <Select
-                options={currencies}
-                required
-                value={form.currencyCode}
-                name={'currencyCode'}
-                reversedTheme={true}
-                onValueChanged={onControlChange}
-              />
-            </Row>
-          </GroupInfoWrapper>
+          <Row jc={'space-between'} ai={'center'} fullWidth>
+            <GroupCurrencyText>
+              {t('mainCurrency')}
+            </GroupCurrencyText>
 
-          <HalfCircle />
-        </MainInfoWrapper>
-
-        <Row jc={'center'} mt={'1rem'} mb={'2rem'} fullWidth>
-          <Button onClick={onFormSubmit} disabled={isSaveButtonDisabled}>
-            {t('saveGroup')}
-          </Button>
-        </Row>
+            <Select
+              options={currencies}
+              required
+              value={form.currencyCode}
+              name={'currencyCode'}
+              reversedTheme={true}
+              onValueChanged={onControlChange}
+            />
+          </Row>
+        </GroupInfoWrapper>
+        
+        <HalfCircle  />
       </Column>
 
-      <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating}/>
-    </>
+      <Row jc={'flex-end'} fullWidth>
+        <Button onClick={onFormSubmit} disabled={isSaveButtonDisabled}>
+          {t('saveGroup')}
+        </Button>
+      </Row>
+    </MainInfoWrapper>
   );
 };
 
