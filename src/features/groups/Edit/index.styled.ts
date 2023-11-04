@@ -1,5 +1,5 @@
 import styled  from 'styled-components';
-import { Column, ContentWrapper } from 'components/Containers';
+import { Column, ContentWrapper, Row } from 'components/Containers';
 import { TextRegular } from 'components';
 
 export const GroupEditContentWrapper = styled(ContentWrapper)`
