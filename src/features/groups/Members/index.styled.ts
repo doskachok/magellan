@@ -7,6 +7,8 @@ export const ContentWrapperMembers = styled(Column)`
   padding: 1rem;
   flex: 1;
   scroll-snap-align: center;
+  background-color: white;
+  z-index: 1;
 `;
 
 export const Header = styled(Row)`

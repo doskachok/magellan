@@ -15,6 +15,7 @@ export const MainInfoWrapper = styled(Column)`
 `;
 
 export const GroupInfoWrapper = styled(Column)`
+  width: 100vw;
   background: ${props => props.theme.colors.primary};
   padding: 2rem 1.5rem 0;
   z-index: 1;

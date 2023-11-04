@@ -124,7 +124,7 @@ const Form = ({ group }: IProps) => {
       <Column>
         <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating}/>
 
-        <GroupInfoWrapper gap={'1rem'} jc={'center'} fullWidth>
+        <GroupInfoWrapper gap={'1rem'} jc={'center'}>
           <Row jc={'center'} fullWidth>
             <FileUploader
               ref={logoUploaderRef}
