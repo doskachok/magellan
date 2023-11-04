@@ -10,7 +10,6 @@ import {
   GroupCurrencyText,
   GroupInfoWrapper,
   MainInfoWrapper,
-  SaveButtonWrapper
 } from './index.styled';
 
 import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
@@ -174,11 +173,11 @@ const Form = ({ group }: IProps) => {
           <HalfCircle />
         </MainInfoWrapper>
 
-        <SaveButtonWrapper jc={'center'} fullWidth>
+        <Row jc={'center'} mt={'1rem'} mb={'2rem'} fullWidth>
           <Button onClick={onFormSubmit} disabled={isSaveButtonDisabled}>
             {t('saveGroup')}
           </Button>
-        </SaveButtonWrapper>
+        </Row>
       </Column>
 
       <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating}/>

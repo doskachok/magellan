@@ -5,6 +5,10 @@ interface ContainerProps {
   jc?: string;
   ai?: string;
   fullWidth?: boolean;
+  mt?: string;
+  mb?: string;
+  ml?: string;
+  mr?: string;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -26,6 +30,22 @@ const Container = styled.div<ContainerProps>`
 
   ${props => props.ai && css`
     align-items: ${props.ai};
+  `};
+
+  ${props => props.mt && css`
+    margin-top: ${props.mt};
+  `};
+
+  ${props => props.mb && css`
+    margin-bottom: ${props.mb};
+  `};
+
+  ${props => props.ml && css`
+    margin-left: ${props.ml};
+  `};
+
+  ${props => props.mr && css`
+    margin-right: ${props.mr};
   `};
 `;
 
