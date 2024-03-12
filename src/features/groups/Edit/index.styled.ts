@@ -21,6 +21,12 @@ export const GroupInfoWrapper = styled(Column)`
   z-index: 1;
 `;
 
+export const GroupControlWrapper = styled(Column)`
+  width: 100%;
+  align-items: flex-end;
+  padding-right: 1rem ;
+`;
+
 export const DoubleContainer = styled(Row)`
   flex: 1;
   overflow-x: scroll;
