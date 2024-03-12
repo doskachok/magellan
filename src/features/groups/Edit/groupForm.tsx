@@ -7,6 +7,7 @@ import { Column, Row } from 'components/Containers';
 import Loader from 'components/Loader';
 
 import {
+  GroupControlWrapper,
   GroupCurrencyText,
   GroupInfoWrapper,
   MainInfoWrapper,
@@ -91,6 +92,8 @@ const Form = ({ group }: IProps) => {
     setIsLogoUploading(isUploading);
   }, []);
 
+  const isLoading = isLogoUploading || isGroupCreating || isGroupUpdating;
+
   const onLogoUploaded = useCallback((fileId: string) => {
     const formToSave = {
       ...form,
@@ -122,7 +125,7 @@ const Form = ({ group }: IProps) => {
   return (
     <MainInfoWrapper fullWidth fullHeight>
       <Column>
-        <Loader isLoading={isLogoUploading || isGroupCreating || isGroupUpdating}/>
+        <Loader isLoading={isLoading}/>
 
         <GroupInfoWrapper gap={'1rem'} jc={'center'}>
           <Row jc={'center'} fullWidth>
@@ -142,6 +145,7 @@ const Form = ({ group }: IProps) => {
 
           <Row jc={'center'} fullWidth>
             <Input
+              disabled={isLoading}
               placeholder={t('groupName')}
               reversedTheme
               name={'name'}
@@ -161,6 +165,7 @@ const Form = ({ group }: IProps) => {
             </GroupCurrencyText>
 
             <Select
+              disabled={isLoading}
               options={currencies}
               required
               value={form.currencyCode}
@@ -174,11 +179,11 @@ const Form = ({ group }: IProps) => {
         <HalfCircle  />
       </Column>
 
-      <Row jc={'flex-end'} fullWidth>
-        <Button onClick={onFormSubmit} disabled={isSaveButtonDisabled}>
+      <GroupControlWrapper >
+        <Button onClick={onFormSubmit} disabled={isSaveButtonDisabled || isLoading}>
           {t('saveGroup')}
         </Button>
-      </Row>
+      </GroupControlWrapper>
     </MainInfoWrapper>
   );
 };
