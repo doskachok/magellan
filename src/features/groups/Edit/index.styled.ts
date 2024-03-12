@@ -1,5 +1,5 @@
 import styled  from 'styled-components';
-import { Column, ContentWrapper } from 'components/Containers';
+import { Column, ContentWrapper, Row } from 'components/Containers';
 import { TextRegular } from 'components';
 
 export const GroupEditContentWrapper = styled(ContentWrapper)`
@@ -9,12 +9,28 @@ export const GroupEditContentWrapper = styled(ContentWrapper)`
 
 export const MainInfoWrapper = styled(Column)`
   z-index: 1;
+  scroll-snap-align: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 `;
 
 export const GroupInfoWrapper = styled(Column)`
+  width: 100vw;
   background: ${props => props.theme.colors.primary};
   padding: 2rem 1.5rem 0;
   z-index: 1;
+`;
+
+export const GroupControlWrapper = styled(Column)`
+  width: 100%;
+  align-items: flex-end;
+  padding-right: 1rem ;
+`;
+
+export const DoubleContainer = styled(Row)`
+  flex: 1;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
 `;
 
 export const GroupCurrencyText = styled(TextRegular)`

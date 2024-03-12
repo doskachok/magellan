@@ -85,38 +85,38 @@ const Login = () => {
               {t('requiredText')}
             </RequiredText>
 
-              <Input
-                required
-                disabled={isLoading}
-                name='login'
-                displayName={form.login.includes('@') ? t('email') : t('username') }
-                value={form.login}
-                validator={requiredValidator}
-                placeholder={t('usernameOrEmailAddress')}
-                onTextChange={onInputChange}
-                onValidationChange={onValidationChange}
-              />
+            <Input
+              required
+              disabled={isLoading}
+              name='login'
+              displayName={form.login.includes('@') ? t('email') : t('username') }
+              value={form.login}
+              validator={requiredValidator}
+              placeholder={t('usernameOrEmailAddress')}
+              onTextChange={onInputChange}
+              onValidationChange={onValidationChange}
+            />
 
-              <Input
-                required
-                disabled={isLoading}
-                name={'password'}
-                displayName={t('password')}
-                type={'password'}
-                value={form.password}
-                validator={requiredValidator}
-                placeholder={t('password')}
-                onTextChange={onInputChange}
-                onValidationChange={onValidationChange}
-              />
+            <Input
+              required
+              disabled={isLoading}
+              name={'password'}
+              displayName={t('password')}
+              type={'password'}
+              value={form.password}
+              validator={requiredValidator}
+              placeholder={t('password')}
+              onTextChange={onInputChange}
+              onValidationChange={onValidationChange}
+            />
 
-              <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
-                {t('forgotPassword')}
-              </ForgotPasswordLink>
+            <ForgotPasswordLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.FORGOT_PASSWORD}`}>
+              {t('forgotPassword')}
+            </ForgotPasswordLink>
 
-              <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
-                {t('noAccount')}
-              </NoAccountLink>
+            <NoAccountLink to={`${ROUTES.AUTH.ROOT}/${ROUTES.AUTH.REGISTER}`}>
+              {t('noAccount')}
+            </NoAccountLink>
           </Column>
 
           <Row jc={'flex-end'} fullWidth>
