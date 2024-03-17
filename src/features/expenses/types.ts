@@ -9,7 +9,7 @@ export interface ITransaction {
 }
 
 export interface ITransactionView extends ITransaction {
-  partialsAssignmentsTranslated: IPartialAssignments[];
+  partialsAssignmentsTranslated: IPartialAssignmentsTranslated[];
 }
 
 export interface ICreateTransaction extends Omit<ITransaction, 'id' | 'ownerId'> {
@@ -34,5 +34,5 @@ export interface IPartialAssignments {
   splitMethod: SplitMethod;
 }
 
-export interface IPartialAssignmentsTranslated extends Omit<ITransaction, 'splitMethod'> {
+export interface IPartialAssignmentsTranslated extends Omit<IPartialAssignments, 'splitMethod'> {
 }
