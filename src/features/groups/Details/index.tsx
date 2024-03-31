@@ -50,7 +50,6 @@ const GroupDetails = () => {
       />
 
       <ContentWrapper fullWidth>
-        <HalfCircle />
         <TransactionListContainer>
           {group?.transactions?.map((tr, index, array) => {
             if (index === 0 || !datesAreOnSameDay(tr.paymentDateUtc, array[index - 1].paymentDateUtc)) {
