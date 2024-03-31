@@ -175,8 +175,6 @@ const Form = ({ group }: IProps) => {
             />
           </Row>
         </GroupInfoWrapper>
-
-        {/* <HalfCircle  /> */}
       </Column>
 
       <GroupControlWrapper >

@@ -11,14 +11,16 @@ export const MainInfoWrapper = styled(Column)`
   z-index: 1;
   scroll-snap-align: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  height: calc(100vh - 6em);
 `;
 
 export const GroupInfoWrapper = styled(Column)`
   width: 100vw;
   background: ${props => props.theme.colors.primary};
-  padding: 2rem 1.5rem 0;
+  padding: 2rem 1.5rem 1.5rem;
   z-index: 1;
+  border-radius: 0px 0px 25px 25px;
 `;
 
 export const GroupControlWrapper = styled(Column)`

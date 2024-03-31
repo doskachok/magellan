@@ -21,7 +21,7 @@ const Edit = () => {
   const { t } = useTranslation('groups');
   const navigate = useNavigate();
   const { groupId } = useParams();
-  const sliderItems = ["mainInfo", "members", "statistics"];
+  const sliderItems = groupId ? ["mainInfo", "members", "statistics"] : ["mainInfo"];
 
   const [getGroup, { data: group }] = useLazyGetTransactionGroupByIdQuery();
   const [activeSliderItem, setActiveSliderItem] = useState<string>(sliderItems[0]);
@@ -47,23 +47,24 @@ const Edit = () => {
     slidesToScroll: 1,
     adaptiveHeight: false,
     className: "w-100",
-    beforeChange: (current: number, next: number) => setActiveSliderItem(sliderItems[next])
-    //afterChange: (current: number) => setActiveSliderItem(sliderItems[current])
+    beforeChange: (_: number, next: number) => setActiveSliderItem(sliderItems[next])
   };
 
   const sliderPagesList = (sliderItems: Array<string>) => {
     return <SliderItemsWrapper>
       {sliderItems.map((item, idx) => {
         return (
-          <SliderNavItem isActive={activeSliderItem == item} onClick={() => { setActiveSliderItem(item); sliderRef.current?.slickGoTo(idx); }}>
+          <SliderNavItem 
+            isActive={activeSliderItem == item} 
+            onClick={() => { setActiveSliderItem(item); sliderRef.current?.slickGoTo(idx); }}
+          >
             {t(item + 'SliderItem')}
-          </SliderNavItem>)
+          </SliderNavItem>
+          )
       })}
     </SliderItemsWrapper>
 
   }
-
-  //sliderRef && sliderRef.slickGoTo(e.target.value)
 
   return (<>
     <PageWrapper>
