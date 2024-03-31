@@ -1,4 +1,4 @@
-import styled  from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Column, ContentWrapper, Row } from 'components/Containers';
 import { TextRegular } from 'components';
 
@@ -37,4 +37,24 @@ export const GroupCurrencyText = styled(TextRegular)`
   color: ${props => props.theme.colors.text.secondary};
   width: 100%;
   margin-top: 23px;
+`;
+
+export const SliderItemsWrapper = styled(Row)`
+background: ${props => props.theme.colors.primary};
+  width: 100%;
+  padding: 5px;
+`;
+
+interface ISliderNavItemProps {
+  isActive: boolean;
+}
+
+export const SliderNavItem = styled(Column) <ISliderNavItemProps>`
+  background: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.secondaryFaded};
+  width: auto; 
+  padding: 3px;
+    ${props => props.isActive && css`
+    color: ${props => props.theme.colors.secondary};
+  `};
 `;

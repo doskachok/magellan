@@ -125,7 +125,7 @@ const Form = ({ group }: IProps) => {
   return (
     <MainInfoWrapper fullWidth fullHeight>
       <Column>
-        <Loader isLoading={isLoading}/>
+        <Loader isLoading={isLoading} />
 
         <GroupInfoWrapper gap={'1rem'} jc={'center'}>
           <Row jc={'center'} fullWidth>
@@ -175,8 +175,8 @@ const Form = ({ group }: IProps) => {
             />
           </Row>
         </GroupInfoWrapper>
-        
-        <HalfCircle  />
+
+        {/* <HalfCircle  /> */}
       </Column>
 
       <GroupControlWrapper >
