@@ -16,8 +16,6 @@ import { createDateString, datesAreOnSameDay } from 'helpers/dateUtil';
 
 import { selectedGroupSelector } from '../slice';
 import Loader from 'components/Loader';
-import { HalfCircle } from 'components';
-
 
 const GroupDetails = () => {
   const { t } = useTranslation('groups');

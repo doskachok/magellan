@@ -14,7 +14,7 @@ import {
 } from './index.styled';
 
 import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
-import { Avatar, AvatarSize, Button, HalfCircle, Input, Select } from 'components';
+import { Avatar, AvatarSize, Button, Input, Select } from 'components';
 import { requiredValidator } from 'features/auth/validation';
 import currencies from 'constants/currencies';
 import { useCreateTransactionGroupMutation, useUpdateTransactionGroupMutation } from '../api';

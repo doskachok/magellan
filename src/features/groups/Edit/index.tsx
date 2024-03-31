@@ -55,7 +55,7 @@ const Edit = () => {
       {sliderItems.map((item, idx) => {
         return (
           <SliderNavItem 
-            isActive={activeSliderItem == item} 
+            isActive={activeSliderItem === item} 
             onClick={() => { setActiveSliderItem(item); sliderRef.current?.slickGoTo(idx); }}
           >
             {t(item + 'SliderItem')}
