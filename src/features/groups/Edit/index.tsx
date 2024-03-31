@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -23,7 +23,7 @@ const Edit = () => {
   const { groupId } = useParams();
   const sliderItems = groupId ? ["mainInfo", "members", "statistics"] : ["mainInfo"];
 
-  const [getGroup, { data: group }] = useLazyGetTransactionGroupByIdQuery();
+  const [getGroup, { isLoading, data: group }] = useLazyGetTransactionGroupByIdQuery();
   const [activeSliderItem, setActiveSliderItem] = useState<string>(sliderItems[0]);
 
   const handleBackAction = useCallback(() => {
@@ -66,27 +66,24 @@ const Edit = () => {
 
   }
 
-  return (<>
+  return (
     <PageWrapper>
-      <>
-        <Header
-          text={t(groupId ? 'updateGroup' : 'createGroup')}
-          leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
-        />
+      <Header
+        isLoading={isLoading}
+        text={t(groupId ? 'updateGroup' : 'createGroup')}
+        leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
+      />
 
-        <Column fullHeight fullWidth> <>
-          {sliderPagesList(sliderItems)}
-          <Slider {...settings} ref={sliderRef}>
-            <GroupForm group={group} />
+      <Column fullHeight fullWidth> 
+        {sliderPagesList(sliderItems)}
+        <Slider {...settings} ref={sliderRef}>
+          <GroupForm group={group} />
 
-            {groupId ? <Members groupId={groupId} /> : null}
-            {groupId ? <div>Not implemented</div> : null}
-          </Slider>
-        </>
-        </Column>
-      </>
+          {groupId ? <Members groupId={groupId} /> : null}
+          {groupId ? <div>Not implemented</div> : null}
+        </Slider>
+      </Column>
     </PageWrapper>
-  </>
   );
 };
 
