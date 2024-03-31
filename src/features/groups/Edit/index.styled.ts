@@ -2,11 +2,6 @@ import styled, { css } from 'styled-components';
 import { Column, ContentWrapper, Row } from 'components/Containers';
 import { TextRegular } from 'components';
 
-export const GroupEditContentWrapper = styled(ContentWrapper)`
-  padding-bottom: 3rem;
-  width: 100%;
-`;
-
 export const MainInfoWrapper = styled(Column)`
   z-index: 1;
   scroll-snap-align: center;
@@ -26,12 +21,6 @@ export const GroupControlWrapper = styled(Column)`
   width: 100%;
   align-items: flex-end;
   padding-right: 1rem ;
-`;
-
-export const DoubleContainer = styled(Row)`
-  flex: 1;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
 `;
 
 export const GroupCurrencyText = styled(TextRegular)`
