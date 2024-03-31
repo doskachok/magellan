@@ -1,11 +1,10 @@
 import styled, { css } from 'styled-components';
-import { Column, ContentWrapper, Row } from 'components/Containers';
+import { Column, Row } from 'components/Containers';
 import { TextRegular } from 'components';
 
 export const MainInfoWrapper = styled(Column)`
-  z-index: 1;
-  scroll-snap-align: center;
   justify-content: space-between;
+  z-index: 1;
   padding-bottom: 1rem;
 `;
 
