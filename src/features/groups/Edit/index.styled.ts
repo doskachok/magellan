@@ -12,7 +12,6 @@ export const MainInfoWrapper = styled(Column)`
   scroll-snap-align: center;
   justify-content: space-between;
   padding-bottom: 1rem;
-  height: calc(100vh - 6em);
 `;
 
 export const GroupInfoWrapper = styled(Column)`

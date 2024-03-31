@@ -3,7 +3,6 @@ import { Column, Row } from 'components/Containers';
 
 export const ContentWrapperMembers = styled(Column)`
   width: 100vw;
-  height: calc(100vh - 6em);
   padding: 1rem;
   flex: 1;
   scroll-snap-align: center;
