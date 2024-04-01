@@ -22,7 +22,7 @@ const Edit = () => {
   const navigate = useNavigate();
   const { groupId } = useParams();  
   const [getGroup, { isLoading, data: group }] = useLazyGetTransactionGroupByIdQuery();
-  const sliderItems = groupId ? [GroupPage.EditMain, GroupPage.Members, GroupPage.Statistics] : [GroupPage.EditMain];
+  const sliderItems = [GroupPage.EditMain, GroupPage.Members, GroupPage.Statistics];
 
   const handleBackAction = useCallback(() => {
     navigate(ROUTES.GROUPS.ROOT, { replace: true });
