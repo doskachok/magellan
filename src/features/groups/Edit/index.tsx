@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Column, PageWrapper } from 'components/Containers';
+import { PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
 
 import { useLazyGetTransactionGroupByIdQuery } from '../api';
@@ -13,58 +13,26 @@ import Members from '../Members';
 import { ROUTES } from 'constants/routes';
 
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
-import { SliderItemsWrapper, SliderNavItem } from './index.styled';
 
-import Slider from "react-slick";
+import { GroupPage } from '../enums';
+import SliderContainer from 'components/SliderContainer';
 
 const Edit = () => {
   const { t } = useTranslation('groups');
   const navigate = useNavigate();
-  const { groupId } = useParams();
-  const sliderItems = groupId ? ["mainInfo", "members", "statistics"] : ["mainInfo"];
-
+  const { groupId } = useParams();  
   const [getGroup, { isLoading, data: group }] = useLazyGetTransactionGroupByIdQuery();
-  const [activeSliderItem, setActiveSliderItem] = useState<string>(sliderItems[0]);
+  const sliderItems = groupId ? [GroupPage.EditMain, GroupPage.Members, GroupPage.Statistics] : [GroupPage.EditMain];
 
   const handleBackAction = useCallback(() => {
     navigate(ROUTES.GROUPS.ROOT, { replace: true });
   }, [navigate]);
-
 
   useEffect(() => {
     if (groupId) {
       getGroup(groupId);
     }
   }, [groupId, getGroup]);
-
-  let sliderRef = useRef<Slider>(null);
-
-  var settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    adaptiveHeight: false,
-    className: "w-100",
-    beforeChange: (_: number, next: number) => setActiveSliderItem(sliderItems[next])
-  };
-
-  const sliderPagesList = (sliderItems: Array<string>) => {
-    return <SliderItemsWrapper>
-      {sliderItems.map((item, idx) => {
-        return (
-          <SliderNavItem 
-            isActive={activeSliderItem === item} 
-            onClick={() => { setActiveSliderItem(item); sliderRef.current?.slickGoTo(idx); }}
-          >
-            {t(item + 'SliderItem')}
-          </SliderNavItem>
-          )
-      })}
-    </SliderItemsWrapper>
-
-  }
 
   return (
     <PageWrapper>
@@ -74,15 +42,20 @@ const Edit = () => {
         leftActionComponent={<BackIconSVG onClick={handleBackAction} />}
       />
 
-      <Column fullHeight fullWidth> 
-        {sliderPagesList(sliderItems)}
-        <Slider {...settings} ref={sliderRef}>
-          <GroupForm group={group} />
-
-          {groupId ? <Members groupId={groupId} /> : null}
-          {groupId ? <div>Not implemented</div> : null}
-        </Slider>
-      </Column>
+      {
+      groupId ?
+        <SliderContainer 
+          className='w-100'
+          sliderItems={sliderItems}
+          translationGroup='groups'
+        >
+          <GroupForm key={GroupPage.EditMain} group={group} />
+          <Members key={GroupPage.Members} groupId={groupId} />
+          <div key={GroupPage.Statistics}>Not implemented</div>
+        </SliderContainer>
+      :
+        <GroupForm group={group} />
+      }
     </PageWrapper>
   );
 };
