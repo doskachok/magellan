@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Column } from 'components/Containers';
 import { ICreateTransaction, IPartialAssignments } from 'features/expenses/types';
 import { ITransactionGroup } from 'features/groups/types';
-import UserListItem from 'components/UserListItem';
-import { Input, SmallInput } from 'components';
+import { Input, SmallInput, UserListItem } from 'components';
 import { updateOrAddPartialAssigment } from 'features/expenses/slice';
 
 interface IProps {

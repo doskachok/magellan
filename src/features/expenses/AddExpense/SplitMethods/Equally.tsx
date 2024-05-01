@@ -1,5 +1,5 @@
 import { Column } from 'components/Containers';
-import UserListItem from 'components/UserListItem';
+import { UserListItem } from 'components';
 import { ICreateTransaction } from 'features/expenses/types';
 import { ITransactionGroup } from 'features/groups/types';
 import { getCurrencyWithSymbolString } from 'helpers/currencyHelper';
