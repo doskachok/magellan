@@ -8,6 +8,9 @@ import Select from './Select';
 import { ButtonBase } from './Button/index.styled';
 import { HalfCircle } from './HalfCircle/index.styled';
 import { SmallInput } from './Input/index.styled';
+import { ModalBody } from './Modal/index';
+import UserListItem from './UserListItem';
+import Loader from './Loader';
 
 export {
     Avatar,
@@ -25,5 +28,8 @@ export {
     TextLink,
     TextHint,
     TextSmall,
-    HalfCircle
+    HalfCircle,
+    ModalBody,
+    UserListItem,
+    Loader
 }
