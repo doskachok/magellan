@@ -1,5 +1,6 @@
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
+@import "./styles/slider.css";
 
 @font-face {
   font-family: 'Montserrat';
@@ -35,25 +36,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.w-100, .w-100 > div {
-  width: 100%;
-  display: flex;
-}
-
-.slick-track, .slick-track > div, .slick-track > div > div {
-  display: flex;
-}
-
-.slick-track > div > div > div {
-  height: 100%;
-}
-
-.slick-slide {
-  display: flex !important;
-}
-
-.w-100, .slick-track > div, .slick-track > div > div, .slick-slide {
-  flex: 1;
 }
