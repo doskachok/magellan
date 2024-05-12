@@ -2,8 +2,11 @@ import styled from 'styled-components';
 import { Column, Row } from 'components/Containers';
 
 export const ContentWrapperMembers = styled(Column)`
+  width: 100vw;
   padding: 1rem;
   flex: 1;
+  background-color: white;
+  z-index: 1;
 `;
 
 export const Header = styled(Row)`

@@ -18,7 +18,7 @@
   "memberRemoved": "Member has been removed",
   "noMembers": "No members",
   "saveGroup": "Save group",
-  "noTransactions" : "No transactions have been added yet.",
+  "noTransactions": "No transactions have been added yet.",
   "transactionNotInvolved": "not involved",
   "transactionYouLent": "you lent",
   "transactionYouBorrowed": "you borrowed",
@@ -26,6 +26,8 @@
   "orLookAlreadyKnown": "...or look though already known",
   "noAlreadyKnownUsers": "...oops, no already known users",
   "enterUsernameOrEmail": "Enter username or email",
-  "balance": "Balance"
-  
+  "balance": "Balance",
+  "mainInfoSliderItem": "Main information",
+  "membersSliderItem": "Members",
+  "statisticsSliderItem": "Statistics"
 }

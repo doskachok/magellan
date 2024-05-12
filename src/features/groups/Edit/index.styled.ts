@@ -1,20 +1,25 @@
-import styled  from 'styled-components';
-import { Column, ContentWrapper } from 'components/Containers';
+import styled from 'styled-components';
+import { Column } from 'components/Containers';
 import { TextRegular } from 'components';
 
-export const GroupEditContentWrapper = styled(ContentWrapper)`
-  padding-bottom: 3rem;
-  width: 100%;
-`;
-
 export const MainInfoWrapper = styled(Column)`
+  justify-content: space-between;
   z-index: 1;
+  padding-bottom: 1rem;
 `;
 
 export const GroupInfoWrapper = styled(Column)`
+  width: 100vw;
   background: ${props => props.theme.colors.primary};
-  padding: 2rem 1.5rem 0;
+  padding: 2rem 1.5rem 1.5rem;
   z-index: 1;
+  border-radius: 0px 0px 25px 25px;
+`;
+
+export const GroupControlWrapper = styled(Column)`
+  width: 100%;
+  align-items: flex-end;
+  padding-right: 1rem ;
 `;
 
 export const GroupCurrencyText = styled(TextRegular)`

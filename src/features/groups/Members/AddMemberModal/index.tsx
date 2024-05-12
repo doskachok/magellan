@@ -1,12 +1,11 @@
 import Autocomplete, { IAutocompleteSuggestion } from 'components/Autocomplete';
 import { Column } from 'components/Containers';
-import Loader from 'components/Loader';
 import { memo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGetKnownsUsersQuery, useLazyGetUsersQuery } from 'store/user.api';
 import { IUser } from 'types/userTypes';
-import { MembersModalBody, ModalBodyElementWrapper, ModalSeparator, ModalText } from './index.styled';
-import UserListItem from 'components/UserListItem';
+import { ModalBody, TextRegular, UserListItem, Loader } from 'components';
+import styles from './index.module.css'
 
 export interface IProps {
   onMemberSelected: (member: IUser) => void;
@@ -35,32 +34,38 @@ const AddMemberModal = ({ onMemberSelected }: IProps) => {
 
   return (
     <Column>
-      <MembersModalBody rounded={true}>
-        <ModalBodyElementWrapper>
-          <ModalText>{t('findNewPeopleHere')}</ModalText>
+      <ModalBody reversedColor rounded className={styles.searchModal}>
+        <div className={styles.searchBar}>
+          <TextRegular reversedColor className={styles.searchText}>
+            {t('findNewPeopleHere')}
+          </TextRegular>
 
           <Autocomplete
+            reversedTheme
             placeholder={t('enterUsernameOrEmail')}
-            reversedTheme={true}
             suggestionsSource={usersSearchSource}
             onSuggestionSelected={handleSuggestionSelected}
             suggestionTemplate={suggestionTemplate} 
           />
-        </ModalBodyElementWrapper>
 
-        <ModalSeparator />
+          <div className={styles.separator} />
 
-        <ModalBodyElementWrapper>
-          <ModalText>{t('orLookAlreadyKnown')}</ModalText>
+          <TextRegular reversedColor className={styles.searchText}>
+            {t('orLookAlreadyKnown')}
+          </TextRegular>
 
           <Column fullWidth gap={'0.5rem'}>
             {knownsUsers?.map(u => <UserListItem key={u.id} reversedTheme user={u} onClick={() => onMemberSelected(u)} />)}
           </Column>
 
           <Loader isLoading={isKnownsUsersLoading} />
-          {!!knownsUsers && knownsUsers.length === 0 && <ModalText>{t('noAlreadyKnownUsers')}</ModalText>}
-        </ModalBodyElementWrapper>
-      </MembersModalBody>
+          {!!knownsUsers && knownsUsers.length === 0 && 
+            <TextRegular reversedColor className={styles.searchText}>
+              {t('noAlreadyKnownUsers')}
+            </TextRegular>
+          }
+        </div>
+      </ModalBody>
     </Column>
   );
 };

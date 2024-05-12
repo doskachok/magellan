@@ -1,12 +1,11 @@
 import { memo } from 'react';
 import { IUser } from 'types/userTypes';
-import { TextRegular } from 'components';
+import { TextRegular, UserListItem } from 'components';
 import { Actions, Wrapper } from './index.styled';
 import { ReactComponent as RemoveSVG } from 'assets/images/remove-icon.svg';
 import { ReactComponent as DeclineSVG } from 'assets/images/decline-icon.svg';
 import { ReactComponent as ApproveSVG } from 'assets/images/check-icon.svg';
 import { useTranslation } from 'react-i18next';
-import UserListItem from 'components/UserListItem';
 
 export interface IProps {
   member: IUser;

@@ -5,6 +5,7 @@ interface ContainerProps {
   jc?: string;
   ai?: string;
   fullWidth?: boolean;
+  fullHeight?: boolean;
   mt?: string;
   mb?: string;
   ml?: string;
@@ -18,6 +19,10 @@ const Container = styled.div<ContainerProps>`
 
   ${props => props.fullWidth && css`
     width: 100%;
+  `};
+
+  ${props => props.fullHeight && css`
+    height: 100%;
   `};
   
   ${props => props.gap && css`

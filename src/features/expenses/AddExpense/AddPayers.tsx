@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ButtonBase, HalfCircle, TextUnderline } from 'components';
+import { ButtonBase, HalfCircle, TextUnderline, UserListItem } from 'components';
 import { Column, ContentWrapper, PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
 import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
@@ -16,7 +16,6 @@ import { ICreateTransaction } from '../types';
 import { newTransactionSelector, saveTransaction } from '../slice';
 import { CreateRouteString, ExpenseRouteMode, composeExpenseRoute } from 'constants/routes';
 import { getCurrencyWithSymbolString } from 'helpers/currencyHelper';
-import UserListItem from 'components/UserListItem';
 import { useGetTransactionGroupByIdQuery } from 'features/groups/api';
 import { useModal } from 'providers/ModalProvider';
 import ChangeUserMoneyModal from '../ChangeUserMoneyModal';

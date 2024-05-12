@@ -16,8 +16,6 @@ import { createDateString, datesAreOnSameDay } from 'helpers/dateUtil';
 
 import { selectedGroupSelector } from '../slice';
 import Loader from 'components/Loader';
-import { HalfCircle } from 'components';
-
 
 const GroupDetails = () => {
   const { t } = useTranslation('groups');
@@ -50,7 +48,6 @@ const GroupDetails = () => {
       />
 
       <ContentWrapper fullWidth>
-        <HalfCircle />
         <TransactionListContainer>
           {group?.transactions?.map((tr, index, array) => {
             if (index === 0 || !datesAreOnSameDay(tr.paymentDateUtc, array[index - 1].paymentDateUtc)) {
