@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { ROUTES } from 'constants/routes';
 
@@ -11,7 +11,7 @@ import { ContentWrapperRegister, PasswordRequirementsText, PasswordRequirementsW
 
 import { useRegisterMutation } from '../api';
 
-import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
+import BackIconSVG from 'assets/images/back-icon.svg?react';
 
 import { useTranslation } from 'react-i18next';
 

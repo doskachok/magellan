@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 import { CreateRouteString } from 'constants/routes';
 import AddExpense from './AddExpense';
 import ExpenseDetails from './Details';

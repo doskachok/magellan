@@ -1,9 +1,16 @@
-import { Middleware } from 'redux';
+import { Middleware } from '@reduxjs/toolkit';
 import { addError } from './errorSlice';
 import { RootState } from './index';
 
-export const errorMiddleware: Middleware<{}, RootState> = store => next => action => {
-  if (action?.error && !action.meta.condition) {
+interface IErrorAction {
+  error?: unknown;
+  meta?: { condition?: boolean };
+  payload?: { status?: number | string; data?: { detail?: string } };
+}
+
+export const errorMiddleware: Middleware<{}, RootState> = store => next => unknownAction => {
+  const action = unknownAction as IErrorAction;
+  if (action?.error && !action.meta?.condition) {
     const message = action.payload?.data?.detail ? action.payload.data.detail :
       action.payload?.status === 'FETCH_ERROR' ? 'Network error, please try again' : null;
 
@@ -13,5 +20,5 @@ export const errorMiddleware: Middleware<{}, RootState> = store => next => actio
       }));
     }
   }
-  return next(action);
+  return next(unknownAction);
 }

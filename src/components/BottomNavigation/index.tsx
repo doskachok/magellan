@@ -1,5 +1,5 @@
 import { BottomNavigationStyled, Groups, Profile, AddExpense } from './index.styled';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import groups from '../../assets/images/groups-icon.svg'
 import receipt from '../../assets/images/receipt-icon.svg'
 import avatar from '../../assets/images/avatar-icon.svg'

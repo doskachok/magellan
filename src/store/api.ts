@@ -1,11 +1,11 @@
-import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import {
-  createApi, 
+  BaseQueryApi,
+  createApi,
   BaseQueryFn,
   FetchArgs,
   fetchBaseQuery,
   FetchBaseQueryError
-} from '@reduxjs/toolkit/dist/query/react';
+} from '@reduxjs/toolkit/query/react';
 import { ApiTags } from '../constants/api-tags';
 import { RootState } from './index';
 import { addError } from './errorSlice';
@@ -13,7 +13,7 @@ import { tokenReceived, logOut, userReceived } from '../features/auth/slice'
 import { IAuthPayload } from '../features/auth/types';
 import { IUser } from 'types/userTypes';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = import.meta.env.REACT_APP_BASE_URL;
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,

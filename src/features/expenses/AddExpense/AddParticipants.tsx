@@ -1,15 +1,15 @@
 import { useCallback, useState, useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
 
-import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
-import { ReactComponent as CheckSVG } from 'assets/images/check-icon.svg';
-import { ReactComponent as EquallyMethodSVG } from 'assets/images/scales-icon.svg';
-import { ReactComponent as UnequallyMethodSVG } from 'assets/images/coins-icon.svg';
-import { ReactComponent as PercentageMethodSVG } from 'assets/images/percent-icon.svg';
-import { ReactComponent as AdjustmentMethodSVG } from 'assets/images/adjust-control-icon.svg';
+import BackIconSVG from 'assets/images/back-icon.svg?react';
+import CheckSVG from 'assets/images/check-icon.svg?react';
+import EquallyMethodSVG from 'assets/images/scales-icon.svg?react';
+import UnequallyMethodSVG from 'assets/images/coins-icon.svg?react';
+import PercentageMethodSVG from 'assets/images/percent-icon.svg?react';
+import AdjustmentMethodSVG from 'assets/images/adjust-control-icon.svg?react';
 import BottomNavigation from 'components/BottomNavigation';
 import { ContentWrapper, PageWrapper } from 'components/Containers';
 import Header from 'components/Header';

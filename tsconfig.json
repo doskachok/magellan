@@ -1,10 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2022",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
+    ],
+    "types": [
+      "vite/client",
+      "vite-plugin-svgr/client",
+      "vitest/globals",
+      "@testing-library/jest-dom"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,15 +19,28 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src"
+    "paths": {
+      "assets/*": ["./src/assets/*"],
+      "components": ["./src/components"],
+      "components/*": ["./src/components/*"],
+      "constants/*": ["./src/constants/*"],
+      "features/*": ["./src/features/*"],
+      "helpers/*": ["./src/helpers/*"],
+      "providers": ["./src/providers"],
+      "providers/*": ["./src/providers/*"],
+      "store": ["./src/store"],
+      "store/*": ["./src/store/*"],
+      "types/*": ["./src/types/*"]
+    }
   },
   "include": [
-    "src"
+    "src",
+    "vite.config.ts"
   ]
 }

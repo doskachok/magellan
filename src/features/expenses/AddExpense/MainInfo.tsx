@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ButtonBase, HalfCircle, Input, Select, TextUnderline } from 'components';
 import { Column, ContentWrapper, PageWrapper, Row } from 'components/Containers';
 import Header from 'components/Header';
-import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
-import { ReactComponent as ArrowRightSVG } from 'assets/images/arrow-right.svg';
-import { ReactComponent as ArrowRightDisabledSVG } from 'assets/images/arrow-right-disabled.svg';
+import BackIconSVG from 'assets/images/back-icon.svg?react';
+import ArrowRightSVG from 'assets/images/arrow-right.svg?react';
+import ArrowRightDisabledSVG from 'assets/images/arrow-right-disabled.svg?react';
 import { BackgroundFiller, CurrencyTitle, MainInfoText, MainInfoWrapper, NextStepButtonWrapper } from './MainInfo.styled';
 import BottomNavigation from 'components/BottomNavigation';
 import currencies from 'constants/currencies';

@@ -3,7 +3,7 @@ Front-end application for simplification of calculation of expenses.
 
 # Dependencies
 
-npm: comes together with [Node.js](https://nodejs.org/uk/)
+npm: comes together with [Node.js](https://nodejs.org/uk/) (version 22.22 or newer)
 
 ## How to run
 In the project directory:
@@ -14,11 +14,10 @@ In the project directory:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The page will reload if you make edits. Run `npm run lint` to check for lint errors.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The app is built with [Vite](https://vite.dev/guide/).
 
 To learn React, check out the [React documentation](https://reactjs.org/).

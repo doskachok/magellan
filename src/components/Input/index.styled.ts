@@ -67,22 +67,22 @@ export const InputStyled = styled.input<IInputProps>`
 
   font-family: 'Montserrat';
   
-  ::placeholder {
+  &::placeholder {
     font-weight: 300;
     color: ${props => props.theme.colors.text.primary};
   };
    
-  :disabled {
+  &:disabled {
     color: ${props => props.theme.colors.input.disabled.default};
   };
 
-  ::-webkit-calendar-picker-indicator {
+  &::-webkit-calendar-picker-indicator {
     filter: invert(1);
   };
 
   /* Chrome, Safari, Edge, Opera */
   ::-webkit-outer-spin-button,
-  ::-webkit-inner-spin-button {
+  &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
@@ -102,11 +102,11 @@ export const InputStyled = styled.input<IInputProps>`
     background: transparent;
     color: ${props => props.theme.colors.input.color.reversed};
 
-    ::placeholder {
+    &::placeholder {
       color: ${props => props.theme.colors.input.placeholder.reversed};
     };
 
-    :disabled {
+    &:disabled {
       color: ${props => props.theme.colors.input.disabled.reversed};
     };
   `};

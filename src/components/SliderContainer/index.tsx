@@ -1,8 +1,11 @@
 import { ReactElement, useRef, useState } from "react";
-import Slider from "react-slick";
+import SlickSlider from "react-slick";
 import { SliderItemsWrapper, SliderNavItem } from "./index.styled";
 import { useTranslation } from "react-i18next";
 import { Column } from "components/Containers";
+
+// react-slick is CommonJS; under Vite its default export can arrive wrapped in a module object.
+const Slider = (SlickSlider as unknown as { default?: typeof SlickSlider }).default ?? SlickSlider;
 
 interface Props {
   sliderItems?: any[];
@@ -13,7 +16,7 @@ interface Props {
 
 const SliderContainer = ({ sliderItems, className, translationGroup, children }: Props) => {
   const { t } = useTranslation(translationGroup);
-  const sliderRef = useRef<Slider>(null);
+  const sliderRef = useRef<SlickSlider>(null);
   const [activeSliderItem, setActiveSliderItem] = useState<string>(sliderItems ? sliderItems[0] : '');
   
   const settings = {

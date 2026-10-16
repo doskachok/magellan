@@ -9,8 +9,8 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import {Middleware} from 'redux';
+import storage from 'redux-persist/es/storage';
+import {Middleware} from '@reduxjs/toolkit';
 import {createLogger} from 'redux-logger'
 import {mainApi} from './api';
 import {errorMiddleware} from './errorMiddleware';

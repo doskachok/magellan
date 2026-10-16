@@ -9,7 +9,7 @@ import {
   useMemo,
 } from 'react';
 import { DisplayName, SelectLabel, SelectStyled, Wrapper } from './index.styled';
-import { ReactComponent as AngleDownSVG } from '../../assets/images/angle-down.svg';
+import AngleDownSVG from '../../assets/images/angle-down.svg?react';
 import { useState } from 'react';
 import { AnySchema } from 'yup';
 import { TextError } from 'components/Input/index.styled';
@@ -25,6 +25,7 @@ interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   onValidationChange?: (name: string, isValid: boolean) => void;
   error?: string;
   displayName?: string;
+  placeholder?: string;
   required?: boolean;
 }
 

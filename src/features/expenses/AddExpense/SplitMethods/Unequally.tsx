@@ -20,7 +20,7 @@ const SAVE_DELAY_MS = 300;
 
 const UserAmountComponent = (partialsAssignments: IPartialAssignments) => {
   const dispatch = useDispatch();
-  const saveTimer = useRef<ReturnType<typeof setTimeout>>();
+  const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const [amount, setAmount] = useState<string>('0');
 
