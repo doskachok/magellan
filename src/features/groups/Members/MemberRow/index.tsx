@@ -2,9 +2,9 @@ import { memo } from 'react';
 import { IUser } from 'types/userTypes';
 import { TextRegular, UserListItem } from 'components';
 import { Actions, Wrapper } from './index.styled';
-import { ReactComponent as RemoveSVG } from 'assets/images/remove-icon.svg';
-import { ReactComponent as DeclineSVG } from 'assets/images/decline-icon.svg';
-import { ReactComponent as ApproveSVG } from 'assets/images/check-icon.svg';
+import RemoveSVG from 'assets/images/remove-icon.svg?react';
+import DeclineSVG from 'assets/images/decline-icon.svg?react';
+import ApproveSVG from 'assets/images/check-icon.svg?react';
 import { useTranslation } from 'react-i18next';
 
 export interface IProps {

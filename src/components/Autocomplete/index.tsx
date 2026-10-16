@@ -33,7 +33,7 @@ const Autocomplete = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [value, setValue] = useState<string>('');
   const [isSuggestionsOpened, setIsSuggestionsOpened] = useState<boolean>(false);
-  const searchTimer = useRef<ReturnType<typeof setTimeout>>();
+  const searchTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const handleInputFocus = useCallback(() => {
     setIsSuggestionsOpened(true);

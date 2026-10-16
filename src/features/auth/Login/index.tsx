@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useLoginMutation, useLazyUserQuery } from '../api';
 import { Input, Button } from 'components';
 import { requiredValidator } from '../validation';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import { ROUTES } from 'constants/routes';
 import { ILoginForm } from '../types';
 import { toast } from 'react-hot-toast';

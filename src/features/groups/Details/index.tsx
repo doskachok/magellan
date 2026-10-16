@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 
 import { ContentWrapper, PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
 import { composeGroupRoute, GroupRouteMode, ROUTES } from 'constants/routes';
 import { useLazyGetTransactionGroupByIdQuery } from '../api';
-import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
-import { ReactComponent as EditIconSVG } from 'assets/images/edit-icon.svg';
+import BackIconSVG from 'assets/images/back-icon.svg?react';
+import EditIconSVG from 'assets/images/edit-icon.svg?react';
 import BottomNavigation from 'components/BottomNavigation';
 import TransactionRow from './TransactionRow';
 import { DateText, NoTransactionsText, TransactionListContainer } from './index.styled';

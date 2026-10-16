@@ -1,4 +1,4 @@
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router';
 import {ROUTES, GroupRouteMode, NoneRouteString} from '../../constants/routes';
 import GroupsList from './Catalog';
 import GroupEdit from './Edit';

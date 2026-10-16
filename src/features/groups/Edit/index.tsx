@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 
 import { PageWrapper } from 'components/Containers';
@@ -12,7 +12,7 @@ import Members from '../Members';
 
 import { ROUTES } from 'constants/routes';
 
-import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
+import BackIconSVG from 'assets/images/back-icon.svg?react';
 
 import { GroupPage } from '../enums';
 import SliderContainer from 'components/SliderContainer';

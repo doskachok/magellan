@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 
 import FileUploader, { IFileUploaderRef } from 'components/FileUploader';
 import { Avatar, AvatarSize, Button, ButtonBase, HalfCircle, Input, TextUnderline } from 'components';
 import { Column, ContentWrapper, PageWrapper, Row } from 'components/Containers';
 import Header from 'components/Header';
-import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
-import { ReactComponent as ArrowLeftSVG } from 'assets/images/arrow-left.svg';
+import BackIconSVG from 'assets/images/back-icon.svg?react';
+import ArrowLeftSVG from 'assets/images/arrow-left.svg?react';
 import { logOut, userReceived, userSelector } from 'features/auth/slice';
 import { IUser, userToUpdateUser } from 'types/userTypes';
 import { getDownloadFileUrl } from 'helpers/urlHelper';
@@ -23,7 +23,7 @@ const AccountSettings = () => {
   const { t } = useTranslation('common');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const logoUploaderRef = useRef<IFileUploaderRef>();
+  const logoUploaderRef = useRef<IFileUploaderRef>(undefined);
 
   const user = useSelector(userSelector);
 

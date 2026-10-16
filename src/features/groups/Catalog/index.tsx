@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { useLazyGetTransactionGroupsQuery } from '../api';
 import Header from 'components/Header';
 import { ContentWrapper, PageWrapper, Row } from 'components/Containers';
 import { ITransactionGroupListItem } from '../types';
-import { ReactComponent as PlusIconSVG } from 'assets/images/plus-icon.svg';
+import PlusIconSVG from 'assets/images/plus-icon.svg?react';
 import { TextRegular } from 'components';
 import { useSelector } from 'react-redux';
 import { groupsListSelector } from '../slice';

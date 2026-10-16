@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 
 import { HalfCircle } from 'components';
 import { ContentWrapper, PageWrapper } from 'components/Containers';
 import Header from 'components/Header';
 import Loader from 'components/Loader';
-import { ReactComponent as BackIconSVG } from 'assets/images/back-icon.svg';
+import BackIconSVG from 'assets/images/back-icon.svg?react';
 import { useLazyGetTransactionByIdQuery } from '../api';
 import { selectTransactionById } from '../slice';
 import PaymentRow from './PaymentRow';

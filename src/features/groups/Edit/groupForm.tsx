@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -37,7 +37,7 @@ const Form = ({ group }: IProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const logoUploaderRef = useRef<IFileUploaderRef>();
+  const logoUploaderRef = useRef<IFileUploaderRef>(undefined);
 
   const [createGroup, { data: createdGroup, isLoading: isGroupCreating }] = useCreateTransactionGroupMutation();
   const [updateGroup, { data: updatedGroup, isLoading: isGroupUpdating }] = useUpdateTransactionGroupMutation();

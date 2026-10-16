@@ -3,7 +3,6 @@ import {
   ForwardedRef,
   forwardRef,
   memo,
-  MutableRefObject,
   ReactElement,
   useCallback,
   useEffect,
@@ -19,7 +18,6 @@ export interface IFileUploaderProps {
   onFileSelected?: (file: File, fileData: string) => void;
   onUploadingChange?: (isUploading: boolean) => void;
   children: ReactElement<any>;
-  ref: MutableRefObject<any>;
 };
 
 export interface IFileUploaderRef {
