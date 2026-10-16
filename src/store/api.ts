@@ -1,68 +1,67 @@
 import {
-  BaseQueryApi,
   createApi,
-  BaseQueryFn,
-  FetchArgs,
   fetchBaseQuery,
-  FetchBaseQueryError
+  type BaseQueryFn,
+  type FetchArgs,
+  type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import { ApiTags } from '../constants/api-tags';
-import { RootState } from './index';
-import { addError } from './errorSlice';
-import { tokenReceived, logOut, userReceived } from '../features/auth/slice'
-import { IAuthPayload } from '../features/auth/types';
-import { IUser } from 'types/userTypes';
 
-const BASE_URL = import.meta.env.REACT_APP_BASE_URL;
+import { API_BASE_URL } from 'lib/config';
+import { credentialsReceived, loggedOut, type Credentials } from './authSlice';
 
-export const baseQuery = fetchBaseQuery({
-  baseUrl: BASE_URL,
+interface StateWithAuth {
+  auth: { token: string | null };
+}
 
-  prepareHeaders: (headers, {getState}) => {
-    const token = (getState() as RootState).auth.accessToken;
-
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
+const rawBaseQuery = fetchBaseQuery({
+  baseUrl: API_BASE_URL,
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as StateWithAuth).auth.token;
+    if (token) headers.set('Authorization', `Bearer ${token}`);
     return headers;
-  }
+  },
 });
 
-const baseQueryWithReAuth: BaseQueryFn<
-  string | FetchArgs, 
-  unknown, 
-  FetchBaseQueryError> 
-  = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}
+// Concurrent 401s share one refresh request instead of each firing their own.
+let refreshInFlight: ReturnType<typeof rawBaseQuery> | null = null;
+
+const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args,
+  api,
+  extraOptions,
 ) => {
-  let result = await baseQuery(args, api, extraOptions);
-  const loggedUserId = (api.getState() as RootState).auth.userId;
+  let result = await rawBaseQuery(args, api, extraOptions);
+  const hadToken = Boolean((api.getState() as StateWithAuth).auth.token);
 
-  if ((args as FetchArgs).url === 'users/authorize' && result.data)
-    api.dispatch(tokenReceived(result.data as IAuthPayload));
+  if (result.error?.status !== 401 || !hadToken) return result;
 
-  if ((args as FetchArgs).url === `users/${loggedUserId}` && result.data)
-    api.dispatch(userReceived(result.data as IUser));
+  refreshInFlight ??= Promise.resolve(rawBaseQuery('users/refreshed-token', api, extraOptions)).finally(() => {
+    refreshInFlight = null;
+  });
+  const refreshed = await refreshInFlight;
 
-  if (result.error && result.error.status === 401) {
-      const refreshed = await baseQuery({ url: 'users/refreshed-token'}, api, extraOptions);
-
-      if (refreshed.data) {
-        api.dispatch(tokenReceived(refreshed.data as IAuthPayload));
-        result = await baseQuery(args, api, extraOptions);
-      } else {
-        api.dispatch(logOut());
-        api.dispatch(addError({ message: 'Please log in again'}));
-      }
+  if (refreshed.data) {
+    api.dispatch(credentialsReceived(refreshed.data as Credentials));
+    result = await rawBaseQuery(args, api, extraOptions);
+  } else {
+    api.dispatch(loggedOut());
   }
 
   return result;
 };
 
-export const mainApi = createApi({
-  reducerPath: 'mainApi',
-  baseQuery: baseQueryWithReAuth,
-  tagTypes: Object.values(ApiTags.GROUPS_LIST),
-  endpoints: () => ({ })
-});
+export const ApiTag = {
+  Groups: 'Groups',
+  Group: 'Group',
+  Debts: 'Debts',
+  Transaction: 'Transaction',
+  User: 'User',
+  KnownUsers: 'KnownUsers',
+} as const;
 
-export default mainApi;
+export const api = createApi({
+  reducerPath: 'api',
+  baseQuery: baseQueryWithReauth,
+  tagTypes: Object.values(ApiTag),
+  endpoints: () => ({}),
+});

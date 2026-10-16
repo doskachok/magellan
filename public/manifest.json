@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Magellan",
+  "short_name": "WiseSplit",
+  "name": "WiseSplit",
   "icons": [
     {
       "src": "favicon.ico",
@@ -22,7 +22,7 @@
   "start_url": "/",
   "scope": ".",
   "display": "standalone",
-  "theme_color": "#379970",
-  "background_color": "#379970",
+  "theme_color": "#1E7F57",
+  "background_color": "#F4F6F5",
   "orientation": "any"
 }

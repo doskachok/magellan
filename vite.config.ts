@@ -1,17 +1,16 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import svgr from 'vite-plugin-svgr';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   // Keep the CRA-style variable names so CI secrets (REACT_APP_BASE_URL) keep working.
   envPrefix: 'REACT_APP_',
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [
     react(),
-    svgr(),
-    tsconfigPaths(),
     VitePWA({
       strategies: 'injectManifest',
       srcDir: 'src',

@@ -8,7 +8,6 @@
     ],
     "types": [
       "vite/client",
-      "vite-plugin-svgr/client",
       "vitest/globals",
       "@testing-library/jest-dom"
     ],
@@ -29,14 +28,11 @@
       "assets/*": ["./src/assets/*"],
       "components": ["./src/components"],
       "components/*": ["./src/components/*"],
-      "constants/*": ["./src/constants/*"],
       "features/*": ["./src/features/*"],
-      "helpers/*": ["./src/helpers/*"],
-      "providers": ["./src/providers"],
-      "providers/*": ["./src/providers/*"],
       "store": ["./src/store"],
       "store/*": ["./src/store/*"],
-      "types/*": ["./src/types/*"]
+      "lib/*": ["./src/lib/*"],
+      "theme/*": ["./src/theme/*"]
     }
   },
   "include": [

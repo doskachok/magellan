@@ -1,37 +1,36 @@
-import mainApi from '../../store/api';
-import { IRegisterForm, IAuthPayload, ILoginForm, IUser } from './types';
+import { api } from 'store/api';
+import { credentialsReceived, type Credentials } from 'store/authSlice';
+import type { User } from 'features/users/types';
 
-export const authApi = mainApi.injectEndpoints({
-  endpoints: (build => ({
-    register: build.mutation<IUser, IRegisterForm>({
-      query: (body) => ({
-        url: `users`,
-        method: 'POST',
-        body,
-      }),
+export interface SignInRequest {
+  login: string;
+  password: string;
+}
+
+export interface SignUpRequest {
+  username: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+}
+
+export const authApi = api.injectEndpoints({
+  endpoints: build => ({
+    signIn: build.mutation<Credentials, SignInRequest>({
+      query: body => ({ url: 'users/authorize', method: 'POST', body }),
+      async onQueryStarted(_request, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(credentialsReceived(data));
+        } catch {
+          // The error toast middleware reports the failure.
+        }
+      },
     }),
-    user: build.query<IUser, string>({
-      query: (id) => ({
-        url: `users/${id}`,
-      })
+    signUp: build.mutation<User, SignUpRequest>({
+      query: body => ({ url: 'users', method: 'POST', body }),
     }),
-    login: build.mutation<IAuthPayload, ILoginForm>({
-      query: (body) => ({
-        url: `users/authorize`,
-        method: 'POST',
-        body,
-      })
-    }),
-    refreshedToken: build.query({
-      query: () => ({
-        url: `users/refreshed-token`
-      })
-    }),
-  }))
+  }),
 });
 
-export const {
-  useLazyUserQuery,
-  useLoginMutation,
-  useRegisterMutation,
-} = authApi;
+export const { useSignInMutation, useSignUpMutation } = authApi;

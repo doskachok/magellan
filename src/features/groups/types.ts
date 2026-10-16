@@ -1,40 +1,47 @@
-export interface ITransactionGroup {
+import type { User } from 'features/users/types';
+
+export interface GroupListItem {
   id: string;
   name: string;
   currencyCode: string;
-  avatarId?: string;
-  participants: ITransactionGroupMember[];
-  ownerId: string;
-  transactions: ITransaction[];
-}
-
-export interface ITransactionGroupListItem extends Omit<ITransactionGroup, 'participants' | 'ownerId' | 'transactions'> {
+  avatarId?: string | null;
+  /** Positive: the group owes you; negative: you owe the group. */
   yourPart: number;
 }
 
-export interface ITransaction {
+export interface GroupTransaction {
   id: string;
   name: string;
-  paymentDateUtc: Date;
+  paymentDateUtc: string;
   currencyCode: string;
   totalAmount: number;
   yourPart: number;
 }
 
-export interface ITransactionGroupMember {
+export interface Group {
   id: string;
-  name: string;
-  email: string;
-  username: string;
-  avatarId: string;
-}
-
-export interface ICreateTransactionGroup {
   name: string;
   currencyCode: string;
-  avatarId?: string;
+  avatarId?: string | null;
+  ownerId: string;
+  participants: User[];
+  transactions: GroupTransaction[];
 }
 
-export interface IUpdateTransactionGroup extends ICreateTransactionGroup {
-  id: string;
+export interface Debt {
+  lenderId: string;
+  lenderName: string;
+  lenderAvatarId?: string | null;
+  debtorId: string;
+  debtorName: string;
+  debtorAvatarId?: string | null;
+  currencyCode: string;
+  amount: number;
+}
+
+export interface SaveGroup {
+  id?: string;
+  name: string;
+  currencyCode: string;
+  avatarId?: string | null;
 }
