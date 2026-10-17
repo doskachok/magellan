@@ -5,7 +5,7 @@ export { Card, CardList, Muted, PlainList, SectionTitle, Stack } from './Card';
 export { Section } from './Section';
 export { ConfirmDialog, Dialog } from './Dialog';
 export { EmptyState } from './EmptyState';
-export { SelectField, TextField } from './Field';
+export { SelectField, TextAreaField, TextField } from './Field';
 export { IconButton, IconLink } from './IconButton';
 export { Screen, TopBar } from './Layout';
 export { Content, Footer } from './Layout.styles';

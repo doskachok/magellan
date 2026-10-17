@@ -1,4 +1,4 @@
-import { useId, type InputHTMLAttributes, type ReactNode, type Ref, type SelectHTMLAttributes } from 'react';
+import { useId, type InputHTMLAttributes, type ReactNode, type Ref, type SelectHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 import { ChevronDown } from 'lucide-react';
 import styled, { css } from 'styled-components';
 
@@ -57,6 +57,15 @@ const ControlRow = styled.div`
 const Input = styled.input<{ $invalid: boolean; $hasSuffix: boolean }>`
   ${controlStyles}
   ${({ $hasSuffix }) => $hasSuffix && css`padding-right: 52px;`}
+`;
+
+const TextArea = styled.textarea<{ $invalid: boolean }>`
+  ${controlStyles}
+  min-height: 88px;
+  padding: ${({ theme }) => theme.space(3, 3.5)};
+  font-family: inherit;
+  line-height: 1.4;
+  resize: vertical;
 `;
 
 const Select = styled.select<{ $invalid: boolean }>`
@@ -122,6 +131,36 @@ export const TextField = ({ label, hint, error, hideLabel, suffix, id, ref, ...r
         />
         {suffix && <Suffix>{suffix}</Suffix>}
       </ControlRow>
+      {message && (
+        <Message id={messageId} $error={Boolean(error)} role={error ? 'alert' : undefined}>
+          {message}
+        </Message>
+      )}
+    </FieldWrapper>
+  );
+};
+
+interface TextAreaFieldProps extends FieldChromeProps, TextareaHTMLAttributes<HTMLTextAreaElement> {
+  ref?: Ref<HTMLTextAreaElement>;
+}
+
+export const TextAreaField = ({ label, hint, error, hideLabel, id, ref, ...rest }: TextAreaFieldProps) => {
+  const { controlId, messageId } = useFieldIds(id);
+  const message = error ?? hint;
+
+  return (
+    <FieldWrapper>
+      <Label htmlFor={controlId} className={hideLabel ? 'visually-hidden' : undefined}>
+        {label}
+      </Label>
+      <TextArea
+        ref={ref}
+        id={controlId}
+        $invalid={Boolean(error)}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={message ? messageId : undefined}
+        {...rest}
+      />
       {message && (
         <Message id={messageId} $error={Boolean(error)} role={error ? 'alert' : undefined}>
           {message}

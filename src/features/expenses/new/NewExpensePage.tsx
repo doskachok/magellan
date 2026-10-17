@@ -1,6 +1,6 @@
 import { useMemo, useReducer, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router';
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router';
 import { Plus, UsersRound } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -10,31 +10,47 @@ import { parseAmount, roundMoney } from 'lib/format';
 import { routes } from 'lib/routes';
 import { useGetGroupQuery, useGetGroupsQuery } from 'features/groups/api';
 import { useCurrentUserId } from 'features/users/api';
-import { useCreateTransactionMutation } from '../api';
+import {
+  useCreateTransactionMutation,
+  useDeleteReceiptMutation,
+  useGetTransactionQuery,
+  useUpdateTransactionMutation,
+  useUploadReceiptMutation,
+} from '../api';
 import { buildAssignments, buildPayerDetails, evaluateSplit, sumInputs } from '../split';
-import { createDraft, draftReducer } from './draft';
+import type { Transaction } from '../types';
+import { createDraft, draftFromExpense, draftReducer, type ExpenseDraft } from './draft';
 import { Stepper } from './parts';
 import { FooterActions } from './parts.styles';
 import { DetailsStep, PaidByStep, SplitStep } from './steps';
 
-const NewExpensePage = () => {
+interface ExpenseFormProps {
+  initialDraft: ExpenseDraft;
+  /** Set when editing an existing expense. */
+  existing?: Transaction;
+}
+
+const ExpenseForm = ({ initialDraft, existing }: ExpenseFormProps) => {
   const { t } = useTranslation('expenses');
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const userId = useCurrentUserId();
 
-  const [draft, dispatch] = useReducer(draftReducer, searchParams.get('groupId') ?? '', createDraft);
+  const [draft, dispatch] = useReducer(draftReducer, initialDraft);
   const [showErrors, setShowErrors] = useState(false);
+  const [isFinishing, setIsFinishing] = useState(false);
 
   const { data: groups = [], isLoading: isGroupsLoading } = useGetGroupsQuery({ archived: false });
   const { data: group, isFetching: isGroupFetching } = useGetGroupQuery(draft.groupId, { skip: !draft.groupId });
-  const [createTransaction, { isLoading: isSaving }] = useCreateTransactionMutation();
+  const [createTransaction, { isLoading: isCreating }] = useCreateTransactionMutation();
+  const [updateTransaction, { isLoading: isUpdating }] = useUpdateTransactionMutation();
+  const [uploadReceipt] = useUploadReceiptMutation();
+  const [deleteReceipt] = useDeleteReceiptMutation();
 
   const members = useMemo(() => group?.participants ?? [], [group]);
   const memberIds = useMemo(() => members.map(member => member.id), [members]);
 
   // Unset choices fall back to sensible defaults instead of being synced into state by effects.
-  const groupCurrency = groups.find(item => item.id === draft.groupId)?.currencyCode;
+  const groupCurrency = groups.find(item => item.id === draft.groupId)?.currencyCode ?? group?.currencyCode;
   const currencyCode = draft.currencyCode || groupCurrency || CURRENCIES[0];
   const payerId = draft.payerId || (memberIds.includes(userId) ? userId : (memberIds[0] ?? ''));
 
@@ -54,21 +70,38 @@ const NewExpensePage = () => {
     else dispatch({ type: 'goTo', step: (draft.step - 1) as 0 | 1 });
   };
 
+  // The expense is already saved here, so a failed receipt doesn't undo it; the API error toast names the problem.
+  const syncReceipts = async (transactionId: string) => {
+    for (const receiptId of draft.removedReceiptIds) {
+      await deleteReceipt({ transactionId, groupId: draft.groupId, receiptId });
+    }
+    for (const receipt of draft.receipts) {
+      const result = await uploadReceipt({ transactionId, groupId: draft.groupId, file: receipt.file, fileName: receipt.file.name });
+      if ('error' in result) toast.error(t('receiptUploadFailed', { name: receipt.file.name }));
+    }
+  };
+
   const save = async () => {
-    const result = await createTransaction({
+    const body = {
       groupId: draft.groupId,
       name: draft.name.trim(),
       currencyCode,
+      note: draft.note.trim() || null,
       // Noon local time keeps the chosen calendar day stable across time zones.
       paymentDateUtc: new Date(`${draft.date}T12:00:00`).toISOString(),
       payerDetails: buildPayerDetails(payerInputs),
       partialsAssignments: buildAssignments(draft.split, memberIds),
-    });
+    };
 
-    if ('data' in result) {
-      toast.success(t('expenseAdded'));
-      navigate(routes.group(draft.groupId), { replace: true });
-    }
+    const result = existing ? await updateTransaction({ ...body, id: existing.id }) : await createTransaction(body);
+    if (!('data' in result) || !result.data) return;
+
+    setIsFinishing(true);
+    await syncReceipts(result.data.id);
+    setIsFinishing(false);
+
+    toast.success(t(existing ? 'expenseSaved' : 'expenseAdded'));
+    navigate(existing ? routes.expense(draft.groupId, existing.id) : routes.group(draft.groupId), { replace: true });
   };
 
   const goNext = () => {
@@ -87,7 +120,14 @@ const NewExpensePage = () => {
     switch (draft.step) {
       case 0:
         return (
-          <DetailsStep draft={draft} dispatch={dispatch} groups={groups} currencyCode={currencyCode} showErrors={showErrors} />
+          <DetailsStep
+            draft={draft}
+            dispatch={dispatch}
+            groups={groups}
+            currencyCode={currencyCode}
+            showErrors={showErrors}
+            editing={existing && { storedReceipts: existing.receipts }}
+          />
         );
       case 1:
         return (
@@ -116,11 +156,11 @@ const NewExpensePage = () => {
     }
   };
 
-  const topBar = <TopBar title={t('newExpense')} back={true} />;
+  const topBar = <TopBar title={existing ? t('editExpense') : t('newExpense')} back={true} />;
 
   if (isGroupsLoading) return <Screen topBar={topBar}><PageSpinner /></Screen>;
 
-  if (groups.length === 0) {
+  if (groups.length === 0 && !existing) {
     return (
       <Screen topBar={topBar}>
         <EmptyState
@@ -145,7 +185,7 @@ const NewExpensePage = () => {
           <Button variant="secondary" onClick={goBack}>
             {t('back', { ns: 'common' })}
           </Button>
-          <Button onClick={goNext} loading={isSaving} disabled={showErrors && !stepIsValid}>
+          <Button onClick={goNext} loading={isCreating || isUpdating || isFinishing} disabled={showErrors && !stepIsValid}>
             {draft.step === 2 ? t('saveExpense') : t('continue')}
           </Button>
         </FooterActions>
@@ -155,6 +195,28 @@ const NewExpensePage = () => {
       {renderStep()}
     </Screen>
   );
+};
+
+const EditExpense = ({ groupId, expenseId }: { groupId: string; expenseId: string }) => {
+  const { t } = useTranslation('expenses');
+  const { data: expense, isLoading } = useGetTransactionQuery(expenseId);
+  const { data: group, isLoading: isGroupLoading } = useGetGroupQuery(groupId);
+
+  if (isLoading || isGroupLoading) return <Screen topBar={<TopBar title={t('editExpense')} back={true} />}><PageSpinner /></Screen>;
+  if (!expense || !group) return <Navigate to={routes.group(groupId)} replace />;
+  // Repayments are edited in a dialog on their own page, and locked expenses can't be edited at all.
+  if (expense.isSettlement || expense.isLocked) return <Navigate to={routes.expense(groupId, expenseId)} replace />;
+
+  const draft = draftFromExpense(expense, groupId, group.participants.map(member => member.id));
+  return <ExpenseForm key={expense.id} initialDraft={draft} existing={expense} />;
+};
+
+const NewExpensePage = () => {
+  const { groupId, expenseId } = useParams();
+  const [searchParams] = useSearchParams();
+
+  if (groupId && expenseId) return <EditExpense groupId={groupId} expenseId={expenseId} />;
+  return <ExpenseForm initialDraft={createDraft(searchParams.get('groupId') ?? '')} />;
 };
 
 export default NewExpensePage;

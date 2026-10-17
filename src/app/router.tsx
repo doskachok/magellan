@@ -65,6 +65,7 @@ export const router = createBrowserRouter([
           { path: routePatterns.settleDebt, element: <SettleDebtPage /> },
           { path: routePatterns.expense, element: <ExpenseDetailsPage /> },
           { path: routePatterns.newExpense, element: <NewExpensePage /> },
+          { path: routePatterns.editExpense, element: <NewExpensePage /> },
           { path: routes.account, element: <AccountPage /> },
         ],
       },

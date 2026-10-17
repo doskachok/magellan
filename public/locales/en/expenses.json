@@ -73,5 +73,20 @@
   "removeReceiptTitle": "Remove receipt?",
   "removeReceiptMessage": "{{name}} will be removed from this expense.",
   "editRepayment": "Edit repayment",
-  "repaymentSaved": "Repayment saved"
+  "repaymentSaved": "Repayment saved",
+  "editExpense": "Edit expense",
+  "expenseSaved": "Expense saved",
+  "noteOptional": "Note (optional)",
+  "noteLeft_one": "{{count}} character left",
+  "noteLeft_other": "{{count}} characters left",
+  "receiptsOptional": "Receipts (optional)",
+  "addReceipt": "Add receipt",
+  "receiptHint_one": "Photo or PDF, up to {{count}} per expense.",
+  "receiptHint_other": "Photos or PDFs, up to {{count}} per expense.",
+  "receiptLimit_one": "An expense can have at most {{count}} receipt.",
+  "receiptLimit_other": "An expense can have at most {{count}} receipts.",
+  "receipt_unreadable": "{{name}} can't be read. Try a JPEG or PNG.",
+  "receipt_tooLarge": "{{name}} is larger than 5 MB.",
+  "receipt_unsupported": "{{name}} isn't a photo or PDF.",
+  "receiptUploadFailed": "{{name}} couldn't be uploaded"
 }
