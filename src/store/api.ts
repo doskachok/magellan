@@ -57,6 +57,7 @@ export const ApiTag = {
   Transaction: 'Transaction',
   User: 'User',
   KnownUsers: 'KnownUsers',
+  Activity: 'Activity',
 } as const;
 
 export const api = createApi({

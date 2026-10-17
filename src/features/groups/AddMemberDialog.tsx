@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, UserPlus } from 'lucide-react';
+import { Search, UserCheck, UserPlus } from 'lucide-react';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 
@@ -9,9 +9,10 @@ import { getFileUrl } from 'lib/config';
 import { useDebouncedValue } from 'lib/useDebouncedValue';
 import { useGetKnownUsersQuery, useSearchUsersQuery } from 'features/users/api';
 import { getDisplayName, type User } from 'features/users/types';
-import { useAddParticipantMutation } from './api';
+import { useAddParticipantMutation, useAddPlaceholderMutation, useReplacePlaceholderMutation } from './api';
 
 const MIN_QUERY_LENGTH = 3;
+const PLACEHOLDER_NAME_MAX = 64;
 
 const SearchIcon = styled(Search)`
   margin-right: ${({ theme }) => theme.space(2.5)};
@@ -22,16 +23,34 @@ const Results = styled(Card)`
   overflow-y: auto;
 `;
 
+const PlaceholderForm = styled.form`
+  display: flex;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.space(2)};
+
+  & > :first-child {
+    flex: 1;
+  }
+
+  & > button {
+    margin-top: 0;
+    min-height: 48px;
+  }
+`;
+
 interface AddMemberDialogProps {
   open: boolean;
   groupId: string;
   memberIds: string[];
+  /** Pick the registered person who takes over this placeholder, instead of adding people. */
+  replacing?: User;
   onClose: () => void;
 }
 
-export const AddMemberDialog = ({ open, groupId, memberIds, onClose }: AddMemberDialogProps) => {
+export const AddMemberDialog = ({ open, groupId, memberIds, replacing, onClose }: AddMemberDialogProps) => {
   const { t } = useTranslation('groups');
   const [query, setQuery] = useState('');
+  const [placeholderName, setPlaceholderName] = useState('');
   const debouncedQuery = useDebouncedValue(query.trim());
   const isSearching = debouncedQuery.length >= MIN_QUERY_LENGTH;
 
@@ -40,26 +59,49 @@ export const AddMemberDialog = ({ open, groupId, memberIds, onClose }: AddMember
     skip: !open || !isSearching,
   });
   const [addParticipant, { isLoading: isAdding, originalArgs }] = useAddParticipantMutation();
+  const [addPlaceholder, { isLoading: isAddingPlaceholder }] = useAddPlaceholderMutation();
+  const [replacePlaceholder, { isLoading: isReplacing, originalArgs: replaceArgs }] = useReplacePlaceholderMutation();
 
   const candidates = useMemo(() => {
     const source = isSearching ? searchResults : knownUsers;
     return source.filter(user => !memberIds.includes(user.id));
   }, [isSearching, searchResults, knownUsers, memberIds]);
 
-  const handleAdd = async (user: User) => {
+  const handleClose = () => {
+    setQuery('');
+    setPlaceholderName('');
+    onClose();
+  };
+
+  const handlePick = async (user: User) => {
+    if (replacing) {
+      const result = await replacePlaceholder({ groupId, placeholderId: replacing.id, userId: user.id });
+      if ('error' in result) return;
+      toast.success(t('placeholderReplaced', { placeholder: getDisplayName(replacing), name: getDisplayName(user) }));
+      handleClose();
+      return;
+    }
     const result = await addParticipant({ groupId, userId: user.id });
     if ('data' in result) toast.success(t('memberAdded', { name: getDisplayName(user) }));
   };
 
-  const handleClose = () => {
-    setQuery('');
-    onClose();
+  const handleAddPlaceholder = async (event: FormEvent) => {
+    event.preventDefault();
+    const name = placeholderName.trim();
+    if (!name) return;
+    const result = await addPlaceholder({ groupId, name });
+    if ('error' in result) return;
+    toast.success(t('memberAdded', { name }));
+    setPlaceholderName('');
   };
 
   const isLoading = isSearching ? isSearchFetching : isKnownLoading;
+  const isPicking = (user: User) => (replacing ? isReplacing && replaceArgs?.userId === user.id : isAdding && originalArgs?.userId === user.id);
 
   return (
-    <Dialog open={open} title={t('addMembers')} onClose={handleClose}>
+    <Dialog open={open} title={replacing ? t('replaceTitle', { name: getDisplayName(replacing) }) : t('addMembers')} onClose={handleClose}>
+      {replacing && <Muted>{t('replaceDescription', { name: getDisplayName(replacing) })}</Muted>}
+
       <TextField
         label={t('searchPeople')}
         hideLabel
@@ -91,16 +133,37 @@ export const AddMemberDialog = ({ open, groupId, memberIds, onClose }: AddMember
                 <Button
                   size="sm"
                   variant="secondary"
-                  icon={<UserPlus size={16} />}
-                  loading={isAdding && originalArgs?.userId === user.id}
-                  onClick={() => handleAdd(user)}
+                  icon={replacing ? <UserCheck size={16} /> : <UserPlus size={16} />}
+                  loading={isPicking(user)}
+                  onClick={() => void handlePick(user)}
                 >
-                  {t('add')}
+                  {replacing ? t('choose') : t('add')}
                 </Button>
               }
             />
           ))}
         </Results>
+      )}
+
+      {!replacing && (
+        <>
+          <SectionTitle>{t('addPlaceholder')}</SectionTitle>
+          <PlaceholderForm onSubmit={event => void handleAddPlaceholder(event)}>
+            <TextField
+              label={t('placeholderName')}
+              hideLabel
+              placeholder={t('placeholderName')}
+              autoComplete="off"
+              maxLength={PLACEHOLDER_NAME_MAX}
+              value={placeholderName}
+              onChange={event => setPlaceholderName(event.target.value)}
+              hint={t('placeholderHint')}
+            />
+            <Button type="submit" variant="secondary" disabled={!placeholderName.trim()} loading={isAddingPlaceholder}>
+              {t('add')}
+            </Button>
+          </PlaceholderForm>
+        </>
       )}
     </Dialog>
   );

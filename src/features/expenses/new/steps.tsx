@@ -2,14 +2,16 @@ import type { Dispatch } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle, CheckCircle2, CircleDashed } from 'lucide-react';
 
-import { Avatar, Card, SegmentedControl, SelectField, Stack, TextField } from 'components';
+import { Avatar, Card, PlaceholderLabel, SegmentedControl, SelectField, Stack, TextAreaField, TextField } from 'components';
 import { CURRENCIES, getFileUrl } from 'lib/config';
 import { formatMoney } from 'lib/format';
 import { getDisplayName, type User } from 'features/users/types';
 import type { GroupListItem } from 'features/groups/types';
 import { SPLIT_MODES, type SplitIssue, type SplitResult } from '../split';
-import { isAmountInput, type DraftAction, type ExpenseDraft } from './draft';
+import type { Receipt } from '../types';
+import { isAmountInput, NOTE_MAX_LENGTH, type DraftAction, type ExpenseDraft } from './draft';
 import { AmountInput } from './parts';
+import { ReceiptPicker } from './ReceiptPicker';
 import { Checkbox, ChoiceRow, Notice, Radio, RowAmount, RowName, RowSubtitle, StepHeading } from './parts.styles';
 
 interface DetailsStepProps {
@@ -18,9 +20,11 @@ interface DetailsStepProps {
   groups: GroupListItem[];
   currencyCode: string;
   showErrors: boolean;
+  /** When editing: the group can't change, and these receipts are already stored. */
+  editing?: { storedReceipts: Receipt[] };
 }
 
-export const DetailsStep = ({ draft, dispatch, groups, currencyCode, showErrors }: DetailsStepProps) => {
+export const DetailsStep = ({ draft, dispatch, groups, currencyCode, showErrors, editing }: DetailsStepProps) => {
   const { t } = useTranslation('expenses');
 
   return (
@@ -35,6 +39,7 @@ export const DetailsStep = ({ draft, dispatch, groups, currencyCode, showErrors 
             label={t('group')}
             placeholder={t('selectGroup')}
             value={draft.groupId}
+            disabled={Boolean(editing)}
             options={groups.map(group => ({ value: group.id, label: group.name }))}
             error={showErrors && !draft.groupId ? t('groupRequired') : undefined}
             onChange={event => dispatch({ type: 'selectGroup', groupId: event.target.value })}
@@ -59,6 +64,19 @@ export const DetailsStep = ({ draft, dispatch, groups, currencyCode, showErrors 
             value={currencyCode}
             options={CURRENCIES.map(code => ({ value: code, label: code }))}
             onChange={event => dispatch({ type: 'update', patch: { currencyCode: event.target.value } })}
+          />
+          <TextAreaField
+            label={t('noteOptional')}
+            maxLength={NOTE_MAX_LENGTH}
+            rows={3}
+            value={draft.note}
+            hint={draft.note.length > NOTE_MAX_LENGTH - 50 ? t('noteLeft', { count: NOTE_MAX_LENGTH - draft.note.length }) : undefined}
+            onChange={event => dispatch({ type: 'update', patch: { note: event.target.value } })}
+          />
+          <ReceiptPicker
+            pending={draft.receipts}
+            stored={(editing?.storedReceipts ?? []).filter(receipt => !draft.removedReceiptIds.includes(receipt.id))}
+            dispatch={dispatch}
           />
         </Stack>
       </Card>
@@ -116,7 +134,10 @@ export const PaidByStep = ({ draft, dispatch, members, payerId, currencyCode, to
             {members.map(member => (
               <ChoiceRow key={member.id}>
                 <Avatar name={getDisplayName(member)} src={getFileUrl(member.avatarId)} size={36} />
-                <RowName>{getDisplayName(member)}</RowName>
+                <RowName>
+                  {getDisplayName(member)}
+                  {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
+                </RowName>
                 <Radio
                   name="payer"
                   checked={payerId === member.id}
@@ -132,7 +153,10 @@ export const PaidByStep = ({ draft, dispatch, members, payerId, currencyCode, to
             {members.map(member => (
               <ChoiceRow key={member.id} as="div">
                 <Avatar name={getDisplayName(member)} src={getFileUrl(member.avatarId)} size={36} />
-                <RowName>{getDisplayName(member)}</RowName>
+                <RowName>
+                  {getDisplayName(member)}
+                  {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
+                </RowName>
                 <AmountInput
                   label={t('amountPaidBy', { name: getDisplayName(member) })}
                   value={draft.payerAmounts[member.id] ?? ''}
@@ -211,7 +235,10 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
             return (
               <ChoiceRow key={member.id}>
                 <Avatar name={name} src={getFileUrl(member.avatarId)} size={36} />
-                <RowName>{name}</RowName>
+                <RowName>
+                  {name}
+                  {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
+                </RowName>
                 <RowAmount $muted={!included}>{share}</RowAmount>
                 <Checkbox
                   checked={included}
@@ -227,6 +254,7 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
               <Avatar name={name} src={getFileUrl(member.avatarId)} size={36} />
               <RowName>
                 {name}
+                {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
                 {mode !== 'amount' && <RowSubtitle>{share}</RowSubtitle>}
               </RowName>
               <AmountInput

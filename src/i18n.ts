@@ -9,7 +9,7 @@ void i18n
     lng: 'en',
     fallbackLng: 'en',
     keySeparator: false,
-    ns: ['common', 'auth', 'validation', 'groups', 'expenses', 'account'],
+    ns: ['common', 'auth', 'validation', 'groups', 'expenses', 'account', 'activity'],
     defaultNS: 'common',
     interpolation: {
       escapeValue: false,
