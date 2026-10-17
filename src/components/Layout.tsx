@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import { routes } from 'lib/routes';
+import { setNavDirection } from 'lib/viewTransitions';
 import { IconButton } from './IconButton';
 import { Content, Footer } from './Layout.styles';
 
@@ -23,6 +24,7 @@ const Bar = styled.header`
   padding-top: env(safe-area-inset-top);
   background: ${({ theme }) => theme.colors.brand};
   color: ${({ theme }) => theme.colors.onBrand};
+  view-transition-name: top-bar;
 
   /* The global blue ring disappears on brand green. */
   :focus-visible {
@@ -68,8 +70,12 @@ export const TopBar = ({ title, back, actions }: TopBarProps) => {
   const { t } = useTranslation();
 
   const handleBack = () => {
+    // Going back in history is a popstate, which already marks the transition as backwards.
     if (back === true) navigate(-1);
-    else if (back) navigate(back);
+    else if (back) {
+      setNavDirection('back');
+      void navigate(back, { viewTransition: true });
+    }
   };
 
   return (
@@ -108,6 +114,7 @@ const Nav = styled.nav`
   padding-bottom: env(safe-area-inset-bottom);
   background: ${({ theme }) => theme.colors.surface};
   border-top: 1px solid ${({ theme }) => theme.colors.border};
+  view-transition-name: bottom-nav;
 `;
 
 const NavList = styled.ul`
@@ -136,9 +143,22 @@ const NavItem = styled(NavLink)`
   font-size: ${({ theme }) => theme.font.size.xs};
   font-weight: ${({ theme }) => theme.font.weight.semibold};
   text-decoration: none;
+  transition: color ${({ theme }) => theme.motion.fast};
+
+  & > svg {
+    transition: transform ${({ theme }) => theme.motion.spring};
+  }
+
+  &:active > svg {
+    transform: scale(0.85);
+  }
 
   &.active {
     color: ${({ theme }) => theme.colors.brand};
+  }
+
+  &.active > svg {
+    transform: translateY(-2px);
   }
 `;
 
@@ -154,6 +174,15 @@ const AddItem = styled(NavItem)`
     border-radius: ${({ theme }) => theme.radius.pill};
     background: ${({ theme }) => theme.colors.brand};
     color: ${({ theme }) => theme.colors.onBrand};
+    transition: transform ${({ theme }) => theme.motion.spring}, background ${({ theme }) => theme.motion.fast};
+  }
+
+  &:hover span:first-child {
+    background: ${({ theme }) => theme.colors.brandHover};
+  }
+
+  &:active span:first-child {
+    transform: scale(0.9);
   }
 `;
 
@@ -168,13 +197,13 @@ const BottomNav = () => {
     <Nav aria-label={t('mainNavigation')}>
       <NavList>
         <li>
-          <NavItem to={routes.groups}>
+          <NavItem to={routes.groups} viewTransition onClick={() => setNavDirection('tab')}>
             <UsersRound size={22} aria-hidden />
             {t('groups')}
           </NavItem>
         </li>
         <li>
-          <AddItem to={routes.newExpense(contextualGroupId)}>
+          <AddItem to={routes.newExpense(contextualGroupId)} viewTransition>
             <span aria-hidden>
               <Plus size={20} />
             </span>
@@ -182,7 +211,7 @@ const BottomNav = () => {
           </AddItem>
         </li>
         <li>
-          <NavItem to={routes.account}>
+          <NavItem to={routes.account} viewTransition onClick={() => setNavDirection('tab')}>
             <UserRound size={22} aria-hidden />
             {t('account')}
           </NavItem>

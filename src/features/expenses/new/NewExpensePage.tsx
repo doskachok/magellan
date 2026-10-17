@@ -8,6 +8,7 @@ import { Button, ButtonLink, EmptyState, PageSpinner, Screen, TopBar } from 'com
 import { CURRENCIES } from 'lib/config';
 import { parseAmount, roundMoney } from 'lib/format';
 import { routes } from 'lib/routes';
+import { withViewTransition } from 'lib/viewTransitions';
 import { useGetGroupQuery, useGetGroupsQuery } from 'features/groups/api';
 import { useCurrentUserId } from 'features/users/api';
 import {
@@ -67,7 +68,7 @@ const ExpenseForm = ({ initialDraft, existing }: ExpenseFormProps) => {
   const goBack = () => {
     setShowErrors(false);
     if (draft.step === 0) navigate(-1);
-    else dispatch({ type: 'goTo', step: (draft.step - 1) as 0 | 1 });
+    else withViewTransition('back', () => dispatch({ type: 'goTo', step: (draft.step - 1) as 0 | 1 }));
   };
 
   // The expense is already saved here, so a failed receipt doesn't undo it; the API error toast names the problem.
@@ -111,7 +112,7 @@ const ExpenseForm = ({ initialDraft, existing }: ExpenseFormProps) => {
     }
     setShowErrors(false);
     if (draft.step === 2) void save();
-    else dispatch({ type: 'goTo', step: (draft.step + 1) as 1 | 2 });
+    else withViewTransition('forward', () => dispatch({ type: 'goTo', step: (draft.step + 1) as 1 | 2 }));
   };
 
   const renderStep = () => {

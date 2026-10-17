@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { formatMoney, formatMonth } from 'lib/format';
 import type { MonthlySpending } from '../types';
@@ -32,6 +32,10 @@ const Plot = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
+const rise = keyframes`
+  from { transform: scaleY(0); }
+`;
+
 /** The whole column is the hit target, so short bars are as easy to hover as tall ones. */
 const Column = styled.button`
   display: flex;
@@ -41,6 +45,10 @@ const Column = styled.button`
   border: none;
   background: transparent;
   cursor: pointer;
+  /* Bars rise left to right; the column is animated (not the bar) so sibling-index() can stagger it. */
+  transform-origin: bottom;
+  animation: ${rise} 500ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc((sibling-index() - 1) * 30ms);
 `;
 
 const Bar = styled.span<{ $height: number; $active: boolean }>`
@@ -49,7 +57,9 @@ const Bar = styled.span<{ $height: number; $active: boolean }>`
   min-height: ${({ $height }) => ($height > 0 ? '2px' : '0')};
   border-radius: 4px 4px 0 0;
   background: ${({ theme, $active }) => ($active ? theme.colors.brandPressed : theme.colors.brand)};
-  transition: background ${({ theme }) => theme.motion.fast};
+  transition:
+    background ${({ theme }) => theme.motion.fast},
+    height ${({ theme }) => theme.motion.enter};
 `;
 
 const Labels = styled.div`

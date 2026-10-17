@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { formatMoney, toneOf } from 'lib/format';
 import type { MemberStatistics } from '../types';
@@ -58,6 +58,10 @@ const Track = styled.div`
   }
 `;
 
+const grow = keyframes`
+  from { transform: scaleX(0); }
+`;
+
 const Fill = styled.span<{ $width: number; $positive: boolean }>`
   position: absolute;
   top: 0;
@@ -66,6 +70,9 @@ const Fill = styled.span<{ $width: number; $positive: boolean }>`
   width: ${({ $width }) => $width / 2}%;
   border-radius: ${({ $positive }) => ($positive ? '0 4px 4px 0' : '4px 0 0 4px')};
   background: ${({ theme, $positive }) => ($positive ? theme.colors.positive : theme.colors.negative)};
+  /* Bars grow outwards from the centre line. */
+  transform-origin: ${({ $positive }) => ($positive ? 'left' : 'right')};
+  animation: ${grow} 600ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms backwards;
 `;
 
 interface PaidVsShareChartProps {

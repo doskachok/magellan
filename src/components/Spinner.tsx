@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
+import { fadeIn } from 'theme/motion';
+
 const spin = keyframes`
   to { transform: rotate(360deg); }
 `;
@@ -23,6 +25,8 @@ const Centered = styled.div`
   justify-content: center;
   padding: ${({ theme }) => theme.space(10)};
   color: ${({ theme }) => theme.colors.brand};
+  /* Held back briefly so fast loads never flash a spinner. */
+  animation: ${fadeIn} 200ms 150ms ease-out backwards;
 `;
 
 export const PageSpinner = ({ label = 'Loading' }: { label?: string }) => (

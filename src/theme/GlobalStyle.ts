@@ -56,10 +56,35 @@ export const GlobalStyle = createGlobalStyle`
     outline-offset: 2px;
   }
 
+  /* Route changes (and wizard steps) slide in the direction of travel; tab switches just cross-fade.
+     The top bar and bottom nav carry their own names, so they stay put while the page moves. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 260ms;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  html[data-nav='forward']::view-transition-old(root) { animation-name: page-out-to-left; }
+  html[data-nav='forward']::view-transition-new(root) { animation-name: page-in-from-right; }
+  html[data-nav='back']::view-transition-old(root) { animation-name: page-out-to-right; }
+  html[data-nav='back']::view-transition-new(root) { animation-name: page-in-from-left; }
+
+  @keyframes page-out-to-left { to { opacity: 0; transform: translateX(-40px); } }
+  @keyframes page-in-from-right { from { opacity: 0; transform: translateX(40px); } }
+  @keyframes page-out-to-right { to { opacity: 0; transform: translateX(40px); } }
+  @keyframes page-in-from-left { from { opacity: 0; transform: translateX(-40px); } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
+    }
+
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+      animation: none !important;
     }
   }
 

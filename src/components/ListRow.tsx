@@ -21,12 +21,26 @@ const rowStyles = css`
   }
 `;
 
+const Chevron = styled(ChevronRight)`
+  color: ${({ theme }) => theme.colors.textDisabled};
+  transition: transform ${({ theme }) => theme.motion.normal}, color ${({ theme }) => theme.motion.normal};
+`;
+
 const interactive = css`
   cursor: pointer;
   transition: background ${({ theme }) => theme.motion.fast};
 
   &:hover {
     background: ${({ theme }) => theme.colors.background};
+  }
+
+  &:active {
+    background: ${({ theme }) => theme.colors.surfaceMuted};
+  }
+
+  &:hover ${Chevron}, &:focus-visible ${Chevron} {
+    color: ${({ theme }) => theme.colors.textMuted};
+    transform: translateX(3px);
   }
 `;
 
@@ -74,10 +88,6 @@ const Trailing = styled.span`
   text-align: right;
 `;
 
-const Chevron = styled(ChevronRight)`
-  color: ${({ theme }) => theme.colors.textDisabled};
-`;
-
 interface ListRowProps {
   leading?: ReactNode;
   title: ReactNode;
@@ -104,7 +114,7 @@ export const ListRow = ({ leading, title, subtitle, trailing, to, onClick }: Lis
     </>
   );
 
-  if (to) return <LinkRow to={to}>{content}</LinkRow>;
+  if (to) return <LinkRow to={to} viewTransition>{content}</LinkRow>;
   if (onClick) return <ButtonRow type="button" onClick={onClick}>{content}</ButtonRow>;
   return <StaticRow>{content}</StaticRow>;
 };

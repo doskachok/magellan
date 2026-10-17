@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled, { keyframes, useTheme } from 'styled-components';
 
 import { Avatar } from 'components';
 import { getFileUrl } from 'lib/config';
 import { formatMoney, formatPercent } from 'lib/format';
+import { fadeIn } from 'theme/motion';
 import { OTHER_KEY, type Slice } from './slices';
 
 const SIZE = 180;
@@ -31,9 +32,17 @@ const Svg = styled.svg`
   transform: rotate(-90deg);
 `;
 
+/** Each segment grows from its own start; delays follow the angle, so together they sweep round the ring. */
+const SWEEP_MS = 360;
+
+const draw = keyframes`
+  from { stroke-dasharray: 0 ${CIRCUMFERENCE}; }
+`;
+
 const Segment = styled.circle`
   cursor: pointer;
   transition: stroke-width ${({ theme }) => theme.motion.fast};
+  animation: ${draw} 520ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
 
   &:focus-visible {
     outline: none;
@@ -51,6 +60,7 @@ const Center = styled.div`
   gap: 2px;
   text-align: center;
   pointer-events: none;
+  animation: ${fadeIn} 160ms ease-out;
 `;
 
 const CenterCaption = styled.span`
@@ -154,6 +164,7 @@ export const DonutChart = ({ label, slices, currencyCode, totalCaption, total: d
               strokeWidth={slice.key === activeKey ? THICKNESS + 6 : THICKNESS}
               strokeDasharray={`${length} ${CIRCUMFERENCE - length}`}
               strokeDashoffset={-start}
+              style={{ animationDelay: `${(start / CIRCUMFERENCE) * SWEEP_MS}ms` }}
               tabIndex={0}
               aria-label={`${slice.label}: ${formatMoney(slice.value, currencyCode)}, ${formatPercent(slice.value, total)}`}
               onMouseEnter={() => setActiveKey(slice.key)}
@@ -163,7 +174,8 @@ export const DonutChart = ({ label, slices, currencyCode, totalCaption, total: d
             />
           ))}
         </Svg>
-        <Center aria-hidden>
+        {/* Re-keyed per segment so the readout fades between values instead of snapping. */}
+        <Center aria-hidden key={activeKey ?? 'total'}>
           <CenterCaption>{active ? active.label : totalCaption}</CenterCaption>
           <CenterValue>{formatMoney(active ? active.value : (displayedTotal ?? total), currencyCode)}</CenterValue>
           {active && <CenterCaption>{formatPercent(active.value, total)}</CenterCaption>}
