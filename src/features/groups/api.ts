@@ -1,5 +1,5 @@
 import { api, ApiTag } from 'store/api';
-import type { CreateSettlement, Debt, Group, GroupListItem, SaveGroup } from './types';
+import type { CreateSettlement, CurrencyStatistics, Debt, Group, GroupListItem, SaveGroup } from './types';
 
 const URL = 'transaction-groups';
 
@@ -28,6 +28,11 @@ export const groupsApi = api.injectEndpoints({
       query: id => `${URL}/${id}/optimized-debts`,
       providesTags: (_result, _error, id) => [{ type: ApiTag.Debts, id }],
     }),
+    // Tagged as the group itself, so adding, editing or deleting an expense refreshes the statistics too.
+    getGroupStatistics: build.query<CurrencyStatistics[], string>({
+      query: id => `${URL}/${id}/statistics`,
+      providesTags: (_result, _error, id) => [{ type: ApiTag.Group, id }],
+    }),
     saveGroup: build.mutation<Group, SaveGroup>({
       query: ({ id, ...body }) => ({ url: URL, method: id ? 'PUT' : 'POST', body: id ? { id, ...body } : body }),
       invalidatesTags: result => (result ? groupTags(result.id) : [ApiTag.Groups]),
@@ -51,6 +56,7 @@ export const {
   useGetGroupsQuery,
   useGetGroupQuery,
   useGetGroupDebtsQuery,
+  useGetGroupStatisticsQuery,
   useSaveGroupMutation,
   useAddParticipantMutation,
   useRemoveParticipantMutation,
