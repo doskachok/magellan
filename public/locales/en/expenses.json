@@ -52,5 +52,7 @@
   "splitBetween_one": "Split between {{count}} person",
   "splitBetween_other": "Split between {{count}} people",
   "formerMember": "Former member",
-  "expenseNotFound": "Expense not found"
+  "expenseNotFound": "Expense not found",
+  "settlement": "Repayment",
+  "paidTo": "Paid to"
 }

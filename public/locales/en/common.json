@@ -16,5 +16,7 @@
   "changePhoto": "Change photo",
   "errorTitle": "Something went wrong",
   "errorDescription": "An unexpected error occurred. Try again, and if it keeps happening, reload the app.",
-  "errorAction": "Back to groups"
+  "errorAction": "Back to groups",
+  "youPaid": "you paid",
+  "youReceived": "you received"
 }

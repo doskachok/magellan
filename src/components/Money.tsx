@@ -24,7 +24,7 @@ interface BalanceProps {
   /** Positive: you are owed / you lent; negative: you owe / you borrowed. */
   amount: number;
   currencyCode: string;
-  variant?: 'balance' | 'expense';
+  variant?: 'balance' | 'expense' | 'settlement';
   align?: 'left' | 'right';
 }
 
@@ -36,10 +36,12 @@ export const Balance = ({ amount, currencyCode, variant = 'balance', align = 'ri
   const captions = {
     balance: { positive: t('youAreOwed'), negative: t('youOwe'), neutral: t('settledUp') },
     expense: { positive: t('youLent'), negative: t('youBorrowed'), neutral: t('notInvolved') },
+    settlement: { positive: t('youPaid'), negative: t('youReceived'), neutral: t('notInvolved') },
   }[variant];
 
   return (
-    <Root $tone={tone} $align={align}>
+    // A repayment is neither a gain nor a loss, so it is not coloured as one.
+    <Root $tone={variant === 'settlement' ? 'neutral' : tone} $align={align}>
       <Caption>{captions[tone]}</Caption>
       {tone !== 'neutral' && <Amount>{formatMoney(Math.abs(amount), currencyCode)}</Amount>}
     </Root>
