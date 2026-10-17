@@ -62,3 +62,12 @@ export type Tone = 'positive' | 'negative' | 'neutral';
 
 /** Classifies a signed balance, treating sub-cent rounding noise as zero. */
 export const toneOf = (amount: number): Tone => (amount > 0.005 ? 'positive' : amount < -0.005 ? 'negative' : 'neutral');
+
+const percentFormatter = new Intl.NumberFormat(LOCALE, { style: 'percent', maximumFractionDigits: 0 });
+
+/** `part` of `whole` as a whole-number percentage; 0 when there is no whole. */
+export const formatPercent = (part: number, whole: number) => percentFormatter.format(whole ? part / whole : 0);
+
+/** A calendar month (1-12) as "Mar" or, with the year, "Mar 2026". */
+export const formatMonth = (year: number, month: number, withYear = false) =>
+  new Date(year, month - 1, 1).toLocaleDateString(LOCALE, { month: 'short', ...(withYear ? { year: 'numeric' } : {}) });

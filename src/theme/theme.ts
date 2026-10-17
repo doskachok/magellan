@@ -26,8 +26,18 @@ const colors = {
   overlay: 'rgba(20, 32, 27, 0.45)',
 };
 
+/**
+ * Categorical chart hues in a fixed, CVD-validated order: series N always gets slot N, never cycled.
+ * Magenta, yellow and aqua are under 3:1 on white, so charts using them must also show values in a legend.
+ */
+const chart = {
+  series: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#6250d6', '#e34948'],
+  other: '#9AA7A1',
+};
+
 export const theme = {
   colors,
+  chart,
   font: {
     family: `'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif`,
     size: { xs: '12px', sm: '14px', md: '16px', lg: '20px', xl: '28px' },

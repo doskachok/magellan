@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import { CheckCircle2, HandCoins, Plus, Receipt, Settings } from 'lucide-react';
+import { ChartPie, CheckCircle2, HandCoins, Plus, Receipt, Settings } from 'lucide-react';
 import styled from 'styled-components';
 
 import {
@@ -248,7 +248,10 @@ const GroupDetailsPage = () => {
           title={group?.name ?? ''}
           back={routes.groups}
           actions={
-            <IconLink tone="onBrand" to={routes.groupSettings(groupId)} label={t('groupSettings')} icon={<Settings size={22} />} />
+            <>
+              <IconLink tone="onBrand" to={routes.groupStatistics(groupId)} label={t('statsTitle')} icon={<ChartPie size={22} />} />
+              <IconLink tone="onBrand" to={routes.groupSettings(groupId)} label={t('groupSettings')} icon={<Settings size={22} />} />
+            </>
           }
         />
       }
