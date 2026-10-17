@@ -15,14 +15,21 @@ export const StepHeading = styled.div`
   }
 `;
 
-export const Notice = styled.p<{ $tone: 'positive' | 'negative' }>`
+const NOTICE_COLORS = {
+  positive: ['positive', 'positiveSoft'],
+  negative: ['negative', 'negativeSoft'],
+  neutral: ['textMuted', 'surfaceMuted'],
+} as const;
+
+/** Status line under a step: `neutral` for work in progress, `negative` only once errors are shown. */
+export const Notice = styled.p<{ $tone: keyof typeof NOTICE_COLORS }>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.space(2)};
   padding: ${({ theme }) => theme.space(3, 4)};
   border-radius: ${({ theme }) => theme.radius.md};
-  background: ${({ theme, $tone }) => ($tone === 'positive' ? theme.colors.positiveSoft : theme.colors.negativeSoft)};
-  color: ${({ theme, $tone }) => theme.colors[$tone]};
+  background: ${({ theme, $tone }) => theme.colors[NOTICE_COLORS[$tone][1]]};
+  color: ${({ theme, $tone }) => theme.colors[NOTICE_COLORS[$tone][0]]};
   font-size: ${({ theme }) => theme.font.size.sm};
   font-weight: ${({ theme }) => theme.font.weight.semibold};
 `;

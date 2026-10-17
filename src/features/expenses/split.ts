@@ -67,7 +67,13 @@ export const evaluateSplit = (state: SplitState, memberIds: string[], total: num
   const shares: Record<string, number> = Object.fromEntries(memberIds.map(id => [id, 0]));
 
   if (participants.length === 0) {
-    return { shares, issue: state.mode === 'shares' ? { kind: 'noShares' } : { kind: 'noParticipants' } };
+    const issue: Record<SplitMode, SplitIssue> = {
+      equal: { kind: 'noParticipants' },
+      amount: { kind: 'amountMismatch', remaining: total },
+      percent: { kind: 'percentMismatch', remaining: 100 },
+      shares: { kind: 'noShares' },
+    };
+    return { shares, issue: issue[state.mode] };
   }
 
   switch (state.mode) {

@@ -38,7 +38,7 @@ const controlStyles = css<{ $invalid: boolean }>`
   &:focus {
     outline: none;
     border-color: ${({ theme }) => theme.colors.brand};
-    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.brandSoft};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.colors.brand};
   }
 
   &:disabled,

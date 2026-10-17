@@ -9,13 +9,13 @@ const colors = {
   surface: '#FFFFFF',
   surfaceMuted: '#EEF2F0',
   border: '#DCE3DF',
-  borderStrong: '#B9C5BF',
+  borderStrong: '#839089',
 
   text: '#14201B',
   textMuted: '#5A6A63',
   textDisabled: '#9AA7A1',
 
-  positive: '#1E7F57',
+  positive: '#1B7450',
   positiveSoft: '#E5F3EC',
   negative: '#B93A26',
   negativeSoft: '#FBEAE6',

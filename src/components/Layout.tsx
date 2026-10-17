@@ -23,6 +23,11 @@ const Bar = styled.header`
   padding-top: env(safe-area-inset-top);
   background: ${({ theme }) => theme.colors.brand};
   color: ${({ theme }) => theme.colors.onBrand};
+
+  /* The global blue ring disappears on brand green. */
+  :focus-visible {
+    outline-color: ${({ theme }) => theme.colors.onBrand};
+  }
 `;
 
 const BarInner = styled.div`

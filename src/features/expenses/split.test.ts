@@ -46,6 +46,11 @@ describe('exact amounts', () => {
     expect(evaluateSplit(split, members, 20).issue).toEqual({ kind: 'amountMismatch', remaining: 4.5 });
   });
 
+  it('reports the whole total as left before anything is entered', () => {
+    const split = state({ mode: 'amount', values: {} });
+    expect(evaluateSplit(split, members, 20).issue).toEqual({ kind: 'amountMismatch', remaining: 20 });
+  });
+
   it('accepts amounts that add up despite floating point noise', () => {
     const split = state({ mode: 'amount', values: { a: '0.1', b: '0.2' } });
     expect(evaluateSplit(split, members, 0.3).issue).toBeNull();
@@ -65,6 +70,13 @@ describe('percentages', () => {
     const valid = evaluateSplit(state({ mode: 'percent', values: { a: '33.33', b: '33.33', c: '33.34' } }), members, 100);
     expect(valid.issue).toBeNull();
     expect(valid.shares.c).toBeCloseTo(33.34);
+  });
+
+  it('reports 100% left before anything is entered', () => {
+    expect(evaluateSplit(state({ mode: 'percent', values: {} }), members, 10).issue).toEqual({
+      kind: 'percentMismatch',
+      remaining: 100,
+    });
   });
 });
 

@@ -110,6 +110,7 @@ const NewExpensePage = () => {
             currencyCode={currencyCode}
             total={total}
             result={splitResult}
+            showErrors={showErrors}
           />
         );
     }

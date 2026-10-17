@@ -1,6 +1,6 @@
 import type { Dispatch } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, CheckCircle2, CircleDashed } from 'lucide-react';
 
 import { Avatar, Card, SegmentedControl, SelectField, Stack, TextField } from 'components';
 import { CURRENCIES, getFileUrl } from 'lib/config';
@@ -141,7 +141,7 @@ export const PaidByStep = ({ draft, dispatch, members, payerId, currencyCode, to
               </ChoiceRow>
             ))}
           </Card>
-          <Notice $tone={total > 0 ? 'positive' : 'negative'} role="status">
+          <Notice $tone={total > 0 ? 'positive' : showErrors ? 'negative' : 'neutral'} role="status">
             {total > 0 ? t('totalPaid', { amount: formatMoney(total, currencyCode) }) : t('amountRequired')}
           </Notice>
         </>
@@ -157,6 +157,7 @@ interface SplitStepProps {
   currencyCode: string;
   total: number;
   result: SplitResult;
+  showErrors: boolean;
 }
 
 const useIssueText = () => {
@@ -179,10 +180,12 @@ const useIssueText = () => {
   };
 };
 
-export const SplitStep = ({ draft, dispatch, members, currencyCode, total, result }: SplitStepProps) => {
+export const SplitStep = ({ draft, dispatch, members, currencyCode, total, result, showErrors }: SplitStepProps) => {
   const { t } = useTranslation('expenses');
   const issueText = useIssueText();
   const { mode } = draft.split;
+  const tone = !result.issue ? 'positive' : showErrors ? 'negative' : 'neutral';
+  const NoticeIcon = { positive: CheckCircle2, negative: AlertCircle, neutral: CircleDashed }[tone];
 
   return (
     <Stack>
@@ -237,8 +240,8 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
         })}
       </Card>
 
-      <Notice $tone={result.issue ? 'negative' : 'positive'} role="status">
-        {result.issue ? <AlertCircle size={18} aria-hidden /> : <CheckCircle2 size={18} aria-hidden />}
+      <Notice $tone={tone} role="status">
+        <NoticeIcon size={18} aria-hidden />
         {result.issue ? issueText(result.issue, currencyCode) : t('splitBalanced')}
       </Notice>
     </Stack>
