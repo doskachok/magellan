@@ -1,61 +1,53 @@
-import { ApiTags } from 'constants/api-tags';
-import mainApi from 'store/api';
-import { ICreateTransactionGroup, ITransactionGroup, ITransactionGroupListItem, IUpdateTransactionGroup } from './types';
+import { api, ApiTag } from 'store/api';
+import type { Debt, Group, GroupListItem, SaveGroup } from './types';
 
-const API_URL = `transaction-groups`;
+const URL = 'transaction-groups';
 
-export const transactionGroupsApi = mainApi.injectEndpoints({
-  endpoints: (build => ({
-    getTransactionGroups: build.query<ITransactionGroupListItem[], void>({
-      providesTags: [ApiTags.GROUPS_LIST],
-      query: () => ({
-        url: API_URL,
-      })
-    }),
-    getTransactionGroupById: build.query<ITransactionGroup, string>({
-      query: (id: string) => ({
-        url: `${API_URL}/${id}`,
-      })
-    }),
-    createTransactionGroup: build.mutation<ITransactionGroup, ICreateTransactionGroup>({
-      invalidatesTags: [ApiTags.GROUPS_LIST],
-      query: (body: ICreateTransactionGroup) => ({
-        url: API_URL,
-        method: 'POST',
-        body,
-      }),
-    }),
-    updateTransactionGroup: build.mutation<ITransactionGroup, IUpdateTransactionGroup>({
-      invalidatesTags: [ApiTags.GROUPS_LIST],
-      query: (body: IUpdateTransactionGroup) => ({
-        url: API_URL,
-        method: 'PUT',
-        body,
-      }),
-    }),
+interface ParticipantRequest {
+  groupId: string;
+  userId: string;
+}
 
-    addParticipant: build.mutation<void, { groupId: string, userId: string }>({
-      query: (data: {groupId: string, userId: string}) => ({
-        url: `${API_URL}/${data.groupId}/participants`,
-        method: 'POST',
-        body: { userId: data.userId },
-      }),
+const groupTags = (groupId: string) => [
+  ApiTag.Groups,
+  { type: ApiTag.Group, id: groupId },
+  { type: ApiTag.Debts, id: groupId },
+];
+
+export const groupsApi = api.injectEndpoints({
+  endpoints: build => ({
+    getGroups: build.query<GroupListItem[], void>({
+      query: () => URL,
+      providesTags: [ApiTag.Groups],
     }),
-    removeParticipant: build.mutation<void, { groupId: string, userId: string }>({
-      query: (data: {groupId: string, userId: string}) => ({
-        url: `${API_URL}/${data.groupId}/participants/${data.userId}`,
-        method: 'DELETE'
-      }),
+    getGroup: build.query<Group, string>({
+      query: id => `${URL}/${id}`,
+      providesTags: (_result, _error, id) => [{ type: ApiTag.Group, id }],
     }),
-  }))
+    getGroupDebts: build.query<Debt[], string>({
+      query: id => `${URL}/${id}/optimized-debts`,
+      providesTags: (_result, _error, id) => [{ type: ApiTag.Debts, id }],
+    }),
+    saveGroup: build.mutation<Group, SaveGroup>({
+      query: ({ id, ...body }) => ({ url: URL, method: id ? 'PUT' : 'POST', body: id ? { id, ...body } : body }),
+      invalidatesTags: result => (result ? groupTags(result.id) : [ApiTag.Groups]),
+    }),
+    addParticipant: build.mutation<void, ParticipantRequest>({
+      query: ({ groupId, userId }) => ({ url: `${URL}/${groupId}/participants`, method: 'POST', body: { userId } }),
+      invalidatesTags: (_result, _error, { groupId }) => [...groupTags(groupId), ApiTag.KnownUsers],
+    }),
+    removeParticipant: build.mutation<void, ParticipantRequest>({
+      query: ({ groupId, userId }) => ({ url: `${URL}/${groupId}/participants/${userId}`, method: 'DELETE' }),
+      invalidatesTags: (_result, _error, { groupId }) => groupTags(groupId),
+    }),
+  }),
 });
 
 export const {
-  useLazyGetTransactionGroupsQuery,
-  useGetTransactionGroupByIdQuery,
-  useLazyGetTransactionGroupByIdQuery,
-  useCreateTransactionGroupMutation,
-  useUpdateTransactionGroupMutation,
+  useGetGroupsQuery,
+  useGetGroupQuery,
+  useGetGroupDebtsQuery,
+  useSaveGroupMutation,
   useAddParticipantMutation,
   useRemoveParticipantMutation,
-} = transactionGroupsApi;
+} = groupsApi;

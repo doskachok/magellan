@@ -14,7 +14,10 @@ In the project directory:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits. Run `npm run lint` to check for lint errors.
+The page will reload if you make edits. Run `npm run lint` to check for lint errors and `npm test` to run unit tests.
+
+## Demo data
+With the API from the `Wise Split` repo running locally, `node scripts/seed-dev-data.mjs [apiBaseUrl]` creates demo users, groups and expenses. Sign in as `alicedemo` (password in the script).
 
 ## Learn More
 

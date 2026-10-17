@@ -1,89 +1,35 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { 
-  persistStore, 
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from 'redux-persist';
-import storage from 'redux-persist/es/storage';
-import {Middleware} from '@reduxjs/toolkit';
-import {createLogger} from 'redux-logger'
-import {mainApi} from './api';
-import {errorMiddleware} from './errorMiddleware';
-import authReducer from '../features/auth/slice';
-import groupsReducer from '../features/groups/slice';
-import expensesReducer from '../features/expenses/slice';
-import errorReducer from './errorSlice';
+import { combineSlices, configureStore, createListenerMiddleware } from '@reduxjs/toolkit';
+import { useDispatch, useSelector } from 'react-redux';
 
-const apiCallStatuses = ['pending', 'fulfilled', 'rejected'];
-const apiCacheActionsTypes = ['unsubscribeQueryResult', 'removeQueryResult'];
+import { api } from './api';
+import authSlice, { credentialsReceived, loggedOut, persistCredentials } from './authSlice';
+import { errorToastMiddleware } from './errors';
 
-const buildActionLog = (action: Record<string, unknown>, typePrefix: string): Record<string, unknown> => {
-  return ({
-    ...action,
-    type: `[${typePrefix}] ${action.type}`
-  });
-}
+const rootReducer = combineSlices(authSlice, api);
 
-const logger = createLogger({
-  actionTransformer: (action) => {
-    if (!action.type.startsWith('mainApi'))
-      return action;
-    
-    const actionType = action.type.split('/').at(-1);
-    
-    if (apiCallStatuses.indexOf(actionType) !== -1)
-      return buildActionLog(action, action?.meta?.arg?.endpointName);
-    
-    if (apiCacheActionsTypes.indexOf(actionType) !== -1)
-      return buildActionLog(action, action?.payload?.queryCacheKey);
-    
-    return action;
-  }
+const listener = createListenerMiddleware();
+
+listener.startListening({
+  actionCreator: credentialsReceived,
+  effect: ({ payload }) => persistCredentials(payload),
 });
 
-const apiReducers = {
-  [mainApi.reducerPath]: mainApi.reducer
-};
-
-const middlewares: Middleware[] = [
-  mainApi.middleware,
-  errorMiddleware,
-  logger,
-];
-
-const reducer = combineReducers({
-  auth: authReducer,
-  groups: groupsReducer,
-  expenses: expensesReducer,
-  errors: errorReducer,
-  ...apiReducers,
+listener.startListening({
+  actionCreator: loggedOut,
+  effect: (_, { dispatch }) => {
+    persistCredentials(null);
+    dispatch(api.util.resetApiState());
+  },
 });
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['groups'],
-};
-
-const persistedReducer = persistReducer(persistConfig, reducer);
-
-const store = configureStore({
-  reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => 
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    })
-      .concat(middlewares)
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().prepend(listener.middleware).concat(api.middleware, errorToastMiddleware),
 });
 
-export const persistor = persistStore(store);
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;
 
-export default store;
-export type RootState = ReturnType<typeof store.getState>;
+export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+export const useAppSelector = useSelector.withTypes<RootState>();

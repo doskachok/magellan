@@ -1,26 +1,21 @@
-import mainApi from 'store/api';
-import { ICreateTransaction, ITransactionView } from './types';
+import { api, ApiTag } from 'store/api';
+import type { CreateTransaction, Transaction } from './types';
 
-const API_URL = `transactions`;
-
-export const transactionsApi = mainApi.injectEndpoints({
-  endpoints: (build => ({
-    createTransaction: build.mutation<ITransactionView, ICreateTransaction>({
-      query: (body: ICreateTransaction) => ({
-        url: API_URL,
-        method: 'POST',
-        body,
-      }),
+export const expensesApi = api.injectEndpoints({
+  endpoints: build => ({
+    getTransaction: build.query<Transaction, string>({
+      query: id => `transactions/${id}`,
+      providesTags: (_result, _error, id) => [{ type: ApiTag.Transaction, id }],
     }),
-    getTransactionById: build.query<ITransactionView, string>({
-      query: (id: string) => ({
-        url: `${API_URL}/${id}`,
-      })
+    createTransaction: build.mutation<Transaction, CreateTransaction>({
+      query: body => ({ url: 'transactions', method: 'POST', body }),
+      invalidatesTags: (_result, _error, { groupId }) => [
+        ApiTag.Groups,
+        { type: ApiTag.Group, id: groupId },
+        { type: ApiTag.Debts, id: groupId },
+      ],
     }),
-  }))
+  }),
 });
 
-export const {
-  useCreateTransactionMutation,
-  useLazyGetTransactionByIdQuery,
-} = transactionsApi;
+export const { useGetTransactionQuery, useCreateTransactionMutation } = expensesApi;

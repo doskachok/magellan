@@ -1,26 +1,4 @@
-export interface ITransaction {
-  id: string;
-  ownerId: string;
-  name: string;
-  paymentDateUtc: string;
-  currencyCode: string;
-  payerDetails: IPayerDetails[];
-  partialsAssignments: IPartialAssignments[];
-}
-
-export interface ITransactionView extends ITransaction {
-  partialsAssignmentsTranslated: IPartialAssignmentsTranslated[];
-}
-
-export interface ICreateTransaction extends Omit<ITransaction, 'id' | 'ownerId'> {
-  groupId: string;
-}
-
-export interface IPayerDetails {
-  payerId: string;
-  amount: number;
-}
-
+/** Mirrors the backend `SplitMethod` enum. */
 export enum SplitMethod {
   AssignedAmount = 0,
   Percentage = 1,
@@ -28,11 +6,34 @@ export enum SplitMethod {
   Shares = 3,
 }
 
-export interface IPartialAssignments {
+export interface PayerDetail {
+  payerId: string;
+  amount: number;
+}
+
+export interface PartialAssignment {
   userId: string;
   partialAmount: number;
   splitMethod: SplitMethod;
 }
 
-export interface IPartialAssignmentsTranslated extends Omit<IPartialAssignments, 'splitMethod'> {
+export interface Transaction {
+  id: string;
+  ownerId: string;
+  name: string;
+  paymentDateUtc: string;
+  currencyCode: string;
+  payerDetails: PayerDetail[];
+  partialsAssignments: PartialAssignment[];
+  /** Every participant's share converted to an absolute amount. */
+  partialsAssignmentsTranslated: Omit<PartialAssignment, 'splitMethod'>[];
+}
+
+export interface CreateTransaction {
+  groupId: string;
+  name: string;
+  paymentDateUtc: string;
+  currencyCode: string;
+  payerDetails: PayerDetail[];
+  partialsAssignments: PartialAssignment[];
 }

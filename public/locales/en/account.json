@@ -1,0 +1,13 @@
+{
+  "title": "Account",
+  "displayName": "Display name",
+  "displayNameHint": "This is how you appear to people in your groups.",
+  "username": "Username",
+  "email": "Email",
+  "saveChanges": "Save changes",
+  "profileSaved": "Profile saved",
+  "session": "Session",
+  "logOut": "Log out",
+  "logOutTitle": "Log out?",
+  "logOutMessage": "You'll need your username and password to sign back in."
+}
