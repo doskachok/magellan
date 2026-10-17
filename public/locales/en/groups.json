@@ -28,6 +28,7 @@
   "noExpensesDescription": "Add the first expense and WiseSplit will work out who owes whom.",
   "addExpense": "Add expense",
   "groupSettings": "Group settings",
+  "activity": "Activity",
   "groupName": "Group name",
   "groupNamePlaceholder": "e.g. Lisbon trip",
   "currency": "Currency",
