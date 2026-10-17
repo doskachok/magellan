@@ -1,4 +1,5 @@
 import { api, ApiTag } from 'store/api';
+import type { User } from 'features/users/types';
 import type { CreateSettlement, CurrencyStatistics, Debt, Group, GroupListItem, SaveGroup } from './types';
 
 const URL = 'transaction-groups';
@@ -12,12 +13,13 @@ const groupTags = (groupId: string) => [
   ApiTag.Groups,
   { type: ApiTag.Group, id: groupId },
   { type: ApiTag.Debts, id: groupId },
+  { type: ApiTag.Activity, id: groupId },
 ];
 
 export const groupsApi = api.injectEndpoints({
   endpoints: build => ({
-    getGroups: build.query<GroupListItem[], void>({
-      query: () => URL,
+    getGroups: build.query<GroupListItem[], { archived: boolean }>({
+      query: ({ archived }) => ({ url: URL, params: { archived } }),
       providesTags: [ApiTag.Groups],
     }),
     getGroup: build.query<Group, string>({
@@ -49,6 +51,30 @@ export const groupsApi = api.injectEndpoints({
       query: ({ groupId, ...body }) => ({ url: `${URL}/${groupId}/settlements`, method: 'POST', body }),
       invalidatesTags: (_result, _error, { groupId }) => groupTags(groupId),
     }),
+    addPlaceholder: build.mutation<User, { groupId: string; name: string }>({
+      query: ({ groupId, name }) => ({ url: `${URL}/${groupId}/placeholders`, method: 'POST', body: { name } }),
+      invalidatesTags: (_result, _error, { groupId }) => groupTags(groupId),
+    }),
+    replacePlaceholder: build.mutation<void, { groupId: string; placeholderId: string; userId: string }>({
+      query: ({ groupId, placeholderId, userId }) => ({
+        url: `${URL}/${groupId}/placeholders/${placeholderId}/replace`,
+        method: 'POST',
+        body: { userId },
+      }),
+      invalidatesTags: (_result, _error, { groupId }) => [...groupTags(groupId), ApiTag.KnownUsers, ApiTag.Transaction],
+    }),
+    leaveGroup: build.mutation<void, { groupId: string; newOwnerId?: string }>({
+      query: ({ groupId, newOwnerId }) => ({ url: `${URL}/${groupId}/leave`, method: 'POST', body: { newOwnerId } }),
+      invalidatesTags: (_result, _error, { groupId }) => groupTags(groupId),
+    }),
+    deleteGroup: build.mutation<void, string>({
+      query: groupId => ({ url: `${URL}/${groupId}`, method: 'DELETE' }),
+      invalidatesTags: (_result, _error, groupId) => groupTags(groupId),
+    }),
+    setArchived: build.mutation<void, { groupId: string; archived: boolean }>({
+      query: ({ groupId, archived }) => ({ url: `${URL}/${groupId}/archive`, method: archived ? 'POST' : 'DELETE' }),
+      invalidatesTags: [ApiTag.Groups],
+    }),
   }),
 });
 
@@ -61,4 +87,9 @@ export const {
   useAddParticipantMutation,
   useRemoveParticipantMutation,
   useSettleDebtMutation,
+  useAddPlaceholderMutation,
+  useReplacePlaceholderMutation,
+  useLeaveGroupMutation,
+  useDeleteGroupMutation,
+  useSetArchivedMutation,
 } = groupsApi;

@@ -7,6 +7,8 @@ export interface GroupListItem {
   avatarId?: string | null;
   /** Positive: the group owes you; negative: you owe the group. */
   yourPart: number;
+  /** Archived by you; other members may still see it. */
+  isArchived: boolean;
 }
 
 export interface GroupTransaction {
@@ -18,6 +20,8 @@ export interface GroupTransaction {
   yourPart: number;
   /** A repayment between two members rather than an expense. */
   isSettlement: boolean;
+  hasNote: boolean;
+  receiptCount: number;
 }
 
 export interface Group {

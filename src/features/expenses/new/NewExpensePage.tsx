@@ -26,7 +26,7 @@ const NewExpensePage = () => {
   const [draft, dispatch] = useReducer(draftReducer, searchParams.get('groupId') ?? '', createDraft);
   const [showErrors, setShowErrors] = useState(false);
 
-  const { data: groups = [], isLoading: isGroupsLoading } = useGetGroupsQuery();
+  const { data: groups = [], isLoading: isGroupsLoading } = useGetGroupsQuery({ archived: false });
   const { data: group, isFetching: isGroupFetching } = useGetGroupQuery(draft.groupId, { skip: !draft.groupId });
   const [createTransaction, { isLoading: isSaving }] = useCreateTransactionMutation();
 

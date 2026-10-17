@@ -4,6 +4,8 @@ export interface User {
   email: string;
   username: string;
   avatarId?: string | null;
+  /** A name-only member who hasn't signed up. */
+  isPlaceholder?: boolean;
 }
 
 export interface UpdateUser {

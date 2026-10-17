@@ -65,7 +65,7 @@ const renderTotals = (totals: string[]) =>
 
 const GroupsPage = () => {
   const { t } = useTranslation('groups');
-  const { data: groups = [], isLoading } = useGetGroupsQuery();
+  const { data: groups = [], isLoading } = useGetGroupsQuery({ archived: false });
   const [filter, setFilter] = useState<Filter>('all');
 
   const visibleGroups = useMemo(

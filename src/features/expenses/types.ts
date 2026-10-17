@@ -17,6 +17,14 @@ export interface PartialAssignment {
   splitMethod: SplitMethod;
 }
 
+export interface Receipt {
+  id: string;
+  fileName: string;
+  contentType: string;
+  /** Bytes */
+  size: number;
+}
+
 export interface Transaction {
   id: string;
   ownerId: string;
@@ -25,6 +33,10 @@ export interface Transaction {
   currencyCode: string;
   /** A repayment between two members rather than an expense. */
   isSettlement: boolean;
+  note?: string | null;
+  /** Someone in it left the group, so it can't be edited, deleted or restored. */
+  isLocked: boolean;
+  receipts: Receipt[];
   payerDetails: PayerDetail[];
   partialsAssignments: PartialAssignment[];
   /** Every participant's share converted to an absolute amount. */
@@ -36,6 +48,17 @@ export interface CreateTransaction {
   name: string;
   paymentDateUtc: string;
   currencyCode: string;
+  note?: string | null;
   payerDetails: PayerDetail[];
   partialsAssignments: PartialAssignment[];
+}
+
+export interface UpdateTransaction extends CreateTransaction {
+  id: string;
+}
+
+/** Identifies an expense together with the group whose caches it touches. */
+export interface TransactionRef {
+  id: string;
+  groupId: string;
 }
