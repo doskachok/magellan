@@ -124,5 +124,6 @@
   "archivedGroups": "Archived groups",
   "archivedCount_one": "Archived ({{count}})",
   "archivedCount_other": "Archived ({{count}})",
-  "noArchivedGroups": "No archived groups"
+  "noArchivedGroups": "No archived groups",
+  "removePlaceholderMessage": "{{name}} will be removed from this group. Expenses that include {{name}} can't be edited afterwards — replace {{name}} with a real person instead to keep them editable."
 }

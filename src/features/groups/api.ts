@@ -16,6 +16,9 @@ const groupTags = (groupId: string) => [
   { type: ApiTag.Activity, id: groupId },
 ];
 
+/** After leaving or deleting a group its own queries would answer 404, so only the list is refreshed. */
+export const goneGroupTags = () => [ApiTag.Groups];
+
 export const groupsApi = api.injectEndpoints({
   endpoints: build => ({
     getGroups: build.query<GroupListItem[], { archived: boolean }>({
@@ -65,11 +68,11 @@ export const groupsApi = api.injectEndpoints({
     }),
     leaveGroup: build.mutation<void, { groupId: string; newOwnerId?: string }>({
       query: ({ groupId, newOwnerId }) => ({ url: `${URL}/${groupId}/leave`, method: 'POST', body: { newOwnerId } }),
-      invalidatesTags: (_result, _error, { groupId }) => groupTags(groupId),
+      invalidatesTags: goneGroupTags,
     }),
     deleteGroup: build.mutation<void, string>({
       query: groupId => ({ url: `${URL}/${groupId}`, method: 'DELETE' }),
-      invalidatesTags: (_result, _error, groupId) => groupTags(groupId),
+      invalidatesTags: goneGroupTags,
     }),
     setArchived: build.mutation<void, { groupId: string; archived: boolean }>({
       query: ({ groupId, archived }) => ({ url: `${URL}/${groupId}/archive`, method: archived ? 'POST' : 'DELETE' }),

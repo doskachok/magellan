@@ -2,7 +2,7 @@ import { api, ApiTag } from 'store/api';
 import type { CreateTransaction, Receipt, Transaction, TransactionRef, UpdateTransaction } from './types';
 
 /** Everything an expense change can show up in. */
-const expenseTags = (groupId: string, transactionId?: string) => [
+export const expenseTags = (groupId: string, transactionId?: string) => [
   ApiTag.Groups,
   { type: ApiTag.Group, id: groupId },
   { type: ApiTag.Debts, id: groupId },
@@ -14,6 +14,10 @@ const expenseTags = (groupId: string, transactionId?: string) => [
       ]
     : []),
 ];
+
+/** As above, minus the deleted expense itself: refetching it would answer 404 and toast an error. */
+export const deletedExpenseTags = (groupId: string, transactionId: string) =>
+  expenseTags(groupId, transactionId).filter(tag => !(typeof tag === 'object' && tag.type === ApiTag.Transaction));
 
 interface ReceiptUpload {
   transactionId: string;
@@ -44,7 +48,7 @@ export const expensesApi = api.injectEndpoints({
     }),
     deleteTransaction: build.mutation<void, TransactionRef>({
       query: ({ id }) => ({ url: `transactions/${id}`, method: 'DELETE' }),
-      invalidatesTags: (_result, _error, { id, groupId }) => expenseTags(groupId, id),
+      invalidatesTags: (_result, _error, { id, groupId }) => deletedExpenseTags(groupId, id),
     }),
     restoreTransaction: build.mutation<Transaction, TransactionRef>({
       query: ({ id }) => ({ url: `transactions/${id}/restore`, method: 'POST' }),

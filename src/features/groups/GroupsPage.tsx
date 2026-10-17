@@ -20,10 +20,11 @@ import {
   SegmentedControl,
   TopBar,
 } from 'components';
-import { formatMoney, toneOf } from 'lib/format';
+import { toneOf } from 'lib/format';
 import { getFileUrl } from 'lib/config';
 import { routes } from 'lib/routes';
 import { useGetGroupsQuery, useSetArchivedMutation } from './api';
+import { sumByCurrency } from './groupTotals';
 import type { GroupListItem } from './types';
 
 type Filter = 'all' | 'owed' | 'owe';
@@ -53,15 +54,6 @@ const SummaryValue = styled.p<{ $tone: 'positive' | 'negative' }>`
   font-variant-numeric: tabular-nums;
   color: ${({ theme, $tone }) => theme.colors[$tone]};
 `;
-
-/** Totals per currency — balances in different currencies can't be summed together. */
-const sumByCurrency = (groups: GroupListItem[], predicate: (amount: number) => boolean) => {
-  const totals = new Map<string, number>();
-  for (const group of groups) {
-    if (predicate(group.yourPart)) totals.set(group.currencyCode, (totals.get(group.currencyCode) ?? 0) + group.yourPart);
-  }
-  return [...totals].map(([currency, amount]) => formatMoney(Math.abs(amount), currency));
-};
 
 const renderTotals = (totals: string[]) =>
   totals.length > 0 ? totals.map(total => <span key={total}>{total}</span>) : <span aria-label="none">—</span>;
@@ -140,8 +132,10 @@ const ActiveGroups = () => {
     [groups, filter],
   );
 
-  const owedToYou = useMemo(() => sumByCurrency(groups, amount => toneOf(amount) === 'positive'), [groups]);
-  const youOwe = useMemo(() => sumByCurrency(groups, amount => toneOf(amount) === 'negative'), [groups]);
+  // Archiving hides a group from the list, not its money: the totals still count it.
+  const everyGroup = useMemo(() => [...groups, ...archived], [groups, archived]);
+  const owedToYou = useMemo(() => sumByCurrency(everyGroup, amount => toneOf(amount) === 'positive'), [everyGroup]);
+  const youOwe = useMemo(() => sumByCurrency(everyGroup, amount => toneOf(amount) === 'negative'), [everyGroup]);
 
   const renderBody = () => {
     if (isLoading) return <PageSpinner />;

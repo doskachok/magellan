@@ -81,7 +81,7 @@ export const MemberMenu = ({ groupId, member, canRemove, removeBlockedReason, on
       <ConfirmDialog
         open={isConfirming}
         title={t('removeMemberTitle')}
-        message={t('removeMemberMessage', { name })}
+        message={t(member.isPlaceholder ? 'removePlaceholderMessage' : 'removeMemberMessage', { name })}
         confirmLabel={t('remove')}
         destructive
         loading={isRemoving}
