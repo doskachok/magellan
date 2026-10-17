@@ -48,10 +48,10 @@ describe('describeActivity', () => {
     [ActivityType.ExpenseEdited, { details: { name: 'Taxi' } }, 'Bob edited “Taxi”'],
     [ActivityType.ExpenseDeleted, { details: { name: 'Taxi', amount: '20.00', currency: 'EUR' } }, 'Bob deleted “Taxi” (€20.00)'],
     [ActivityType.ExpenseRestored, { details: { name: 'Taxi', amount: '20.00', currency: 'EUR' } }, 'Bob restored “Taxi” (€20.00)'],
-    [ActivityType.RepaymentAdded, { subjectUser: me, details: { amount: '12.40', currency: 'EUR' } }, 'Bob recorded a €12.40 repayment to you'],
-    [ActivityType.RepaymentEdited, {}, 'Bob edited a repayment'],
-    [ActivityType.RepaymentDeleted, { details: { amount: '12.40', currency: 'EUR' } }, 'Bob deleted a €12.40 repayment'],
-    [ActivityType.RepaymentRestored, { details: { amount: '12.40', currency: 'EUR' } }, 'Bob restored a €12.40 repayment'],
+    [ActivityType.RepaymentAdded, { subjectUser: me, details: { name: 'Carol', amount: '12.40', currency: 'EUR' } }, 'Bob recorded that Carol paid you €12.40'],
+    [ActivityType.RepaymentEdited, { details: { name: 'Carol' } }, 'Bob edited Carol’s repayment'],
+    [ActivityType.RepaymentDeleted, { details: { name: 'Carol', amount: '12.40', currency: 'EUR' } }, 'Bob deleted Carol’s €12.40 repayment'],
+    [ActivityType.RepaymentRestored, { details: { name: 'Carol', amount: '12.40', currency: 'EUR' } }, 'Bob restored Carol’s €12.40 repayment'],
     [ActivityType.ReceiptAdded, { details: { name: 'bill.pdf' } }, 'Bob attached bill.pdf'],
     [ActivityType.ReceiptRemoved, { details: { name: 'bill.pdf' } }, 'Bob removed bill.pdf'],
   ] as const)('describes type %s', (type, overrides, expected) => {
@@ -87,6 +87,15 @@ describe('describeActivity', () => {
       t,
     );
     expect(changes).toEqual(['Date: 12 Oct 2026 → 13 Oct 2026']);
+  });
+
+  it('names split methods in words', () => {
+    const { changes } = describeActivity(
+      item(ActivityType.ExpenseEdited, { details: { changes: [{ field: 'split', from: 'Equal: Alice 10.00', to: 'AssignedAmount: Alice 4.00' }] } }),
+      me.id,
+      t,
+    );
+    expect(changes).toEqual(['Split: Equally: Alice 10.00 → By amount: Alice 4.00']);
   });
 
   it('says a photo changed without values', () => {

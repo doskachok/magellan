@@ -120,5 +120,9 @@
   "deleteGroupMessage": "The group disappears for everyone. This can't be undone from the app.",
   "deleteHint": "Only you, as the owner, can delete the group.",
   "deleteBlocked": "Everyone has to be settled up before the group can be deleted.",
-  "groupDeleted": "{{name}} deleted"
+  "groupDeleted": "{{name}} deleted",
+  "archivedGroups": "Archived groups",
+  "archivedCount_one": "Archived ({{count}})",
+  "archivedCount_other": "Archived ({{count}})",
+  "noArchivedGroups": "No archived groups"
 }

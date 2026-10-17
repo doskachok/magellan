@@ -15,12 +15,15 @@ const formatAmount = (value: string, currency?: string | null) => (currency ? fo
 // Dates arrive as `yyyy-mm-dd`; read them as local noon so no timezone shifts the day.
 const formatDate = (value: string) => formatShortDate(new Date(`${value}T12:00:00`));
 
-const formatValue = (change: FieldChange, value: string, currency?: string | null) => {
+const formatValue = (change: FieldChange, value: string, currency: string | null | undefined, t: TFunction<'activity'>) => {
   switch (change.field) {
     case 'amount':
       return formatAmount(value, currency);
     case 'date':
       return formatDate(value);
+    case 'split':
+      // The API sends the method's code first, e.g. `Equal: Alice 10.00, Bob 10.00`.
+      return value.replace(/^(\w+):/, (_match, method: string) => `${t(`method_${method}`)}:`);
     default:
       return value;
   }
@@ -46,8 +49,8 @@ export const describeActivity = (item: ActivityItem, currentUserId: string, t: T
     if (change.field === 'avatar') return t('photoChanged');
     return t('change', {
       field: t(`field_${change.field}`),
-      from: change.from ? formatValue(change, change.from, details.currency) : t('empty'),
-      to: change.to ? formatValue(change, change.to, details.currency) : t('empty'),
+      from: change.from ? formatValue(change, change.from, details.currency, t) : t('empty'),
+      to: change.to ? formatValue(change, change.to, details.currency, t) : t('empty'),
     });
   });
 

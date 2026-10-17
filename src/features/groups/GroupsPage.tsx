@@ -1,11 +1,14 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, UsersRound } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router';
+import { Archive, ArchiveRestore, Plus, UsersRound } from 'lucide-react';
+import toast from 'react-hot-toast';
 import styled from 'styled-components';
 
 import {
   Avatar,
   Balance,
+  Button,
   ButtonLink,
   Card,
   CardList,
@@ -20,7 +23,7 @@ import {
 import { formatMoney, toneOf } from 'lib/format';
 import { getFileUrl } from 'lib/config';
 import { routes } from 'lib/routes';
-import { useGetGroupsQuery } from './api';
+import { useGetGroupsQuery, useSetArchivedMutation } from './api';
 import type { GroupListItem } from './types';
 
 type Filter = 'all' | 'owed' | 'owe';
@@ -63,9 +66,73 @@ const sumByCurrency = (groups: GroupListItem[], predicate: (amount: number) => b
 const renderTotals = (totals: string[]) =>
   totals.length > 0 ? totals.map(total => <span key={total}>{total}</span>) : <span aria-label="none">—</span>;
 
-const GroupsPage = () => {
+const ArchivedLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.space(2)};
+  min-height: ${({ theme }) => theme.layout.touchTarget};
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-weight: ${({ theme }) => theme.font.weight.semibold};
+`;
+
+const GroupLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+`;
+
+const ArchivedGroups = () => {
+  const { t } = useTranslation('groups');
+  const { data: groups = [], isLoading } = useGetGroupsQuery({ archived: true });
+  const [setArchived, { isLoading: isRestoring, originalArgs }] = useSetArchivedMutation();
+  const sorted = useMemo(() => groups.toSorted((a, b) => a.name.localeCompare(b.name)), [groups]);
+
+  const unarchive = async (group: GroupListItem) => {
+    const result = await setArchived({ groupId: group.id, archived: false });
+    if (!('error' in result)) toast.success(t('groupUnarchived'));
+  };
+
+  const renderBody = () => {
+    if (isLoading) return <PageSpinner />;
+    if (sorted.length === 0) return <EmptyState icon={<Archive size={28} />} title={t('noArchivedGroups')} />;
+
+    return (
+      <CardList>
+        {sorted.map(group => (
+          <li key={group.id}>
+            <ListRow
+              leading={<Avatar name={group.name} src={getFileUrl(group.avatarId)} />}
+              title={<GroupLink to={routes.group(group.id)}>{group.name}</GroupLink>}
+              subtitle={<Balance amount={group.yourPart} currencyCode={group.currencyCode} align="left" />}
+              trailing={
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  icon={<ArchiveRestore size={16} />}
+                  loading={isRestoring && originalArgs?.groupId === group.id}
+                  onClick={() => void unarchive(group)}
+                >
+                  {t('unarchiveGroup')}
+                </Button>
+              }
+            />
+          </li>
+        ))}
+      </CardList>
+    );
+  };
+
+  return (
+    <Screen withNav topBar={<TopBar title={t('archivedGroups')} back={routes.groups} />}>
+      {renderBody()}
+    </Screen>
+  );
+};
+
+const ActiveGroups = () => {
   const { t } = useTranslation('groups');
   const { data: groups = [], isLoading } = useGetGroupsQuery({ archived: false });
+  const { data: archived = [] } = useGetGroupsQuery({ archived: true });
   const [filter, setFilter] = useState<Filter>('all');
 
   const visibleGroups = useMemo(
@@ -79,18 +146,28 @@ const GroupsPage = () => {
   const renderBody = () => {
     if (isLoading) return <PageSpinner />;
 
+    const archivedLink = archived.length > 0 && (
+      <ArchivedLink to={routes.archivedGroups}>
+        <Archive size={18} aria-hidden />
+        {t('archivedCount', { count: archived.length })}
+      </ArchivedLink>
+    );
+
     if (groups.length === 0) {
       return (
-        <EmptyState
-          icon={<UsersRound size={28} />}
-          title={t('emptyTitle')}
-          description={t('emptyDescription')}
-          action={
-            <ButtonLink to={routes.newGroup} icon={<Plus size={20} />}>
-              {t('createGroup')}
-            </ButtonLink>
-          }
-        />
+        <>
+          <EmptyState
+            icon={<UsersRound size={28} />}
+            title={t('emptyTitle')}
+            description={t('emptyDescription')}
+            action={
+              <ButtonLink to={routes.newGroup} icon={<Plus size={20} />}>
+                {t('createGroup')}
+              </ButtonLink>
+            }
+          />
+          {archivedLink}
+        </>
       );
     }
 
@@ -135,6 +212,7 @@ const GroupsPage = () => {
         ) : (
           <EmptyState icon={<UsersRound size={28} />} title={t('noMatchingGroups')} />
         )}
+        {archivedLink}
       </>
     );
   };
@@ -152,6 +230,11 @@ const GroupsPage = () => {
       {renderBody()}
     </Screen>
   );
+};
+
+const GroupsPage = () => {
+  const [searchParams] = useSearchParams();
+  return searchParams.get('archived') ? <ArchivedGroups /> : <ActiveGroups />;
 };
 
 export default GroupsPage;
