@@ -14,3 +14,4 @@ export { Balance } from './Money';
 export { MoneyText } from './Text';
 export { SegmentedControl } from './SegmentedControl';
 export { PageSpinner, Spinner } from './Spinner';
+export { PlaceholderLabel } from './PlaceholderLabel';

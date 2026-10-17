@@ -2,7 +2,7 @@ import type { Dispatch } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AlertCircle, CheckCircle2, CircleDashed } from 'lucide-react';
 
-import { Avatar, Card, SegmentedControl, SelectField, Stack, TextAreaField, TextField } from 'components';
+import { Avatar, Card, PlaceholderLabel, SegmentedControl, SelectField, Stack, TextAreaField, TextField } from 'components';
 import { CURRENCIES, getFileUrl } from 'lib/config';
 import { formatMoney } from 'lib/format';
 import { getDisplayName, type User } from 'features/users/types';
@@ -134,7 +134,10 @@ export const PaidByStep = ({ draft, dispatch, members, payerId, currencyCode, to
             {members.map(member => (
               <ChoiceRow key={member.id}>
                 <Avatar name={getDisplayName(member)} src={getFileUrl(member.avatarId)} size={36} />
-                <RowName>{getDisplayName(member)}</RowName>
+                <RowName>
+                  {getDisplayName(member)}
+                  {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
+                </RowName>
                 <Radio
                   name="payer"
                   checked={payerId === member.id}
@@ -150,7 +153,10 @@ export const PaidByStep = ({ draft, dispatch, members, payerId, currencyCode, to
             {members.map(member => (
               <ChoiceRow key={member.id} as="div">
                 <Avatar name={getDisplayName(member)} src={getFileUrl(member.avatarId)} size={36} />
-                <RowName>{getDisplayName(member)}</RowName>
+                <RowName>
+                  {getDisplayName(member)}
+                  {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
+                </RowName>
                 <AmountInput
                   label={t('amountPaidBy', { name: getDisplayName(member) })}
                   value={draft.payerAmounts[member.id] ?? ''}
@@ -229,7 +235,10 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
             return (
               <ChoiceRow key={member.id}>
                 <Avatar name={name} src={getFileUrl(member.avatarId)} size={36} />
-                <RowName>{name}</RowName>
+                <RowName>
+                  {name}
+                  {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
+                </RowName>
                 <RowAmount $muted={!included}>{share}</RowAmount>
                 <Checkbox
                   checked={included}
@@ -245,6 +254,7 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
               <Avatar name={name} src={getFileUrl(member.avatarId)} size={36} />
               <RowName>
                 {name}
+                {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
                 {mode !== 'amount' && <RowSubtitle>{share}</RowSubtitle>}
               </RowName>
               <AmountInput

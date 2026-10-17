@@ -17,6 +17,7 @@ import {
   MoneyText,
   Muted,
   PageSpinner,
+  PlaceholderLabel,
   Screen,
   Section,
   TopBar,
@@ -123,6 +124,7 @@ const ExpenseDetailsPage = () => {
         key={personId}
         leading={<Avatar name={name} src={getFileUrl(user?.avatarId)} size={36} />}
         title={personId === userId ? t('you', { ns: 'groups', name }) : name}
+        subtitle={user?.isPlaceholder && <PlaceholderLabel />}
         trailing={<MoneyText>{formatMoney(amount, currencyCode)}</MoneyText>}
       />
     );

@@ -12,9 +12,9 @@ import {
   AvatarPicker,
   Button,
   Card,
-  ConfirmDialog,
   ListRow,
   PageSpinner,
+  PlaceholderLabel,
   Screen,
   Section,
   SelectField,
@@ -26,8 +26,11 @@ import { CURRENCIES, getFileUrl } from 'lib/config';
 import { routes } from 'lib/routes';
 import { useCurrentUserId, useUploadFileMutation } from 'features/users/api';
 import { getDisplayName, type User } from 'features/users/types';
-import { useGetGroupQuery, useRemoveParticipantMutation, useSaveGroupMutation } from './api';
+import { useGetGroupDebtsQuery, useGetGroupQuery, useSaveGroupMutation } from './api';
 import { AddMemberDialog } from './AddMemberDialog';
+import { formatBalances, openBalances } from './memberBalance';
+import { GroupActionsSection } from './settings/GroupActionsSection';
+import { MemberMenu } from './settings/MemberMenu';
 import type { Group } from './types';
 
 const groupSchema = yup.object({
@@ -117,14 +120,15 @@ const MembersSection = ({ group }: { group: Group }) => {
   const { t } = useTranslation('groups');
   const userId = useCurrentUserId();
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const [memberToRemove, setMemberToRemove] = useState<User | null>(null);
-  const [removeParticipant, { isLoading: isRemoving }] = useRemoveParticipantMutation();
+  const [replacing, setReplacing] = useState<User>();
+  const { data: debts = [] } = useGetGroupDebtsQuery(group.id);
+  const isOwner = group.ownerId === userId;
+  const memberIds = group.participants.map(member => member.id);
 
-  const handleRemove = async () => {
-    if (!memberToRemove) return;
-    const result = await removeParticipant({ groupId: group.id, userId: memberToRemove.id });
-    if ('data' in result) toast.success(t('memberRemoved', { name: getDisplayName(memberToRemove) }));
-    setMemberToRemove(null);
+  const blockedReason = (member: User) => {
+    const balances = openBalances(debts, member.id);
+    if (balances.length === 0) return undefined;
+    return t('settleFirst', { balances: formatBalances(balances, { owes: t('balanceWordOwe'), owed: t('balanceWordOwed') }) });
   };
 
   return (
@@ -142,34 +146,29 @@ const MembersSection = ({ group }: { group: Group }) => {
             key={member.id}
             leading={<Avatar name={getDisplayName(member)} src={getFileUrl(member.avatarId)} />}
             title={member.id === userId ? t('you', { name: getDisplayName(member) }) : getDisplayName(member)}
-            subtitle={member.email}
+            subtitle={member.isPlaceholder ? <PlaceholderLabel /> : member.email}
             trailing={
               member.id !== userId && (
-                <Button size="sm" variant="danger" onClick={() => setMemberToRemove(member)}>
-                  {t('remove')}
-                </Button>
+                <MemberMenu
+                  groupId={group.id}
+                  member={member}
+                  canRemove={member.isPlaceholder === true || isOwner}
+                  removeBlockedReason={blockedReason(member)}
+                  onReplace={() => setReplacing(member)}
+                />
               )
             }
           />
         ))}
       </Card>
 
+      <AddMemberDialog open={isAddOpen} groupId={group.id} memberIds={memberIds} onClose={() => setIsAddOpen(false)} />
       <AddMemberDialog
-        open={isAddOpen}
+        open={Boolean(replacing)}
         groupId={group.id}
-        memberIds={group.participants.map(member => member.id)}
-        onClose={() => setIsAddOpen(false)}
-      />
-
-      <ConfirmDialog
-        open={memberToRemove !== null}
-        title={t('removeMemberTitle')}
-        message={t('removeMemberMessage', { name: memberToRemove ? getDisplayName(memberToRemove) : '' })}
-        confirmLabel={t('remove')}
-        destructive
-        loading={isRemoving}
-        onConfirm={handleRemove}
-        onClose={() => setMemberToRemove(null)}
+        memberIds={memberIds}
+        replacing={replacing}
+        onClose={() => setReplacing(undefined)}
       />
     </Section>
   );
@@ -198,6 +197,7 @@ const GroupSettingsPage = () => {
           {/* Keyed so the form re-initialises when the loaded group changes. */}
           <GroupDetailsForm key={group?.id ?? 'new'} group={group} />
           {group && <MembersSection group={group} />}
+          {group && <GroupActionsSection group={group} />}
         </>
       )}
     </Screen>
