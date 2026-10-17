@@ -19,7 +19,9 @@ export default defineConfig({
       injectRegister: false,
       manifest: false,
       injectManifest: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf,woff2}'],
+        // Locale JSON is precached with the code that uses it: left to the runtime cache, a stale copy of a
+        // namespace outlives an update and new keys render untranslated until the next reload.
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf,woff2,json}'],
       },
     }),
   ],
