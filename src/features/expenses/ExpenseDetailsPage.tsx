@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import { Receipt } from 'lucide-react';
+import { HandCoins, Receipt } from 'lucide-react';
 import styled from 'styled-components';
 
 import { Avatar, Balance, Card, EmptyState, ListRow, MoneyText, Muted, PageSpinner, Screen, Section, TopBar } from 'components';
@@ -94,16 +94,16 @@ const ExpenseDetailsPage = () => {
       <>
         <Hero $padded>
           <HeroIcon aria-hidden>
-            <Receipt size={28} />
+            {expense.isSettlement ? <HandCoins size={28} /> : <Receipt size={28} />}
           </HeroIcon>
-          <HeroTitle>{expense.name}</HeroTitle>
+          <HeroTitle>{expense.isSettlement ? t('settlement') : expense.name}</HeroTitle>
           <HeroAmount>{formatMoney(total, expense.currencyCode)}</HeroAmount>
           <Muted>
             {formatShortDate(expense.paymentDateUtc)}
             {group && ` · ${group.name}`}
           </Muted>
           <YourShare>
-            <Balance variant="expense" align="left" amount={myBalance} currencyCode={expense.currencyCode} />
+            <Balance variant={expense.isSettlement ? 'settlement' : 'expense'} align="left" amount={myBalance} currencyCode={expense.currencyCode} />
           </YourShare>
         </Hero>
 
@@ -111,14 +111,20 @@ const ExpenseDetailsPage = () => {
           <Card>{expense.payerDetails.map(payer => personRow(payer.payerId, payer.amount, expense.currencyCode))}</Card>
         </Section>
 
-        <Section title={t('splitBetween', { count: expense.partialsAssignmentsTranslated.length })}>
+        <Section
+          title={
+            expense.isSettlement
+              ? t('paidTo')
+              : t('splitBetween', { count: expense.partialsAssignmentsTranslated.length })
+          }
+        >
           <Card>{expense.partialsAssignmentsTranslated.map(part => personRow(part.userId, part.partialAmount, expense.currencyCode))}</Card>
         </Section>
       </>
     );
   };
 
-  return <Screen topBar={<TopBar title={t('expense')} back={routes.group(groupId)} />}>{renderBody()}</Screen>;
+  return <Screen topBar={<TopBar title={expense?.isSettlement ? t('settlement') : t('expense')} back={routes.group(groupId)} />}>{renderBody()}</Screen>;
 };
 
 export default ExpenseDetailsPage;

@@ -12,6 +12,7 @@ const SignUpPage = lazy(() => import('features/auth/SignUpPage'));
 const GroupsPage = lazy(() => import('features/groups/GroupsPage'));
 const GroupDetailsPage = lazy(() => import('features/groups/GroupDetailsPage'));
 const GroupSettingsPage = lazy(() => import('features/groups/GroupSettingsPage'));
+const SettleDebtPage = lazy(() => import('features/groups/SettleDebtPage'));
 const NewExpensePage = lazy(() => import('features/expenses/new/NewExpensePage'));
 const ExpenseDetailsPage = lazy(() => import('features/expenses/ExpenseDetailsPage'));
 const AccountPage = lazy(() => import('features/account/AccountPage'));
@@ -57,6 +58,7 @@ export const router = createBrowserRouter([
           { path: routes.newGroup, element: <GroupSettingsPage /> },
           { path: routePatterns.group, element: <GroupDetailsPage /> },
           { path: routePatterns.groupSettings, element: <GroupSettingsPage /> },
+          { path: routePatterns.settleDebt, element: <SettleDebtPage /> },
           { path: routePatterns.expense, element: <ExpenseDetailsPage /> },
           { path: routePatterns.newExpense, element: <NewExpensePage /> },
           { path: routes.account, element: <AccountPage /> },

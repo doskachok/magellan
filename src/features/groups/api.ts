@@ -1,5 +1,5 @@
 import { api, ApiTag } from 'store/api';
-import type { Debt, Group, GroupListItem, SaveGroup } from './types';
+import type { CreateSettlement, Debt, Group, GroupListItem, SaveGroup } from './types';
 
 const URL = 'transaction-groups';
 
@@ -40,6 +40,10 @@ export const groupsApi = api.injectEndpoints({
       query: ({ groupId, userId }) => ({ url: `${URL}/${groupId}/participants/${userId}`, method: 'DELETE' }),
       invalidatesTags: (_result, _error, { groupId }) => groupTags(groupId),
     }),
+    settleDebt: build.mutation<void, CreateSettlement & { groupId: string }>({
+      query: ({ groupId, ...body }) => ({ url: `${URL}/${groupId}/settlements`, method: 'POST', body }),
+      invalidatesTags: (_result, _error, { groupId }) => groupTags(groupId),
+    }),
   }),
 });
 
@@ -50,4 +54,5 @@ export const {
   useSaveGroupMutation,
   useAddParticipantMutation,
   useRemoveParticipantMutation,
+  useSettleDebtMutation,
 } = groupsApi;

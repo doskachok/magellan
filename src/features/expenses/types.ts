@@ -23,6 +23,8 @@ export interface Transaction {
   name: string;
   paymentDateUtc: string;
   currencyCode: string;
+  /** A repayment between two members rather than an expense. */
+  isSettlement: boolean;
   payerDetails: PayerDetail[];
   partialsAssignments: PartialAssignment[];
   /** Every participant's share converted to an absolute amount. */

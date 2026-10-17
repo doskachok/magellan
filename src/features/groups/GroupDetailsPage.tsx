@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import { CheckCircle2, Plus, Receipt, Settings } from 'lucide-react';
+import { CheckCircle2, HandCoins, Plus, Receipt, Settings } from 'lucide-react';
 import styled from 'styled-components';
 
 import {
@@ -60,6 +60,11 @@ const ExpenseIcon = styled.span`
   color: ${({ theme }) => theme.colors.brand};
 `;
 
+const SettlementIcon = styled(ExpenseIcon)`
+  background: ${({ theme }) => theme.colors.surfaceMuted};
+  color: ${({ theme }) => theme.colors.positive};
+`;
+
 const DayHeading = styled.h3`
   padding: ${({ theme }) => theme.space(2, 4)};
   background: ${({ theme }) => theme.colors.surfaceMuted};
@@ -75,6 +80,8 @@ const SettledRow = styled.div`
   padding: ${({ theme }) => theme.space(4)};
   color: ${({ theme }) => theme.colors.positive};
 `;
+
+const involves = (debt: Debt, userId: string) => debt.lenderId === userId || debt.debtorId === userId;
 
 const groupByDay = (transactions: GroupTransaction[]) => {
   const days = new Map<string, GroupTransaction[]>();
@@ -105,18 +112,48 @@ const GroupDetailsPage = () => {
   );
 
   // Debts involving the current user first — those are the ones they can act on.
-  const sortedDebts = useMemo(() => {
-    const involvesMe = (debt: Debt) => debt.lenderId === userId || debt.debtorId === userId;
-    return debts.toSorted((a, b) => Number(involvesMe(b)) - Number(involvesMe(a)));
-  }, [debts, userId]);
+  const sortedDebts = useMemo(
+    () => debts.toSorted((a, b) => Number(involves(b, userId)) - Number(involves(a, userId))),
+    [debts, userId],
+  );
 
   const days = useMemo(() => groupByDay(group?.transactions ?? []), [group]);
 
-  const describeDebt = (debt: Debt) => {
+  const renderDebt = (debt: Debt) => {
     const amount = formatMoney(debt.amount, debt.currencyCode);
-    if (debt.lenderId === userId) return t('debtOwesYou', { name: debt.debtorName, amount });
-    if (debt.debtorId === userId) return t('debtYouOwe', { name: debt.lenderName, amount });
-    return t('debtOwes', { debtor: debt.debtorName, lender: debt.lenderName, amount });
+    const key = `${debt.debtorId}-${debt.lenderId}`;
+
+    if (!involves(debt, userId)) {
+      return (
+        <ListRow
+          key={key}
+          leading={<Avatar name={debt.debtorName} src={getFileUrl(debt.debtorAvatarId)} size={36} />}
+          title={t('debtOwes', { debtor: debt.debtorName, lender: debt.lenderName, amount })}
+        />
+      );
+    }
+
+    // The other person names the row and the amount gets its own line, so neither is cut off by the button.
+    const iAmLender = debt.lenderId === userId;
+    return (
+      <ListRow
+        key={key}
+        leading={
+          iAmLender ? (
+            <Avatar name={debt.debtorName} src={getFileUrl(debt.debtorAvatarId)} size={36} />
+          ) : (
+            <Avatar name={debt.lenderName} src={getFileUrl(debt.lenderAvatarId)} size={36} />
+          )
+        }
+        title={iAmLender ? debt.debtorName : debt.lenderName}
+        subtitle={<MoneyText>{t(iAmLender ? 'debtOwesYouAmount' : 'debtYouOweAmount', { amount })}</MoneyText>}
+        trailing={
+          <ButtonLink size="sm" variant="secondary" to={routes.settleDebt(groupId, debt)}>
+            {t('settleUp')}
+          </ButtonLink>
+        }
+      />
+    );
   };
 
   const renderBody = () => {
@@ -148,13 +185,7 @@ const GroupDetailsPage = () => {
                   {t('everyoneSettled')}
                 </SettledRow>
               ) : (
-                sortedDebts.map(debt => (
-                  <ListRow
-                    key={`${debt.debtorId}-${debt.lenderId}`}
-                    leading={<Avatar name={debt.debtorName} src={getFileUrl(debt.debtorAvatarId)} size={36} />}
-                    title={describeDebt(debt)}
-                  />
-                ))
+                sortedDebts.map(renderDebt)
               )}
             </Card>
           </Section>
@@ -180,14 +211,22 @@ const GroupDetailsPage = () => {
                         <ListRow
                           to={routes.expense(group.id, transaction.id)}
                           leading={
-                            <ExpenseIcon aria-hidden>
-                              <Receipt size={20} />
-                            </ExpenseIcon>
+                            transaction.isSettlement ? (
+                              <SettlementIcon aria-hidden>
+                                <HandCoins size={20} />
+                              </SettlementIcon>
+                            ) : (
+                              <ExpenseIcon aria-hidden>
+                                <Receipt size={20} />
+                              </ExpenseIcon>
+                            )
                           }
-                          title={transaction.name}
+                          title={transaction.isSettlement ? t('settlement') : transaction.name}
                           subtitle={<MoneyText>{formatMoney(transaction.totalAmount, transaction.currencyCode)}</MoneyText>}
                           trailing={
-                            <Balance variant="expense" amount={transaction.yourPart} currencyCode={transaction.currencyCode} />
+                            <Balance
+                              variant={transaction.isSettlement ? 'settlement' : 'expense'}
+                              amount={transaction.yourPart} currencyCode={transaction.currencyCode} />
                           }
                         />
                       </li>

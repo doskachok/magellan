@@ -16,6 +16,8 @@ export interface GroupTransaction {
   currencyCode: string;
   totalAmount: number;
   yourPart: number;
+  /** A repayment between two members rather than an expense. */
+  isSettlement: boolean;
 }
 
 export interface Group {
@@ -35,6 +37,13 @@ export interface Debt {
   debtorId: string;
   debtorName: string;
   debtorAvatarId?: string | null;
+  currencyCode: string;
+  amount: number;
+}
+
+export interface CreateSettlement {
+  debtorId: string;
+  lenderId: string;
   currencyCode: string;
   amount: number;
 }
