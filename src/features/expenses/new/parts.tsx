@@ -43,6 +43,8 @@ export const AmountInput = ({ value, label, onValueChange, ...rest }: AmountInpu
 );
 
 const StepperRoot = styled.div`
+  /* Stays in place while the step below it slides, so the bar fill reads as progress. */
+  view-transition-name: expense-stepper;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.space(2)};
@@ -64,12 +66,16 @@ const StepperBar = styled.li<{ $state: 'done' | 'current' | 'todo' }>`
   font-size: ${({ theme }) => theme.font.size.xs};
   font-weight: ${({ theme }) => theme.font.weight.semibold};
   color: ${({ theme, $state }) => ($state === 'todo' ? theme.colors.textMuted : theme.colors.brand)};
+  transition: color ${({ theme }) => theme.motion.normal};
 
+  /* A brand fill sweeps across the track as the step is reached, and drains back when leaving it. */
   &::before {
     content: '';
     height: 4px;
     border-radius: ${({ theme }) => theme.radius.pill};
-    background: ${({ theme, $state }) => ($state === 'todo' ? theme.colors.border : theme.colors.brand)};
+    background: linear-gradient(${({ theme }) => `${theme.colors.brand}, ${theme.colors.brand}`}) left / ${({ $state }) => ($state === 'todo' ? '0%' : '100%')} 100% no-repeat
+      ${({ theme }) => theme.colors.border};
+    transition: background-size 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 `;
 

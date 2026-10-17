@@ -14,10 +14,16 @@ const iconButtonStyles = css<{ $tone: 'default' | 'onBrand' }>`
   background: transparent;
   color: ${({ theme, $tone }) => ($tone === 'onBrand' ? theme.colors.onBrand : theme.colors.text)};
   cursor: pointer;
-  transition: background ${({ theme }) => theme.motion.fast};
+  transition:
+    background ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast};
 
   &:hover {
     background: ${({ $tone }) => ($tone === 'onBrand' ? 'rgba(255, 255, 255, 0.16)' : 'rgba(20, 32, 27, 0.06)')};
+  }
+
+  &:active {
+    transform: scale(0.9);
   }
 `;
 
@@ -50,7 +56,7 @@ interface IconLinkProps {
 }
 
 export const IconLink = ({ label, icon, to, tone = 'default' }: IconLinkProps) => (
-  <StyledLink to={to} aria-label={label} title={label} $tone={tone}>
+  <StyledLink to={to} viewTransition aria-label={label} title={label} $tone={tone}>
     {icon}
   </StyledLink>
 );

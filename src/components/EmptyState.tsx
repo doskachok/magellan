@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
+import { popIn } from 'theme/motion';
+
 const Root = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,6 +21,7 @@ const IconCircle = styled.div`
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.brandSoft};
   color: ${({ theme }) => theme.colors.brand};
+  animation: ${popIn} ${({ theme }) => theme.motion.spring} backwards;
 `;
 
 const Title = styled.h2`

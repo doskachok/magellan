@@ -54,9 +54,15 @@ const buttonStyles = css<StyleProps>`
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: background ${({ theme }) => theme.motion.fast};
+  transition:
+    background ${({ theme }) => theme.motion.fast},
+    transform ${({ theme }) => theme.motion.fast};
 
   ${({ $variant }) => variants[$variant]}
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
 
   &:disabled {
     cursor: not-allowed;
@@ -118,7 +124,7 @@ export const Button = ({
 type ButtonLinkProps = CommonProps & LinkProps;
 
 export const ButtonLink = ({ variant = 'primary', size = 'md', fullWidth = false, icon, children, ...rest }: ButtonLinkProps) => (
-  <StyledLink $variant={variant} $size={size} $fullWidth={fullWidth} {...rest}>
+  <StyledLink viewTransition $variant={variant} $size={size} $fullWidth={fullWidth} {...rest}>
     {icon}
     {children}
   </StyledLink>

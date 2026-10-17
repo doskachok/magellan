@@ -51,7 +51,14 @@ export const theme = {
     raised: '0 8px 24px rgba(20, 32, 27, 0.16)',
   },
   layout: { maxWidth: '560px', topBarHeight: '56px', bottomNavHeight: '64px', touchTarget: '44px' },
-  motion: { fast: '120ms ease-out', normal: '200ms ease-out' },
+  motion: {
+    fast: '120ms ease-out',
+    normal: '200ms ease-out',
+    /** Things arriving on screen: quick start, long soft landing. */
+    enter: '280ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+    /** Slight overshoot for small, playful movements (selection thumbs, icons). */
+    spring: '360ms cubic-bezier(0.34, 1.4, 0.64, 1)',
+  },
 };
 
 export type AppTheme = typeof theme;

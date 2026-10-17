@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { staggeredEntrance } from 'theme/motion';
+
 export const Card = styled.section<{ $padded?: boolean }>`
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -33,6 +35,10 @@ export const CardList = styled(Card).attrs({ as: 'ul' })`
   margin: 0;
   padding: 0;
   list-style: none;
+
+  & > li {
+    ${staggeredEntrance()}
+  }
 `;
 
 export const PlainList = styled.ul`
