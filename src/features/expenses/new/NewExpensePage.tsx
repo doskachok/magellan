@@ -8,6 +8,7 @@ import { Button, ButtonLink, EmptyState, PageSpinner, Screen, TopBar } from 'com
 import { CURRENCIES } from 'lib/config';
 import { parseAmount, roundMoney } from 'lib/format';
 import { routes } from 'lib/routes';
+import { useDebouncedValue } from 'lib/useDebouncedValue';
 import { withViewTransition } from 'lib/viewTransitions';
 import { useGetGroupQuery, useGetGroupsQuery } from 'features/groups/api';
 import { useCurrentUserId } from 'features/users/api';
@@ -15,10 +16,11 @@ import {
   useCreateTransactionMutation,
   useDeleteReceiptMutation,
   useGetTransactionQuery,
+  usePreviewSplitQuery,
   useUpdateTransactionMutation,
   useUploadReceiptMutation,
 } from '../api';
-import { buildAssignments, buildPayerDetails, evaluateSplit, sumInputs } from '../split';
+import { buildAssignments, buildPayerDetails, sumInputs } from '../split';
 import type { Transaction } from '../types';
 import { createDraft, draftFromExpense, draftReducer, type ExpenseDraft } from './draft';
 import { Stepper } from './parts';
@@ -55,14 +57,27 @@ const ExpenseForm = ({ initialDraft, existing }: ExpenseFormProps) => {
   const currencyCode = draft.currencyCode || groupCurrency || CURRENCIES[0];
   const payerId = draft.payerId || (memberIds.includes(userId) ? userId : (memberIds[0] ?? ''));
 
-  const payerInputs = draft.payerMode === 'single' ? { [payerId]: draft.amount } : draft.payerAmounts;
   const total = draft.payerMode === 'single' ? roundMoney(parseAmount(draft.amount)) : sumInputs(draft.payerAmounts);
-  const splitResult = useMemo(() => evaluateSplit(draft.split, memberIds, total), [draft.split, memberIds, total]);
+
+  // What saving would send. The split step shows the API's preview of it: shares and whether it adds up
+  // are computed only there, with the same code that validates and stores the expense.
+  const split = useMemo(
+    () => ({
+      payerDetails: buildPayerDetails(draft.payerMode === 'single' ? { [payerId]: draft.amount } : draft.payerAmounts),
+      partialsAssignments: buildAssignments(draft.split, memberIds),
+    }),
+    [draft.payerMode, draft.amount, draft.payerAmounts, draft.split, payerId, memberIds],
+  );
+  const previewedSplit = useDebouncedValue(split, 250);
+  // `data` keeps showing the previous preview while the next one loads, so numbers don't flicker.
+  const { data: preview, isFetching: isPreviewing } = usePreviewSplitQuery(previewedSplit, { skip: draft.step !== 2 });
+  // Until the preview catches up with the latest input, it can't vouch for it.
+  const previewIsCurrent = previewedSplit === split && !isPreviewing;
 
   const stepIsValid = [
     Boolean(draft.groupId && draft.name.trim() && draft.date),
     total > 0 && Boolean(payerId),
-    splitResult.issue === null,
+    previewIsCurrent && preview?.issue === null,
   ][draft.step];
 
   const goBack = () => {
@@ -90,8 +105,7 @@ const ExpenseForm = ({ initialDraft, existing }: ExpenseFormProps) => {
       note: draft.note.trim() || null,
       // Noon local time keeps the chosen calendar day stable across time zones.
       paymentDateUtc: new Date(`${draft.date}T12:00:00`).toISOString(),
-      payerDetails: buildPayerDetails(payerInputs),
-      partialsAssignments: buildAssignments(draft.split, memberIds),
+      ...split,
     };
 
     const result = existing ? await updateTransaction({ ...body, id: existing.id }) : await createTransaction(body);
@@ -150,7 +164,8 @@ const ExpenseForm = ({ initialDraft, existing }: ExpenseFormProps) => {
             members={members}
             currencyCode={currencyCode}
             total={total}
-            result={splitResult}
+            preview={preview}
+            isPreviewing={!previewIsCurrent}
             showErrors={showErrors}
           />
         );

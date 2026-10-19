@@ -66,6 +66,37 @@ describe('draftFromExpense', () => {
     expect(roundTrip(draft)).toEqual({ payerDetails: original.payerDetails, partialsAssignments: original.partialsAssignments });
   });
 
+  it.each([
+    ['equal', SplitMethod.Equal, [0, 0]],
+    ['proportional', SplitMethod.Shares, [10, 5]],
+  ] as const)('round-trips amounts with the rest split %s', (rest, splitMethod, [first, second]) => {
+    const original = expense({
+      partialsAssignments: [
+        { userId: 'alice', partialAmount: 10, splitMethod: SplitMethod.AssignedAmount },
+        { userId: 'bob', partialAmount: 5, splitMethod: SplitMethod.AssignedAmount },
+        { userId: 'carol', partialAmount: 3, splitMethod: SplitMethod.AssignedAmount },
+        { userId: 'alice', partialAmount: first, splitMethod },
+        { userId: 'bob', partialAmount: second, splitMethod },
+      ],
+    });
+
+    const draft = draftFromExpense(original, 'g1', members);
+
+    expect(draft.split).toMatchObject({ mode: 'amount', rest, restIncluded: { alice: true, bob: true, carol: false } });
+    expect(roundTrip(draft)).toEqual({ payerDetails: original.payerDetails, partialsAssignments: original.partialsAssignments });
+  });
+
+  it('keeps members without an amount ticked for a proportional rest', () => {
+    const original = expense({
+      partialsAssignments: [
+        { userId: 'alice', partialAmount: 20, splitMethod: SplitMethod.AssignedAmount },
+        { userId: 'alice', partialAmount: 20, splitMethod: SplitMethod.Shares },
+      ],
+    });
+
+    expect(draftFromExpense(original, 'g1', members).split.restIncluded).toEqual({ alice: true, bob: true, carol: true });
+  });
+
   it('round-trips several payers', () => {
     const original = expense({
       payerDetails: [

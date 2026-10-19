@@ -12,6 +12,9 @@ const MODE_TO_METHOD: Record<SplitMode, SplitMethod> = {
   shares: SplitMethod.Shares,
 };
 
+/** How the amount left after fixed amounts is shared out in the `amount` mode. */
+export type RestMode = 'none' | 'equal' | 'proportional';
+
 /** Raw text input per user id, as typed. */
 export type AmountInputs = Record<string, string>;
 
@@ -21,18 +24,28 @@ export interface SplitState {
   included: Record<string, boolean>;
   /** Amount / percent / share inputs for the other modes. */
   values: AmountInputs;
+  /** `amount` mode only: who shares the unassigned rest, and how. */
+  rest: RestMode;
+  /** Who takes part in sharing the rest; members not listed are included. */
+  restIncluded: Record<string, boolean>;
 }
 
-export type SplitIssue =
-  | { kind: 'noParticipants' }
-  | { kind: 'amountMismatch'; remaining: number }
-  | { kind: 'percentMismatch'; remaining: number }
-  | { kind: 'noShares' };
+/** Why the API won't save a split yet; mirrors `SplitIssue` / `SplitIssueKind` in the API. */
+export interface SplitIssue {
+  kind: 'noPayers' | 'noParticipants' | 'noShares' | 'amountMismatch' | 'percentMismatch' | 'invalidSplit';
+  /** Money (amountMismatch) or percent (percentMismatch) left to assign; negative when over. */
+  remaining?: number | null;
+}
 
-export interface SplitResult {
-  /** Each participant's resulting amount, for preview. */
-  shares: Record<string, number>;
+/** The API's answer to `POST transactions/preview`: what everyone pays, computed exactly as on save. */
+export interface SplitPreview {
+  shares: { userId: string; partialAmount: number }[];
   issue: SplitIssue | null;
+}
+
+export interface SplitPreviewRequest {
+  payerDetails: PayerDetail[];
+  partialsAssignments: PartialAssignment[];
 }
 
 const sum = (values: number[]) => values.reduce((total, value) => total + value, 0);
@@ -49,52 +62,29 @@ const activeParticipants = (state: SplitState, memberIds: string[]) =>
     ? memberIds.filter(id => state.included[id] ?? true)
     : memberIds.filter(id => parseAmount(state.values[id] ?? '') > 0);
 
-export const buildAssignments = (state: SplitState, memberIds: string[]): PartialAssignment[] =>
-  activeParticipants(state, memberIds).map(userId => ({
+/**
+ * Turns what was typed into the assignments the API stores. No maths happens here: shares, totals
+ * and whether the split adds up all come from the API (`SplitPreview`, and validation on save).
+ *
+ * In the `amount` mode a rest is sent as a mixed split: everyone keeps their `AssignedAmount`, and
+ * the ticked members get an extra `Equal` entry, or a `Shares` entry weighted by the amount they
+ * typed (members without an amount have no weight, so they're left out). When nothing is left, the
+ * API drops those extra entries on save.
+ */
+export const buildAssignments = (state: SplitState, memberIds: string[]): PartialAssignment[] => {
+  const amount = (id: string) => parseAmount(state.values[id] ?? '');
+  const assignments = activeParticipants(state, memberIds).map(userId => ({
     userId,
     splitMethod: MODE_TO_METHOD[state.mode],
-    partialAmount: state.mode === 'equal' ? 0 : parseAmount(state.values[userId] ?? ''),
+    partialAmount: state.mode === 'equal' ? 0 : amount(userId),
   }));
 
-/**
- * Previews each person's share and reports what blocks saving. Rules mirror the API's
- * `TransactionUtils.AmountCheck`: amounts must add up to the total, percentages to 100,
- * shares must be positive, and someone has to take part.
- */
-export const evaluateSplit = (state: SplitState, memberIds: string[], total: number): SplitResult => {
-  const participants = activeParticipants(state, memberIds);
-  const value = (id: string) => parseAmount(state.values[id] ?? '');
-  const shares: Record<string, number> = Object.fromEntries(memberIds.map(id => [id, 0]));
+  if (state.mode !== 'amount' || state.rest === 'none') return assignments;
 
-  if (participants.length === 0) {
-    const issue: Record<SplitMode, SplitIssue> = {
-      equal: { kind: 'noParticipants' },
-      amount: { kind: 'amountMismatch', remaining: total },
-      percent: { kind: 'percentMismatch', remaining: 100 },
-      shares: { kind: 'noShares' },
-    };
-    return { shares, issue: issue[state.mode] };
-  }
-
-  switch (state.mode) {
-    case 'equal': {
-      for (const id of participants) shares[id] = total / participants.length;
-      return { shares, issue: null };
-    }
-    case 'amount': {
-      for (const id of participants) shares[id] = value(id);
-      const remaining = roundMoney(total - sum(participants.map(value)));
-      return { shares, issue: remaining === 0 ? null : { kind: 'amountMismatch', remaining } };
-    }
-    case 'percent': {
-      for (const id of participants) shares[id] = (total * value(id)) / 100;
-      const remaining = roundMoney(100 - sum(participants.map(value)));
-      return { shares, issue: remaining === 0 ? null : { kind: 'percentMismatch', remaining } };
-    }
-    case 'shares': {
-      const totalShares = sum(participants.map(value));
-      for (const id of participants) shares[id] = (total * value(id)) / totalShares;
-      return { shares, issue: null };
-    }
-  }
+  const ticked = memberIds.filter(id => state.restIncluded[id] ?? true);
+  const rest =
+    state.rest === 'equal'
+      ? ticked.map(userId => ({ userId, splitMethod: SplitMethod.Equal, partialAmount: 0 }))
+      : ticked.filter(id => amount(id) > 0).map(userId => ({ userId, splitMethod: SplitMethod.Shares, partialAmount: amount(userId) }));
+  return [...assignments, ...rest];
 };
