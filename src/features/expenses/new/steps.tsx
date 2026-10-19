@@ -7,7 +7,7 @@ import { CURRENCIES, getFileUrl } from 'lib/config';
 import { formatMoney } from 'lib/format';
 import { getDisplayName, type User } from 'features/users/types';
 import type { GroupListItem } from 'features/groups/types';
-import { SPLIT_MODES, type SplitIssue, type SplitResult } from '../split';
+import { SPLIT_MODES, type SplitIssue, type SplitPreview, type SplitState } from '../split';
 import type { Receipt } from '../types';
 import { isAmountInput, NOTE_MAX_LENGTH, type DraftAction, type ExpenseDraft } from './draft';
 import { AmountInput } from './parts';
@@ -180,35 +180,53 @@ interface SplitStepProps {
   members: User[];
   currencyCode: string;
   total: number;
-  result: SplitResult;
+  /** The API's preview of the split; undefined until the first one arrives. */
+  preview: SplitPreview | undefined;
+  /** The preview doesn't reflect the latest input yet. */
+  isPreviewing: boolean;
   showErrors: boolean;
 }
 
+/** Words for the API's verdict. Only wording is chosen here; every number comes from the API. */
 const useIssueText = () => {
   const { t } = useTranslation('expenses');
-  return (issue: SplitIssue, currencyCode: string) => {
+  return (issue: SplitIssue, split: SplitState, total: number, currencyCode: string) => {
+    const remaining = issue.remaining ?? 0;
     switch (issue.kind) {
+      case 'noPayers':
+        return t('amountRequired');
       case 'noParticipants':
-        return t('issueNoParticipants');
+        // Nothing was entered yet, so everything is still to be assigned.
+        return {
+          equal: t('issueNoParticipants'),
+          amount: t('issueAmountLeft', { amount: formatMoney(total, currencyCode) }),
+          percent: t('issuePercentLeft', { percent: 100 }),
+          shares: t('issueNoShares'),
+        }[split.mode];
       case 'noShares':
         return t('issueNoShares');
+      case 'invalidSplit':
+        return t('issueInvalidSplit');
       case 'amountMismatch':
-        return issue.remaining > 0
-          ? t('issueAmountLeft', { amount: formatMoney(issue.remaining, currencyCode) })
-          : t('issueAmountOver', { amount: formatMoney(-issue.remaining, currencyCode) });
+        // With a rest option on, money left over means nobody was ticked to take it.
+        if (remaining > 0 && split.mode === 'amount' && split.rest !== 'none') return t(`issueNoRestTakers_${split.rest}`);
+        return remaining > 0
+          ? t('issueAmountLeft', { amount: formatMoney(remaining, currencyCode) })
+          : t('issueAmountOver', { amount: formatMoney(-remaining, currencyCode) });
       case 'percentMismatch':
-        return issue.remaining > 0
-          ? t('issuePercentLeft', { percent: issue.remaining })
-          : t('issuePercentOver', { percent: -issue.remaining });
+        return remaining > 0 ? t('issuePercentLeft', { percent: remaining }) : t('issuePercentOver', { percent: -remaining });
     }
   };
 };
 
-export const SplitStep = ({ draft, dispatch, members, currencyCode, total, result, showErrors }: SplitStepProps) => {
+export const SplitStep = ({ draft, dispatch, members, currencyCode, total, preview, isPreviewing, showErrors }: SplitStepProps) => {
   const { t } = useTranslation('expenses');
   const issueText = useIssueText();
-  const { mode } = draft.split;
-  const tone = !result.issue ? 'positive' : showErrors ? 'negative' : 'neutral';
+  const { mode, rest } = draft.split;
+  const sharingRest = mode === 'amount' && rest !== 'none';
+  const shares = new Map(preview?.shares.map(share => [share.userId, share.partialAmount]));
+  const balanced = preview?.issue === null && !isPreviewing;
+  const tone = balanced ? 'positive' : showErrors && preview?.issue ? 'negative' : 'neutral';
   const NoticeIcon = { positive: CheckCircle2, negative: AlertCircle, neutral: CircleDashed }[tone];
 
   return (
@@ -228,7 +246,7 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
       <Card>
         {members.map(member => {
           const name = getDisplayName(member);
-          const share = formatMoney(result.shares[member.id] ?? 0, currencyCode);
+          const share = preview ? formatMoney(shares.get(member.id) ?? 0, currencyCode) : '—';
 
           if (mode === 'equal') {
             const included = draft.split.included[member.id] ?? true;
@@ -255,7 +273,7 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
               <RowName>
                 {name}
                 {member.isPlaceholder && <RowSubtitle><PlaceholderLabel /></RowSubtitle>}
-                {mode !== 'amount' && <RowSubtitle>{share}</RowSubtitle>}
+                {(mode !== 'amount' || sharingRest) && <RowSubtitle>{share}</RowSubtitle>}
               </RowName>
               <AmountInput
                 label={t(`valueFor_${mode}`, { name })}
@@ -263,14 +281,42 @@ export const SplitStep = ({ draft, dispatch, members, currencyCode, total, resul
                 value={draft.split.values[member.id] ?? ''}
                 onValueChange={value => dispatch({ type: 'setSplitValue', userId: member.id, value })}
               />
+              {sharingRest && (
+                <Checkbox
+                  checked={draft.split.restIncluded[member.id] ?? true}
+                  aria-label={t('includeMemberInRest', { name })}
+                  onChange={event => dispatch({ type: 'toggleRestIncluded', userId: member.id, included: event.target.checked })}
+                />
+              )}
             </ChoiceRow>
           );
         })}
       </Card>
 
+      {mode === 'amount' && (
+        <Card role="group" aria-label={t('splitRest')}>
+          {(['equal', 'proportional'] as const).map(value => (
+            <ChoiceRow key={value}>
+              <RowName>
+                {t(`splitRest_${value}`)}
+                <RowSubtitle>{t(`splitRestHint_${value}`)}</RowSubtitle>
+              </RowName>
+              <Checkbox
+                checked={rest === value}
+                onChange={event => dispatch({ type: 'setSplitRest', rest: event.target.checked ? value : 'none' })}
+              />
+            </ChoiceRow>
+          ))}
+        </Card>
+      )}
+
       <Notice $tone={tone} role="status">
         <NoticeIcon size={18} aria-hidden />
-        {result.issue ? issueText(result.issue, currencyCode) : t('splitBalanced')}
+        {!preview
+          ? t('splitChecking')
+          : preview.issue
+            ? issueText(preview.issue, draft.split, total, currencyCode)
+            : t('splitBalanced')}
       </Notice>
     </Stack>
   );

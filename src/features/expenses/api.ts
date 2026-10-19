@@ -1,4 +1,5 @@
 import { api, ApiTag } from 'store/api';
+import type { SplitPreview, SplitPreviewRequest } from './split';
 import type { CreateTransaction, Receipt, Transaction, TransactionRef, UpdateTransaction } from './types';
 
 /** Everything an expense change can show up in. */
@@ -37,6 +38,10 @@ export const expensesApi = api.injectEndpoints({
     getTransaction: build.query<Transaction, string>({
       query: id => `transactions/${id}`,
       providesTags: (_result, _error, id) => [{ type: ApiTag.Transaction, id }],
+    }),
+    // A POST only because the split goes in the body; nothing is stored, so it's cached like a query.
+    previewSplit: build.query<SplitPreview, SplitPreviewRequest>({
+      query: body => ({ url: 'transactions/preview', method: 'POST', body }),
     }),
     createTransaction: build.mutation<Transaction, CreateTransaction>({
       query: body => ({ url: 'transactions', method: 'POST', body }),
@@ -83,6 +88,7 @@ export const expensesApi = api.injectEndpoints({
 
 export const {
   useGetTransactionQuery,
+  usePreviewSplitQuery,
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,
